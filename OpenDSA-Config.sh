@@ -9,7 +9,6 @@ function sudo-pw {
     echo $password | sudo -S $@
 }
 
-
 # Start configuration
 
 # Install and configure mysql-server
