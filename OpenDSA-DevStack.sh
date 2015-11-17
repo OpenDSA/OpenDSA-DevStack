@@ -12,7 +12,7 @@ function sudo-pw {
 # Start configuration
 
 # Install and configure mysql-server
-sudo-pw apt-get -y update
+# sudo-pw apt-get -y update
 sudo-pw debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
 sudo-pw debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
 sudo-pw apt-get -y install mysql-server
@@ -25,9 +25,31 @@ mysql -uroot -proot -e "GRANT ALL ON opendsa.* TO 'opendsa'@'localhost' IDENTIFI
 sudo-pw service mysql stop
 sudo-pw service mysql start
 
+# Install OpenDSA-server
 sudo-pw apt-get -y autoremove
 
-sudo-pw apt-get -y install dkms curl screen libxml2-dev libxslt-dev nodejs git libpq-dev vim emacs python python-feedvalidator python-software-properties libmysqlclient-dev libmariadbclient-dev libcurl4-gnutls-dev python-pip libevent-dev libffi-dev libssl-dev python-dev build-essential stunnel4
+sudo-pw apt-get -y install dkms
+sudo-pw apt-get -y install curl
+sudo-pw apt-get -y install screen
+sudo-pw apt-get -y install libxml2-dev libxslt-dev
+sudo-pw apt-get -y install nodejs
+sudo-pw apt-get -y install git
+sudo-pw apt-get -y install libpq-dev
+sudo-pw apt-get -y install vim
+sudo-pw apt-get -y install emacs
+sudo-pw apt-get -y install python
+sudo-pw apt-get -y install python-feedvalidator
+sudo-pw apt-get -y install python-software-properties
+sudo-pw apt-get -y install libmysqlclient-dev
+sudo-pw apt-get -y install libmariadbclient-dev
+sudo-pw apt-get -y install libcurl4-gnutls-dev
+sudo-pw apt-get -y install python-pip
+sudo-pw apt-get -y install libevent-dev
+sudo-pw apt-get -y install libffi-dev
+sudo-pw apt-get -y install libssl-dev
+sudo-pw apt-get -y install python-dev
+sudo-pw apt-get -y install build-essential
+sudo-pw apt-get -y install stunnel4
 
 sudo-pw apt-get -y update
 
