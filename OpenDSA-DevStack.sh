@@ -23,10 +23,8 @@ echo -e "\n--- Setting up our MySQL user and db ---\n"
 mysql -uroot -proot -e "CREATE DATABASE opendsa"
 mysql -uroot -proot -e "GRANT ALL ON opendsa.* TO 'opendsa'@'localhost' IDENTIFIED BY 'opendsa'"
 
-sudo-pw /etc/init.d/mysql restart
 sudo-pw service mysql stop
-sudo-pw service mysql restart
-
+sudo-pw service mysql start
 
 # Install OpenDSA-server
 sudo-pw apt-get -y autoremove
@@ -57,7 +55,6 @@ sudo-pw apt-get -y install stunnel4
 sudo-pw apt-get -y update
 
 # Clone OpenDSA-server
-# sudo-pw rm -rf /vagrant/OpenDSA-server
 sudo-pw git clone https://github.com/OpenDSA/OpenDSA-server.git /vagrant/OpenDSA-server
 
 # Create link to assets
@@ -72,19 +69,15 @@ cd /vagrant/OpenDSA-server/ODSA-django
 sudo-pw mkdir /vagrant/OpenDSA-server/ODSA-django/media
 sudo-pw touch /vagrant/OpenDSA-server/ODSA-django/media/daily_stats.json
 
-# Install requirements
-sudo-pw pip install -r requirements.txt
-
 # Change stunnel.pem file permission
 sudo-pw chmod 600 stunnel/stunnel.pem
+
+# Install requirements
+sudo-pw pip install -r requirements.txt
 
 # Run Django syncdb
 python manage.py syncdb
 
-# Run development server
-sudo-pw kill `sudo lsof -t -i:8443`
-sudo-pw kill `sudo lsof -t -i:8001`
-sudo-pw ./runserver
 
 # Clone OpenDSA
 sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
@@ -93,6 +86,18 @@ sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
 cd /vagrant/OpenDSA/
 git checkout LTI
 make pull
+
+sudo-pw apt-get -y install python-sphinx
+sudo-pw curl -sL https://deb.nodesource.com/setup | sudo bash -
+sudo-pw apt-get -y install nodejs
+sudo-pw apt-get -y install uglifyjs
+sudo-pw apt-get -y install uglifycss
+sudo-pw ln -s /usr/bin/nodejs /usr/bin/node
+sudo-pw ln -s /usr/bin/nodejs /usr/sbin/node
+sudo-pw npm install -g jshint
+sudo-pw npm install -g csslint
+sudo-pw pip install -r requirements.txt
+
 
 # Clone OpenDSA-LTI
 sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA-LTI
