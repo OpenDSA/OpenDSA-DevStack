@@ -12,7 +12,7 @@ function sudo-pw {
 # Start configuration
 
 # Install and configure mysql-server
-# sudo-pw apt-get -y update
+sudo-pw apt-get -y update
 sudo-pw debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
 sudo-pw debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
 sudo-pw apt-get -y install mysql-server
@@ -77,6 +77,9 @@ sudo-pw pip install -r requirements.txt
 # Run Django syncdb
 python manage.py syncdb
 
+# Create Django superuser
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('opendsa', 'opendsa@opendsa.com', 'opendsa')" | python manage.py shell
+
 # Clone OpenDSA
 sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
 
@@ -115,9 +118,9 @@ source ~/.rvm/scripts/rvm
 source ~/.bash_profile
 
 ## GEMS
-gem install bundler
+sudo-pw gem install bundler
 
 cd /vagrant/OpenDSA-LTI
-sudo bundle install
+sudo-pw bundle install
 
 su -c 'bash /vagrant/runservers.sh' vagrant
