@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 
-# Get password to be used with sudo commands
-echo -n "Enter password to be used for sudo commands:"
-read -s password
-
 # Function to issue sudo command with password
 function sudo-pw {
-    echo $password | sudo -S $@
+    echo "vagrant" | sudo -S $@
 }
 
 # Start configuration
