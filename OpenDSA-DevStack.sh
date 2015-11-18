@@ -70,11 +70,11 @@ sudo-pw chmod 600 stunnel/stunnel.pem
 # Install requirements
 sudo-pw pip install -r requirements.txt
 
-# Run Django syncdb
-python manage.py syncdb
-
 # Create Django superuser
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('opendsa', 'opendsa@opendsa.com', 'opendsa')" | python manage.py shell
+
+# Run Django syncdb
+python manage.py syncdb
 
 # Clone OpenDSA
 sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
