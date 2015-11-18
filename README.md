@@ -3,7 +3,7 @@ Ubuntu 14.04, OpenDSA-DevStack
 
 ## How to use:
 
-1. Install [Vagrant](http://www.vagrantup.com)
+1. Install [Vagrant](https://www.vagrantup.com/downloads)
 2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 3. Clone or [Download](https://github.com/OpenDSA/OpenDSA-DevStack/archive/master.zip) this repository
 4. `$ cd OpenDSA-DevStack`
