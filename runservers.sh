@@ -3,20 +3,21 @@ function sudo-pw {
     echo "vagrant" | sudo -S $@
 }
 
+# sudo kill `sudo lsof -t -i:8080`
+# sudo kill `sudo lsof -t -i:9292`
+# sudo kill `sudo lsof -t -i:8443`
+# sudo kill `sudo lsof -t -i:8001`
+
 # OpenDSA content server
 cd /vagrant/OpenDSA
-sudo-pw kill `sudo lsof -t -i:8080`
 (setsid ./WebServer &)
 
-sleep 5
+sleep 2
 # OpenDSA-LTI server
 cd /vagrant/OpenDSA-LTI
-sudo-pw kill `sudo lsof -t -i:9292`
-(setsid rackup config.ru &)
+(setsid sudo rackup config.ru &)
 
-sleep 5
+sleep 2
 # OpenDSA-server
 cd /vagrant/OpenDSA-server/ODSA-django
-sudo-pw kill `sudo lsof -t -i:8443`
-sudo-pw kill `sudo lsof -t -i:8001`
 (setsid sudo ./runserver &)

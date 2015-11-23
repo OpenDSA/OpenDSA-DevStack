@@ -46,6 +46,7 @@ sudo-pw apt-get -y install libssl-dev
 sudo-pw apt-get -y install python-dev
 sudo-pw apt-get -y install build-essential
 sudo-pw apt-get -y install stunnel4
+sudo-pw apt-get -y install default-jre
 
 sudo-pw apt-get -y update
 
@@ -71,7 +72,7 @@ sudo-pw chmod 600 stunnel/stunnel.pem
 sudo-pw pip install -r requirements.txt
 
 # Create Django superuser
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('opendsa', 'opendsa@opendsa.com', 'opendsa')" | python manage.py shell
+# echo "from django.contrib.auth.models import User; User.objects.create_superuser('opendsa', 'opendsa@opendsa.com', 'opendsa')" | python manage.py shell
 
 # Run Django syncdb
 python manage.py syncdb
@@ -93,7 +94,7 @@ sudo-pw ln -s /usr/bin/nodejs /usr/bin/node
 sudo-pw ln -s /usr/bin/nodejs /usr/sbin/node
 sudo-pw npm install -g jshint
 sudo-pw npm install -g csslint
-sudo-pw pip install -r requirements.txt
+sudo-pw pip install -r requirements.txt --upgrade
 
 # Clone OpenDSA-LTI
 sudo-pw git clone https://github.com/OpenDSA/OpenDSA-LTI.git /vagrant/OpenDSA-LTI
@@ -119,4 +120,7 @@ sudo-pw gem install bundler
 cd /vagrant/OpenDSA-LTI
 sudo-pw bundle install
 
-su -c 'bash /vagrant/runservers.sh' vagrant
+# Create link to OpenDSA
+ln -s /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
+
+bash /vagrant/runservers.sh

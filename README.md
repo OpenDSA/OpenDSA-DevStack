@@ -1,7 +1,11 @@
-Ubuntu 14.04, OpenDSA-DevStack
+Setting UP Vagrant Environment For OpenDSA Project
 ======
 
-## How to use:
+## Introduction:
+
+Vagrant designed to run through multiple platforms including currently Mac OS X, Microsoft Windows, Debian, Ubuntu, CentOS, RedHat and Fedora, in this document we will handle how to configure and run OpenDSA project virtual development environment through Vagrant from scratch to up and running.
+
+## Installation Steps:
 
 1. Install [Vagrant](https://www.vagrantup.com/downloads)
 2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -10,15 +14,48 @@ Ubuntu 14.04, OpenDSA-DevStack
 5. `$ vagrant up`
 6. `$ vagrant ssh`
 7. `$ cd /vagrant`
-8. `$ ./OpenDSA-Devstack.sh`
-9. Go to https://192.168.33.10:8443 for OpenDSA-server
-10. Go to https://192.168.33.10:9292 for OpenDSA-LTI server
-11. Go to http://192.168.33.10:8080 for OpenDSA content server
+8. `$ ./OpenDSA-DevStack.sh`
+9. Enter MySQL root password when prompted
+10. When prompted to create django superuser account enter username: `opendsa` and password:`opendsa`
+11. After the provisioning script complete you can go to:
 
-##Suspending and Shutting Down Virtual Machine:
+  * https://192.168.33.10:8443 for OpenDSA-server
+  * https://192.168.33.10:9292 for OpenDSA-LTI server
+  * http://192.168.33.10:8080 for OpenDSA content server
 
-<p>After you finish your working, you need either to suspend and resume your virtual machine or turn it off; you can use one of the following commands upon your choice.</p>
+## Shut Down The Virtual Machine:
 
-1. `$ vagrant suspend`
-2. `$ vagrant resume`
+After you finish your work, you need to turn the virtual machine off.
+
+1. Exit the virtual machine terminal by typing `exit`
+2. `$ cd OpenDSA-DevStack`
 3. `$ vagrant halt`
+
+## Re-run Development Servers:
+
+If you decided to shut down the virtual machine using `vagrant halt`, you have to re-run the servers again after you `vagrant up`.
+
+1. `$ cd OpenDSA-DevStack`
+2. `$ vagrant up`
+3. `$ vagrant ssh`
+4. `$ cd /vagrant`
+5. `$ ./runservers.sh`
+
+## Reprovision The Virtual Machine:
+
+If anything went wrong or you want to reprovision your virtual machine for any reason follow these steps.
+
+1. `$ cd OpenDSA-DevStack`
+2. `$ vagrant destroy`
+3. `$ rm -rf OpenDSA`
+4. `$ rm -rf OpenDSA-LTI`
+5. `$ rm -rf OpenDSA-server`
+6. `$ vagrant up`
+7. `$ vagrant ssh`
+8. `$ cd /vagrant`
+9. `$ ./OpenDSA-DevStack.sh`
+10. Enter MySQL root password and create django superuser as described before.
+
+## Virtual Machine sudo password:
+
+Sudo password is `vagrant` in case you need to execute any commands the require sudo.
