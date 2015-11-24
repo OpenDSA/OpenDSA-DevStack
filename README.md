@@ -15,8 +15,8 @@ Vagrant designed to run through multiple platforms including currently Mac OS X,
 6. `$ vagrant ssh`
 7. `$ cd /vagrant`
 8. `$ ./OpenDSA-DevStack.sh`
-9. Enter MySQL root password when prompted
-10. When prompted to create django superuser account enter username: `opendsa` and password:`opendsa`
+9. Enter MySQL root password as `root` when prompted
+10. When prompted to create django superuser account enter username: `opendsa`, password:`opendsa`, and any email address
 11. After the provisioning script complete you can go to:
 
   * https://192.168.33.10:8443 for OpenDSA-server
