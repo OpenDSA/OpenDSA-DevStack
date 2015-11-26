@@ -1,4 +1,4 @@
-Setting UP Vagrant Environment For OpenDSA Project
+Setting Up Vagrant Environment For OpenDSA Project
 ======
 
 ## Introduction:
@@ -33,7 +33,7 @@ After you finish your work, you need to turn the virtual machine off.
 
 ## Re-run Development Servers:
 
-If you decided to shut down the virtual machine using `vagrant halt`, you have to re-run the servers again after you `vagrant up`.
+If you decided to shut down the virtual machine using `vagrant halt`, you have to re-run the servers again after you do `vagrant up`.
 
 1. `$ cd OpenDSA-DevStack`
 2. `$ vagrant up`
@@ -43,7 +43,7 @@ If you decided to shut down the virtual machine using `vagrant halt`, you have t
 
 ## Reprovision The Virtual Machine:
 
-If anything went wrong or you want to reprovision your virtual machine for any reason follow these steps.
+If anything went wrong or you want to reprovision your virtual machine for any reasons follow these steps.
 
 1. `$ cd OpenDSA-DevStack`
 2. `$ vagrant destroy`
@@ -58,4 +58,14 @@ If anything went wrong or you want to reprovision your virtual machine for any r
 
 ## Virtual Machine sudo password:
 
-Sudo password is `vagrant` in case you need to execute any commands the require sudo.
+sudo password is `vagrant` in case you need to execute any commands the require sudo.
+
+## Development Workflow:
+
+Provisioning script will clone OpenDSA, OpenDSA-LTI, and OpenDSA-server repositories inside OpenDSA-DevStack folder. OpenDSA-DevStack folder is shared between your host machine and the virtual machine so you can do your development to any of these repositories on your host machine using your preferred tools or IDEs. All changes you make will take effect immediately and you can test them through the virtual machine servers URLs provided earlier. You can commit and push your changes from your host machine however if you want to compile books in OpenDSA folder you have to do that within the virtual machine as following:
+
+1. Open new terminal in your host machine
+2. `$ cd OpenDSA-DevStack`
+3. `$ vagrant ssh` (you don't need to do `vagrant up` because we assume that VM is already up and running)
+4. `$ cd /vagrant/OpenDSA`
+5. `make <<CONFIG_FILE_NAME>>`
