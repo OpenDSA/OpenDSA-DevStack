@@ -77,12 +77,11 @@ sudo-pw pip install -r requirements.txt
 # Run Django syncdb
 python manage.py syncdb
 
-# Clone OpenDSA
-sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
+# Clone the LTI branch of OpenDSA repo
+sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git --branch LTI --single-branch /vagrant/OpenDSA
 
 # Checkout LTI branch
 cd /vagrant/OpenDSA/
-git checkout LTI
 make pull
 
 sudo-pw apt-get -y install python-sphinx
