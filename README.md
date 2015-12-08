@@ -95,11 +95,11 @@ How to create a new DB and sync OpenDSA with the new DB.
 3. Open conf.py in  ODSA-django folder
 4. Change the name field which is the DB name
 5. Create a new database in the terminal
-   e.g. mysql -uroot -proot -e "CREATE DATABASE opendsa2"
+   e.g. mysql -uroot -proot -e "CREATE DATABASE opendsa"
 6. Grant a user in the terminal
-   e.g. mysql -uroot -proot -e "GRANT ALL ON opendsa2.* TO 'opendsa'@'localhost' IDENTIFIED BY 'opendsa'"
+   e.g. mysql -uroot -proot -e "GRANT ALL ON opendsa.* TO 'opendsa'@'localhost' IDENTIFIED BY 'opendsa'"
 7. Restart the mysql server
    sudo service mysql stop
    sudo service mysql start
-8. Sync the OpenDSA with the new DB
+8. Sync the OpenDSA with the new DB, ODSA-django under OpenDSA-server
    python manage.py syncdb
