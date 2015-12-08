@@ -69,3 +69,37 @@ Provisioning script will clone OpenDSA, OpenDSA-LTI, and OpenDSA-server reposito
 3. `$ vagrant ssh` (you don't need to do `vagrant up` because we assume that VM is already up and running)
 4. `$ cd /vagrant/OpenDSA`
 5. `make <<CONFIG_FILE_NAME>>`
+
+
+
+## Test within Canvas
+
+1. Create Canvas Account.
+2. Generate access token with Approved Integration menu under settings under account.
+3. Put generated token in to template_LMSconf.json
+4. Type your course name at course_code (e.g. "course_code": "CS3")
+5. Change template_LMSconf.json with your course name (e.g. CS3_LMSconf.json)
+6. Go to https://canvas.instructure.com and create a course with the same name that you chose in the previous step.
+7. Go to the terminal, OpenDSA under vagrant, and compile a book (e.g. make CS3 opts="-c True")
+8. If you get an error, try sudo pip install -r requirements.txt --upgrade
+9. then compile a book again.
+10. If you want to go to mysql terminal, type mysql -u root -proot
+
+
+## Alter django DB scheme
+
+How to create a new DB and sync OpenDSA with the new DB.
+
+1. Open models.py in opendsa folder under ODSA-django
+2. Edit the described DB scheme as you wish
+3. Open conf.py in  ODSA-django folder
+4. Change the name field which is the DB name
+5. Create a new database in the terminal
+   e.g. mysql -uroot -proot -e "CREATE DATABASE opendsa2"
+6. Grant a user in the terminal
+   e.g. mysql -uroot -proot -e "GRANT ALL ON opendsa2.* TO 'opendsa'@'localhost' IDENTIFIED BY 'opendsa'"
+7. Restart the mysql server
+   sudo service mysql stop
+   sudo service mysql start
+8. Sync the OpenDSA with the new DB
+   python manage.py syncdb
