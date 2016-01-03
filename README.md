@@ -1,9 +1,9 @@
-Setting Up Vagrant Environment For OpenDSA Project
-======
+Setting Up a Vagrant Environment for OpenDSA
+============================================
 
 ## Introduction:
 
-Vagrant designed to run through multiple platforms including currently Mac OS X, Microsoft Windows, Debian, Ubuntu, CentOS, RedHat and Fedora, in this document we will handle how to configure and run OpenDSA project virtual development environment through Vagrant from scratch to up and running.
+Vagrant is designed to run on multiple platforms, including Mac OS X, Microsoft Windows, Debian, Ubuntu, CentOS, RedHat and Fedora. In this document we describe how to configure and run an OpenDSA project virtual development environment through Vagrant.
 
 ## Installation Steps:
 
@@ -16,8 +16,8 @@ Vagrant designed to run through multiple platforms including currently Mac OS X,
 7. `$ cd /vagrant`
 8. `$ ./OpenDSA-DevStack.sh`
 9. Enter MySQL root password as `root` when prompted
-10. When prompted to create django superuser account enter username: `opendsa`, password:`opendsa`, and any email address
-11. After the provisioning script complete you can go to:
+10. When prompted to create django superuser account, enter username: `opendsa`, password:`opendsa`, and any email address
+11. After the provisioning script is complete you can go to:
 
   * https://192.168.33.10:8443 for OpenDSA-server
   * https://192.168.33.10:9292 for OpenDSA-LTI server
@@ -43,7 +43,7 @@ If you decided to shut down the virtual machine using `vagrant halt`, you have t
 
 ## Reprovision The Virtual Machine:
 
-If anything went wrong or you want to reprovision your virtual machine for any reasons follow these steps.
+If anything went wrong or you want to reprovision your virtual machine for any reason, follow these steps.
 
 1. `$ cd OpenDSA-DevStack`
 2. `$ vagrant destroy`
@@ -62,11 +62,11 @@ sudo password is `vagrant` in case you need to execute any commands the require 
 
 ## Development Workflow:
 
-Provisioning script will clone OpenDSA, OpenDSA-LTI, and OpenDSA-server repositories inside OpenDSA-DevStack folder. OpenDSA-DevStack folder is shared between your host machine and the virtual machine so you can do your development to any of these repositories on your host machine using your preferred tools or IDEs. All changes you make will take effect immediately and you can test them through the virtual machine servers URLs provided earlier. You can commit and push your changes from your host machine however if you want to compile books in OpenDSA folder you have to do that within the virtual machine as following:
+The provisioning script will clone the OpenDSA, OpenDSA-LTI, and OpenDSA-server repositories inside the OpenDSA-DevStack directory. OpenDSA-DevStack directory is shared between your host machine and the virtual machine, so you can do your development to any of these repositories on your host machine using your preferred tools or IDEs (from "outide" the virtual machine). All changes you make will take effect immediately, and you can test them through the virtual machine server URLs provided earlier. You can commit and push your changes from your host machine. **However, if you want to compile books in OpenDSA, you have to do that from within the virtual machine.** Do so as follows:
 
-1. Open new terminal in your host machine
+1. Open a new terminal within your virtual machine
 2. `$ cd OpenDSA-DevStack`
-3. `$ vagrant ssh` (you don't need to do `vagrant up` because we assume that VM is already up and running)
+3. `$ vagrant ssh` (you don't need to do `vagrant up` if the VM is already up and running)
 4. `$ cd /vagrant/OpenDSA`
 5. `make <<CONFIG_FILE_NAME>>`
 
@@ -74,26 +74,25 @@ Provisioning script will clone OpenDSA, OpenDSA-LTI, and OpenDSA-server reposito
 
 ## Test within Canvas
 
-1. Create Canvas Account.
-2. Generate access token with Approved Integration menu under settings under account.
-3. Put generated token in to template_LMSconf.json
-4. Type your course name at course_code (e.g. "course_code": "CS3")
+1. Create a Canvas Account. If you do not have access to a Canvas installation, then use the public one provided by Instructure at https://canvas.instructure.com.
+2. Generate an access token. Under "Account", click "Settings", then at the bottom of the page click "New Access Token". Be sure to copy the token once it is generated for the next step.
+3. Put the generated token into a copy of config/template_LMSconf.json
+4. In the template, pick a course code for `course_code` (e.g. "course_code": "CS3")
 5. Change template_LMSconf.json with your course name (e.g. CS3_LMSconf.json)
-6. Go to https://canvas.instructure.com and create a course with the same name that you chose in the previous step.
-7. Go to the terminal, OpenDSA under vagrant, and compile a book (e.g. make CS3 opts="-c True")
-8. If you get an error, try sudo pip install -r requirements.txt --upgrade
-9. then compile a book again.
-10. If you want to go to mysql terminal, type mysql -u root -proot
+6. Go to https://canvas.instructure.com and create a course using the same course code that you chose in the previous step.
+7. Go to the vagrant command terminal, cd to `OpenDSA`, and compile a book (e.g. make CS3). You will probably need to add a Makefile target, following the existing examples in the Makefile.
+8. If you get an error, try sudo pip install -r requirements.txt --upgrade. then compile a book again.
+10. If you want to go to the mysql terminal, type mysql -u root -proot
 
 
 ## Alter django DB scheme
 
 How to create a new DB and sync OpenDSA with the new DB.
 
-1. Open models.py in opendsa folder under ODSA-django
+1. Open models.py in the opendsa folder under ODSA-django
 2. Edit the described DB scheme as you wish
 3. Open conf.py in  ODSA-django folder
-4. Change the name field which is the DB name
+4. Change the name field, which is the DB name
 5. Create a new database in the terminal
    e.g. mysql -uroot -proot -e "CREATE DATABASE opendsa"
 6. Grant a user in the terminal
