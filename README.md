@@ -46,15 +46,16 @@ If you decided to shut down the virtual machine using `vagrant halt`, you have t
 If anything went wrong or you want to reprovision your virtual machine for any reason, follow these steps.
 
 1. `$ cd OpenDSA-DevStack`
-2. `$ vagrant destroy`
-3. `$ rm -rf OpenDSA`
-4. `$ rm -rf OpenDSA-LTI`
-5. `$ rm -rf OpenDSA-server`
-6. `$ vagrant up`
-7. `$ vagrant ssh`
-8. `$ cd /vagrant`
-9. `$ ./OpenDSA-DevStack.sh`
-10. Enter MySQL root password and create django superuser as described before.
+2. `$ git pull`
+3. `$ vagrant destroy`
+4. `$ rm -rf OpenDSA`
+5. `$ rm -rf OpenDSA-LTI`
+6. `$ rm -rf OpenDSA-server`
+7. `$ vagrant up`
+8. `$ vagrant ssh`
+9. `$ cd /vagrant`
+10. `$ ./OpenDSA-DevStack.sh`
+11. Enter MySQL root password and create django superuser as described before.
 
 ## Virtual Machine sudo password:
 
