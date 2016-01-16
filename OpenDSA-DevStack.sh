@@ -51,34 +51,31 @@ sudo-pw apt-get -y install default-jre
 sudo-pw apt-get -y update
 
 # Clone OpenDSA-server
-sudo-pw git clone https://github.com/OpenDSA/OpenDSA-server.git /vagrant/OpenDSA-server
+if [ ! -d /vagrant/OpenDSA-server ]; then
+  sudo-pw git clone https://github.com/OpenDSA/OpenDSA-server.git /vagrant/OpenDSA-server
+fi
 
 # Create link to assets
 ln -s /vagrant/OpenDSA-server/ODSA-django/assets/* /vagrant/OpenDSA-server/ODSA-django/static
-
-# Checkout NewKA branch
-cd /vagrant/OpenDSA-server/
-git checkout NewKA
-cd /vagrant/OpenDSA-server/ODSA-django
 
 # Create media folder
 sudo-pw mkdir /vagrant/OpenDSA-server/ODSA-django/media
 sudo-pw touch /vagrant/OpenDSA-server/ODSA-django/media/daily_stats.json
 
 # Change stunnel.pem file permission
-sudo-pw chmod 600 stunnel/stunnel.pem
+sudo-pw chmod 600 /vagrant/OpenDSA-server/ODSA-django/stunnel/stunnel.pem
 
 # Install requirements
+cd /vagrant/OpenDSA-server/ODSA-django
 sudo-pw pip install -r requirements.txt
-
-# Create Django superuser
-# echo "from django.contrib.auth.models import User; User.objects.create_superuser('opendsa', 'opendsa@opendsa.com', 'opendsa')" | python manage.py shell
 
 # Run Django syncdb
 python manage.py syncdb
 
-# Clone the LTI branch of OpenDSA repo
-sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git
+# Clone OpenDSA
+if [ ! -d /vagrant/OpenDSA ]; then
+  sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
+fi
 
 # Checkout LTI branch
 cd /vagrant/OpenDSA/
@@ -93,10 +90,14 @@ sudo-pw ln -s /usr/bin/nodejs /usr/bin/node
 sudo-pw ln -s /usr/bin/nodejs /usr/sbin/node
 sudo-pw npm install -g jshint
 sudo-pw npm install -g csslint
+cd /vagrant/OpenDSA/
 sudo-pw pip install -r requirements.txt --upgrade
 
 # Clone OpenDSA-LTI
-sudo-pw git clone https://github.com/OpenDSA/OpenDSA-LTI.git /vagrant/OpenDSA-LTI
+if [ ! -d /vagrant/OpenDSA-LTI ]; then
+  sudo-pw git clone https://github.com/OpenDSA/OpenDSA-LTI.git /vagrant/OpenDSA-LTI
+fi
+
 cd /vagrant/OpenDSA-LTI
 git checkout dev
 
