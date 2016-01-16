@@ -78,7 +78,7 @@ sudo-pw pip install -r requirements.txt
 python manage.py syncdb
 
 # Clone the LTI branch of OpenDSA repo
-sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git --branch LTI --single-branch /vagrant/OpenDSA
+sudo-pw git clone https://github.com/OpenDSA/OpenDSA.git
 
 # Checkout LTI branch
 cd /vagrant/OpenDSA/
