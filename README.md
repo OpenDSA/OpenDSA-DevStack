@@ -14,10 +14,8 @@ Vagrant is designed to run on multiple platforms, including Mac OS X, Microsoft 
 5. `$ vagrant up`
 6. `$ vagrant ssh`
 7. `$ cd /vagrant`
-8. `$ ./OpenDSA-DevStack.sh`
-9. Enter MySQL root password as `root` when prompted
-10. When prompted to create django superuser account, enter username: `opendsa`, password:`opendsa`, and any email address
-11. After the provisioning script is complete you can go to:
+8. `$ ./runservers.sh`
+9. After the provisioning script is complete you can go to:
 
   * https://192.168.33.10:8443 for OpenDSA-server
   * https://192.168.33.10:9292 for OpenDSA-LTI server
@@ -48,14 +46,7 @@ If anything went wrong or you want to reprovision your virtual machine for any r
 1. `$ cd OpenDSA-DevStack`
 2. `$ git pull`
 3. `$ vagrant destroy`
-4. `$ rm -rf OpenDSA`
-5. `$ rm -rf OpenDSA-LTI`
-6. `$ rm -rf OpenDSA-server`
-7. `$ vagrant up`
-8. `$ vagrant ssh`
-9. `$ cd /vagrant`
-10. `$ ./OpenDSA-DevStack.sh`
-11. Enter MySQL root password and create django superuser as described before.
+4. `$ vagrant up`
 
 ## Virtual Machine sudo password:
 
@@ -82,24 +73,3 @@ The provisioning script will clone the OpenDSA, OpenDSA-LTI, and OpenDSA-server 
 5. Change template_LMSconf.json with your course name (e.g. CS3_LMSconf.json)
 6. Go to https://canvas.instructure.com and create a course using the same course code that you chose in the previous step.
 7. Go to the vagrant command terminal, cd to `OpenDSA`, and compile a book (e.g. make CS3). You will probably need to add a Makefile target, following the existing examples in the Makefile.
-8. If you get an error, try sudo pip install -r requirements.txt --upgrade. then compile a book again.
-10. If you want to go to the mysql terminal, type mysql -u root -proot
-
-
-## Alter django DB scheme
-
-How to create a new DB and sync OpenDSA with the new DB.
-
-1. Open models.py in the opendsa folder under ODSA-django
-2. Edit the described DB scheme as you wish
-3. Open conf.py in  ODSA-django folder
-4. Change the name field, which is the DB name
-5. Create a new database in the terminal
-   e.g. mysql -uroot -proot -e "CREATE DATABASE opendsa"
-6. Grant a user in the terminal
-   e.g. mysql -uroot -proot -e "GRANT ALL ON opendsa.* TO 'opendsa'@'localhost' IDENTIFIED BY 'opendsa'"
-7. Restart the mysql server
-   sudo service mysql stop
-   sudo service mysql start
-8. Sync the OpenDSA with the new DB, ODSA-django under OpenDSA-server
-   python manage.py syncdb
