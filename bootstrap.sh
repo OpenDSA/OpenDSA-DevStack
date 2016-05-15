@@ -96,6 +96,8 @@ rake db:migrate
 ln -s /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
 ln -s /vagrant/OpenDSA/RST /vagrant/OpenDSA-LTI/RST
 ln -s /vagrant/OpenDSA/config /vagrant/OpenDSA-LTI/Configuration
+rm /vagrant/OpenDSA-LTI/Configuration/config
+rm /vagrant/OpenDSA-LTI/RST/RST
 sudo bower install --allow-root
 
 echo 'all set, welcome to OpenDSA project!'
