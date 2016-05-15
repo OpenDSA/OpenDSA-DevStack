@@ -96,6 +96,7 @@ rake db:migrate
 ln -s /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
 ln -s /vagrant/OpenDSA/RST /vagrant/OpenDSA-LTI/RST
 ln -s /vagrant/OpenDSA/config /vagrant/OpenDSA-LTI/Configuration
+bower install
 
 bash /vagrant/runservers.sh
 
