@@ -98,6 +98,4 @@ ln -s /vagrant/OpenDSA/RST /vagrant/OpenDSA-LTI/RST
 ln -s /vagrant/OpenDSA/config /vagrant/OpenDSA-LTI/Configuration
 sudo bower install --allow-root
 
-bash /vagrant/runservers.sh
-
 echo 'all set, welcome to OpenDSA project!'
