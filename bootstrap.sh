@@ -64,11 +64,9 @@ chmod 600 /vagrant/OpenDSA-server/ODSA-django/stunnel/stunnel.pem
 cd /vagrant/OpenDSA-server/ODSA-django
 pip install -r requirements.txt
 
+# Run Django syncdb
 python manage.py syncdb --noinput
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('opendsa', 'admin@example.com', 'opendsa')" | python manage.py shell
-
-# Run Django syncdb
-python manage.py syncdb
 
 # Clone OpenDSA
 if [ ! -d /vagrant/OpenDSA ]; then
@@ -90,7 +88,8 @@ fi
 cd /vagrant/OpenDSA-LTI
 git checkout RailsConfigIntg
 bundle install
-rake db:migrate
+rake db:rest_all
+rake db:populate
 
 # Create link to OpenDSA
 ln -s /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
