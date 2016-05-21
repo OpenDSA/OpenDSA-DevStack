@@ -52,6 +52,21 @@ npm install -g bower
 # Needed for docs generation.
 update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
+# install hh tool
+cd
+apt-add-repository -y ppa:ultradvorka/ppa
+apt-get update
+apt-get install -y hh
+
+apt-get install -y libncurses5-dev libreadline-dev
+wget https://github.com/dvorka/hstr/releases/download/1.10/hh-1.10-src.tgz
+tar xf hh-1.10-src.tgz
+cd hstr
+./configure && make && sudo make install
+
+hh --show-configuration >> ~/.bashrc
+source ~/.bashrc
+
 # Clone OpenDSA-server
 if [ ! -d /vagrant/OpenDSA-server ]; then
   git clone https://github.com/OpenDSA/OpenDSA-server.git /vagrant/OpenDSA-server
@@ -88,8 +103,7 @@ fi
 cd /vagrant/OpenDSA-LTI
 git checkout RailsConfigIntg
 bundle install
-rake db:rest_all
-rake db:populate
+rake db:reset_all
 
 # Create link to OpenDSA
 ln -s /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
