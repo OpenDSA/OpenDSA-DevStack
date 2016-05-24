@@ -105,7 +105,7 @@ git pull
 cd /vagrant/OpenDSA-LTI
 git checkout RailsConfigIntg
 bundle install
-rake db:reset_all
+rake db:reset_populate
 
 # Create link to OpenDSA
 ln -s /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
