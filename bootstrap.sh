@@ -71,6 +71,7 @@ source ~/.bashrc
 if [ ! -d /vagrant/OpenDSA-server ]; then
   git clone https://github.com/OpenDSA/OpenDSA-server.git /vagrant/OpenDSA-server
 fi
+git pull
 
 # Change stunnel.pem file permission
 chmod 600 /vagrant/OpenDSA-server/ODSA-django/stunnel/stunnel.pem
@@ -99,6 +100,7 @@ pip install -r requirements.txt --upgrade
 if [ ! -d /vagrant/OpenDSA-LTI ]; then
   git clone https://github.com/OpenDSA/OpenDSA-LTI.git /vagrant/OpenDSA-LTI
 fi
+git pull
 
 cd /vagrant/OpenDSA-LTI
 git checkout RailsConfigIntg
