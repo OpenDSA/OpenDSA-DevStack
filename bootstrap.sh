@@ -67,6 +67,14 @@ cd hstr
 hh --show-configuration >> ~/.bashrc
 source ~/.bashrc
 
+# install Java 8 and Ant
+sudo apt-add-repository -y ppa:webupd8team/java
+sudo apt-get update
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+sudo apt-get install -y oracle-java8-installer
+sudo apt-get install -y ant
+
 # Clone OpenDSA-server
 if [ ! -d /vagrant/OpenDSA-server ]; then
   git clone https://github.com/OpenDSA/OpenDSA-server.git /vagrant/OpenDSA-server
