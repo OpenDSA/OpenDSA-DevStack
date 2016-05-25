@@ -7,7 +7,7 @@ Vagrant is designed to run on multiple platforms, including Mac OS X, Microsoft 
 
 ## Installation Steps:
 
-1. Install [Vagrant](https://www.vagrantup.com/downloads)
+1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
 2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 3. Clone or [Download](https://github.com/OpenDSA/OpenDSA-DevStack/archive/master.zip) this repository
 4. `$ cd OpenDSA-DevStack`
@@ -50,7 +50,7 @@ If anything went wrong or you want to reprovision your virtual machine for any r
 
 ## Virtual Machine sudo password:
 
-sudo password is `vagrant` in case you need to execute any commands the require sudo.
+sudo password is `vagrant` in case you need to execute any commands that require sudo.
 
 ## Development Workflow:
 
