@@ -71,10 +71,11 @@ During development of OpenDSA-LTI, other developers might add new gems to the pr
 3. `$ vagrant reload`
 4. `$ vagrant ssh`
 5. `$ cd /vagrant/OpenDSA-LTI`
-6. `$ sudo bundle install`
-7. `$ rake db:reset_populate` **Note:** This step will place the database in a simple starter state.
-8. `$ cd /vagrant`
-9. `$ ./runservers.sh`
+6. `$ git pull`
+7. `$ sudo bundle install`
+8. `$ rake db:reset_populate` **Note:** This step will place the database in a simple starter state.
+9. `$ cd /vagrant`
+10. `$ ./runservers.sh`
 
 
 ## OpenDSA-LTI Database Test Data
