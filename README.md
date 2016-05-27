@@ -64,7 +64,7 @@ The provisioning script will clone the OpenDSA, OpenDSA-LTI, and OpenDSA-server 
 
 ## Keep OpenDSA-LTI up to date:
 
-During development of OpenDSA-LTI, other developers might add new gems to the project or add new migrations etc. To keep you local version up to date with the latest version do the following:
+During development of OpenDSA-LTI, other developers might add new gems to the project or add new migrations etc. To keep your local version up to date with the latest version do the following:
 
 1. Open a new terminal
 2. `$ cd OpenDSA-DevStack`
