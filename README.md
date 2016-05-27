@@ -76,12 +76,9 @@ During development of OpenDSA-LTI, other developers might add new gems to the pr
 8. `$ cd /vagrant`
 9. `$ ./runservers.sh`
 
-Development team notes:
 
-Database Test Data
-------------------
-Step number 7 (`rake db:reset_populate`) in the sequence will place the database in
-a simple starter state.
+## OpenDSA-LTI Database Test Data
+
 
 The initial database population is defined by lib/tasks/sample_data.rake.
 It uses the factories defined in spec/factories/* to generate entities.
