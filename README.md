@@ -62,7 +62,7 @@ The provisioning script will clone the OpenDSA, OpenDSA-LTI, and OpenDSA-server 
 4. `$ cd /vagrant/OpenDSA`
 5. `make <<CONFIG_FILE_NAME>>`
 
-## Keep OpenDSA-LTI up to date:
+## Keep OpenDSA-DevStack up to date:
 
 During development of OpenDSA-LTI, other developers might add new gems to the project or add new migrations etc. To keep your local version up to date with the latest version do the following:
 
@@ -74,8 +74,10 @@ During development of OpenDSA-LTI, other developers might add new gems to the pr
 6. `$ git pull`
 7. `$ sudo bundle install`
 8. `$ rake db:reset_populate` **Note:** This step will place the database in a simple starter state.
-9. `$ cd /vagrant`
-10. `$ ./runservers.sh`
+9. `$ cd /vagrant/OpenDSA`
+10. `$ make pull`
+11. `$ cd /vagrant`
+12. `$ ./runservers.sh`
 
 
 ## OpenDSA-LTI Database Test Data
