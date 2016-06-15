@@ -115,3 +115,18 @@ in db/seeds.rb instead.
 5. Change template_LMSconf.json with your course name (e.g. CS3_LMSconf.json)
 6. Go to https://canvas.instructure.com and create a course using the same course code that you chose in the previous step.
 7. Go to the vagrant command terminal, cd to `OpenDSA`, and compile a book (e.g. make CS3). You will probably need to add a Makefile target, following the existing examples in the Makefile.
+
+
+## Connect to CodeWorkout Database:
+
+During development it is convenient to connect to OpenDSA-LTI database from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to CodeWorkout Database in the Vagrant machine using the following setup:
+
+- Connection Name: CodeWorkout
+- Connection Method: Standard TCP/IP over SSH
+- SSH Hostname: 192.168.33.10
+- SSH Username: vagrant
+- SSH Password: vagrant
+- MySQL Hostname: 127.0.0.1
+- MySQL Server Port: 3306
+- Username: opendsa
+- Password: opendsa
