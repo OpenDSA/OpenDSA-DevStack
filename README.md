@@ -108,14 +108,7 @@ in db/seeds.rb instead.
 
 ## Test within Canvas
 
-1. Create a Canvas Account. If you do not have access to a Canvas installation, then use the public one provided by Instructure at https://canvas.instructure.com.
-2. Generate an access token. Under "Account", click "Settings", then at the bottom of the page click "New Access Token". Be sure to copy the token once it is generated for the next step.
-3. Put the generated token into a copy of config/template_LMSconf.json
-4. In the template, pick a course code for `course_code` (e.g. "course_code": "CS3")
-5. Change template_LMSconf.json with your course name (e.g. CS3_LMSconf.json)
-6. Go to https://canvas.instructure.com and create a course using the same course code that you chose in the previous step.
-7. Go to the vagrant command terminal, cd to `OpenDSA`, and compile a book (e.g. make CS3). You will probably need to add a Makefile target, following the existing examples in the Makefile.
-
+1. Follow the directions at https://github.com/OpenDSA/OpenDSA-DevStack/wiki
 
 ## Connect to CodeWorkout Database:
 
