@@ -106,9 +106,34 @@ in db/seeds.rb instead.
       - one course offering is set up with the admin and instructor
         as instructors, and all other sample accounts as students
 
-## Test within Canvas
+## Generate Canvas course using OpenDSA web interface.
 
-1. Follow the directions at https://github.com/OpenDSA/OpenDSA-DevStack/wiki
+1. If you are using OpenDSA-DevStack, make sure it is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-lti-up-to-date).
+2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
+3. Open a new terminal and do the following to process background jobs:
+    - `cd ~/OpenDSA-DevStack`
+    - `vagrant ssh`
+    - `cd /vagrant/OpenDSA-LTI`
+    - `rake jobs:work`
+4. Login to the application with admin account (admin@codeworkout.org, pass: 'adminadmin').
+5. Click `Upload Books` in the navigation bar, then  click `Choose File`. Navigate to OpenDSA-DevStack/OpenDSA-LTI and choose test_CS3.json. Click `Submit File`.
+6. Go to https://canvas.instructure.com/ and create a course with the name `OpenDSA-LTI`. Copy the course ID from the URL, you will use it later.
+7. Go to the admin area by clicking on the little wrench icon to the left of "admin@codworkout.org" in the top menu bar. Click the `University-oriented` menu and select `Course Offerings`. There are six course offerings in three semesters, Spring-2016 (1/1-5/31), Summer-I (6/1-7/15), and Summer-II (7/16-8/15). Pick one and click `edit`. At the top of the form, select `https://canvas.instructure.com` from the menu.
+Also, modify `LMS COURSE CODE` to be 'OpenDSA-LTI' and `LMS COURSE NUM` to the course ID you copied in point #6.
+Click on `Update Course offering` at the bottom of the page.
+8. Under the `ODSA Books` menu, select `Inst Book`. Then click on `edit` for the chosen book-to-course mapping entry. On the edit form, select the proper course instance (the one that you updated in the previous step). Click `Update Inst book`.
+9. Under the `LMS config` menu, click `Lms Access`. Give instructor `Ima Teacher` access to the Canvas instance. Click `create access`, then set the LMS instance and the User. Put some dummy value in the token field. Click `Create Lms access`.
+10. Log out and log in again using the instructor account `example-1@railstutorial.org`, password: 'hokiehokie'. This is the `Ima Teacher` account. Click on the instructor email address in the navigation bar, then click `Update Access Token`. If you don't have Canvas access token follow the instructions [here](https://guides.instructure.com/m/4214/l/40399-how-do-i-obtain-an-api-access-token-for-an-account). Click `Edit` for the `LMS instance`. Set the access token, and click `Update Lms access`.
+11. Go back to the application main page by following this link https://192.168.33.10:9292. Click the `Course` button and then navigate to the course that you have previously selected. Under the `OpenDSA` tab you will find the book linked to that offering. You can click `Configure Book` to go to book configuration view. This allows an instructor to add/remove book modules and chapters. It also allows an instructor to define exercises points and due dates. Clicking the `Compile Book` button will then generate the book's html files on the server file system, and send book details to the linked Canvas instance as well. Click `Compile Book` and you should see the progress bar moving forward while the course is being generated in Canvas.
+12. At this point the book is generated in Canvas and linked to a compiled book on the server file system. But
+Since we don't have the book compilation step automated yet, you should compile the book manually.
+I've updated the `Makefile` for CS3 book to compile it in the right folder. So you need to open a new terminal and do the following:
+    - `cd ~/OpenDSA-DevStack`
+    - `vagrant ssh`
+    - `cd /vagrant/OpenDSA`
+    - `make pull`
+    - `make CS3`
+13. Once the compilation step is done, go to Canvas and open course modules you should find the book pushed and published.
 
 ## Connect to CodeWorkout Database:
 
