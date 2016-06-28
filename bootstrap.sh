@@ -111,7 +111,6 @@ fi
 git pull
 
 cd /vagrant/OpenDSA-LTI
-git checkout RailsConfigIntg
 bundle install
 rake db:reset_populate
 
