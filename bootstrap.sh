@@ -32,11 +32,8 @@ debconf-set-selections <<< 'mysql-server mysql-server/root_password password roo
 debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
 install MySQL mysql-server libmysqlclient-dev
 mysql -uroot -proot <<SQL
-CREATE DATABASE opendsa DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE DATABASE opendsa_lti DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 GRANT ALL PRIVILEGES ON opendsa.* to 'opendsa'@'localhost' IDENTIFIED BY 'opendsa';
-FLUSH PRIVILEGES;
-GRANT ALL PRIVILEGES ON opendsa_lti.* to 'opendsa'@'localhost'  IDENTIFIED BY 'opendsa';
 FLUSH PRIVILEGES;
 SQL
 
@@ -74,23 +71,6 @@ echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 sudo apt-get install -y oracle-java8-installer
 sudo apt-get install -y ant
-
-# Clone OpenDSA-server
-if [ ! -d /vagrant/OpenDSA-server ]; then
-  git clone https://github.com/OpenDSA/OpenDSA-server.git /vagrant/OpenDSA-server
-fi
-git pull
-
-# Change stunnel.pem file permission
-chmod 600 /vagrant/OpenDSA-server/ODSA-django/stunnel/stunnel.pem
-
-# Install requirements
-cd /vagrant/OpenDSA-server/ODSA-django
-pip install -r requirements.txt
-
-# Run Django syncdb
-python manage.py syncdb --noinput
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('opendsa', 'admin@example.com', 'opendsa')" | python manage.py shell
 
 # Clone OpenDSA
 if [ ! -d /vagrant/OpenDSA ]; then
