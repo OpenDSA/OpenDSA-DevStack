@@ -94,7 +94,7 @@ for all new installs, including the production server, is described
 in db/seeds.rb instead.
 
   - The initial database includes the following accounts:
-    - admin@codeworkout.org (pass: adminadmin), has admin-level access
+    - admin@opendsa.org (pass: adminadmin), has admin-level access
     - example-1@railstutorial.org (pass: hokiehokie), has instructor access
     - example-*@railstutorial.org (pass: hokiehokie) 50 students
 
