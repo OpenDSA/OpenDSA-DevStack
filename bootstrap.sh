@@ -81,15 +81,15 @@ if [ ! -d /vagrant/code-workout ]; then
   git https://github.com/hosamshahin/code-workout.git /vagrant/code-workout
 fi
 
+cd /vagrant/code-workout
+bundle install
+rake db:populate
+
 # Clone OpenDSA
 if [ ! -d /vagrant/OpenDSA ]; then
   git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
 fi
 
-cd /vagrant/code-workout
-bundle install
-rake db:reset
-rake db:populate
 
 # Checkout LTI_ruby branch
 cd /vagrant/OpenDSA/
