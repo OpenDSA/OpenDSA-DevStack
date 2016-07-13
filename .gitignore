@@ -6,6 +6,7 @@
 /OpenDSA-server
 /OpenDSA-LTI
 /OpenDSA
+/code-workout
 
 # workspace files are user-specific
 *.sublime-workspace
