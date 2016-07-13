@@ -80,6 +80,7 @@ sudo apt-get install -y ant
 if [ ! -d /vagrant/code-workout ]; then
   git https://github.com/hosamshahin/code-workout.git /vagrant/code-workout
 fi
+git pull
 
 cd /vagrant/code-workout
 bundle install
@@ -90,11 +91,13 @@ if [ ! -d /vagrant/OpenDSA ]; then
   git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
 fi
 
-
 # Checkout LTI_ruby branch
 cd /vagrant/OpenDSA/
 git checkout LTI_ruby
 make pull
+cd /vagrant/OpenDSA/khan-exercises
+git checkout master
+cd /vagrant/OpenDSA/
 pip install -r requirements.txt --upgrade
 
 # Clone OpenDSA-LTI
@@ -104,7 +107,6 @@ fi
 git pull
 
 cd /vagrant/OpenDSA-LTI
-git checkout RailsConfigIntg
 bundle install
 rake db:reset_populate
 
