@@ -8,6 +8,6 @@ cd /vagrant/OpenDSA-LTI
 (setsid thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 9292 &)
 
 sleep 2
-# OpenDSA-server
-cd /vagrant/OpenDSA-server/ODSA-django
-(setsid sudo ./runserver &)
+# code-workout
+cd /vagrant/code-workout
+(setsid thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 9200 &)

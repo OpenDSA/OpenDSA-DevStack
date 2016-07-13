@@ -32,8 +32,13 @@ debconf-set-selections <<< 'mysql-server mysql-server/root_password password roo
 debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
 install MySQL mysql-server libmysqlclient-dev
 mysql -uroot -proot <<SQL
+CREATE DATABASE codeworkout DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE DATABASE opendsa_lti DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-GRANT ALL PRIVILEGES ON opendsa.* to 'opendsa'@'localhost' IDENTIFIED BY 'opendsa';
+
+GRANT ALL PRIVILEGES ON codeworkout.* to 'opendsa'@'localhost' IDENTIFIED BY 'opendsa';
+FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON opendsa_lti.* to 'opendsa'@'localhost'  IDENTIFIED BY 'opendsa';
 FLUSH PRIVILEGES;
 SQL
 
@@ -50,12 +55,11 @@ npm install -g bower
 update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 # install hh tool
-cd
-apt-add-repository -y ppa:ultradvorka/ppa
-apt-get update
-apt-get install -y hh
+sudo apt-add-repository -y ppa:ultradvorka/ppa
+sudo apt-get update
+sudo apt-get install -y hh
 
-apt-get install -y libncurses5-dev libreadline-dev
+sudo apt-get install -y libncurses5-dev libreadline-dev
 wget https://github.com/dvorka/hstr/releases/download/1.10/hh-1.10-src.tgz
 tar xf hh-1.10-src.tgz
 cd hstr
@@ -72,17 +76,26 @@ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-se
 sudo apt-get install -y oracle-java8-installer
 sudo apt-get install -y ant
 
+# Clone code-workout
+if [ ! -d /vagrant/code-workout ]; then
+  git https://github.com/hosamshahin/code-workout.git /vagrant/code-workout
+fi
+
 # Clone OpenDSA
 if [ ! -d /vagrant/OpenDSA ]; then
   git clone https://github.com/OpenDSA/OpenDSA.git /vagrant/OpenDSA
 fi
+
+cd /vagrant/code-workout
+bundle install
+rake db:reset
+rake db:populate
 
 # Checkout LTI_ruby branch
 cd /vagrant/OpenDSA/
 git checkout LTI_ruby
 make pull
 pip install -r requirements.txt --upgrade
-
 
 # Clone OpenDSA-LTI
 if [ ! -d /vagrant/OpenDSA-LTI ]; then
@@ -91,6 +104,7 @@ fi
 git pull
 
 cd /vagrant/OpenDSA-LTI
+git checkout RailsConfigIntg
 bundle install
 rake db:reset_populate
 
