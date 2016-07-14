@@ -17,9 +17,9 @@ Vagrant is designed to run on multiple platforms, including Mac OS X, Microsoft 
 8. `$ ./runservers.sh`
 9. After the provisioning script is complete you can go to:
 
-  * https://192.168.33.10:8443 for OpenDSA-server
-  * https://192.168.33.10:9292 for OpenDSA-LTI server
   * http://192.168.33.10:8080 for OpenDSA content server
+  * https://192.168.33.10:9292 for OpenDSA-LTI server
+  * https://192.168.33.10:9200 for code-workout server
 
 ## Shut Down The Virtual Machine:
 
@@ -54,7 +54,7 @@ sudo password is `vagrant` in case you need to execute any commands that require
 
 ## Development Workflow:
 
-The provisioning script will clone the OpenDSA, OpenDSA-LTI, and OpenDSA-server repositories inside the OpenDSA-DevStack directory. OpenDSA-DevStack directory is shared between your host machine and the virtual machine, so you can do your development to any of these repositories on your host machine using your preferred tools or IDEs (from "outide" the virtual machine). All changes you make will take effect immediately, and you can test them through the virtual machine server URLs provided earlier. You can commit and push your changes from your host machine. **However, if you want to compile books in OpenDSA, you have to do that from within the virtual machine.** Do so as follows:
+The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout repositories inside the OpenDSA-DevStack directory. OpenDSA-DevStack directory is shared between your host machine and the virtual machine, so you can do your development to any of these repositories on your host machine using your preferred tools or IDEs (from "outide" the virtual machine). All changes you make will take effect immediately, and you can test them through the virtual machine server URLs provided earlier. You can commit and push your changes from your host machine. **However, if you want to compile books in OpenDSA, you have to do that from within the virtual machine.** Do so as follows:
 
 1. Open a new terminal within your virtual machine
 2. `$ cd OpenDSA-DevStack`
@@ -99,47 +99,45 @@ in db/seeds.rb instead.
     - example-*@railstutorial.org (pass: hokiehokie) 50 students
 
     It also includes the following other objects:
-    - six terms (spring, summer I, summer II, fall, and winter 2016),
+    - Five terms (Spring, Summer I, Summer II, Fall, and Winter 2016),
     - one organization (VT)
     - one course (CS 1114)
-    - two offerings of 1114 (one each semester)
+    - two offerings of 1114 (one each term)
       - one course offering is set up with the admin and instructor
         as instructors, and all other sample accounts as students
 
 ## Generate Canvas course using OpenDSA web interface.
 
-1. If you are using OpenDSA-DevStack, make sure it is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-lti-up-to-date).
+1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-lti-up-to-date).
 2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
 3. Open a new terminal and do the following to process background jobs:
     - `cd ~/OpenDSA-DevStack`
     - `vagrant ssh`
     - `cd /vagrant/OpenDSA-LTI`
     - `rake jobs:work`
-4. Login to the application with admin account (admin@codeworkout.org, pass: 'adminadmin').
-5. Click `Upload Books` in the navigation bar, then  click `Choose File`. Navigate to OpenDSA-DevStack/OpenDSA-LTI and choose test_CS3.json. Click `Submit File`.
-6. Go to https://canvas.instructure.com/ and create a course with the name `OpenDSA-LTI`. Copy the course ID from the URL, you will use it later.
-7. Go to the admin area by clicking on the little wrench icon to the left of "admin@codworkout.org" in the top menu bar. Click the `University-oriented` menu and select `Course Offerings`. There are six course offerings in three semesters, Spring-2016 (1/1-5/31), Summer-I (6/1-7/15), and Summer-II (7/16-8/15). Pick one and click `edit`. At the top of the form, select `https://canvas.instructure.com` from the menu.
-Also, modify `LMS COURSE CODE` to be 'OpenDSA-LTI' and `LMS COURSE NUM` to the course ID you copied in point #6.
-Click on `Update Course offering` at the bottom of the page.
-8. Under the `ODSA Books` menu, select `Inst Book`. Then click on `edit` for the chosen book-to-course mapping entry. On the edit form, select the proper course instance (the one that you updated in the previous step). Click `Update Inst book`.
-9. Under the `LMS config` menu, click `Lms Access`. Give instructor `Ima Teacher` access to the Canvas instance. Click `create access`, then set the LMS instance and the User. Put some dummy value in the token field. Click `Create Lms access`.
-10. Log out and log in again using the instructor account `example-1@railstutorial.org`, password: 'hokiehokie'. This is the `Ima Teacher` account. Click on the instructor email address in the navigation bar, then click `Update Access Token`. If you don't have Canvas access token follow the instructions [here](https://guides.instructure.com/m/4214/l/40399-how-do-i-obtain-an-api-access-token-for-an-account). Click `Edit` for the `LMS instance`. Set the access token, and click `Update Lms access`.
-11. Go back to the application main page by following this link https://192.168.33.10:9292. Click the `Course` button and then navigate to the course that you have previously selected. Under the `OpenDSA` tab you will find the book linked to that offering. You can click `Configure Book` to go to book configuration view. This allows an instructor to add/remove book modules and chapters. It also allows an instructor to define exercises points and due dates. Clicking the `Compile Book` button will then generate the book's html files on the server file system, and send book details to the linked Canvas instance as well. Click `Compile Book` and you should see the progress bar moving forward while the course is being generated in Canvas.
-12. At this point the book is generated in Canvas and linked to a compiled book on the server file system. But
-Since we don't have the book compilation step automated yet, you should compile the book manually.
-I've updated the `Makefile` for CS3 book to compile it in the right folder. So you need to open a new terminal and do the following:
-    - `cd ~/OpenDSA-DevStack`
-    - `vagrant ssh`
-    - `cd /vagrant/OpenDSA`
-    - `make pull`
-    - `make CS3`
-13. Once the compilation step is done, go to Canvas and open course modules you should find the book pushed and published.
+4. Go to https://canvas.instructure.com/ and create a course with the name `OpenDSA-LTI`. Copy the course ID from the URL, you will use it later.
+5. Go to https://192.168.33.10:9292 and login to the application with admin account (admin@opendsa.org, pass: 'adminadmin') and do the following:
+    - Go to the admin area by clicking on the little wrench icon to the left of "admin@opendsa.org" in the top menu bar.
+    - Under the `OpenDSA Books` menu, select `Book Instances`. Then click on `Upload Books`. then  click `Choose File`, navigate to OpenDSA-DevStack/OpenDSA-LTI folder and choose `CS3_code-workout.json` and Click `Submit File`.
+    - The configuration file will be imported as a template. Templates can be cloned and linked to course offerings.
+    - Clone the configuration file you have just imported and click edit to link it to a course offering.
 
-## Connect to CodeWorkout Database:
+6. Logout and login again as instructor (example-1@railstutorial.org, pass: 'hokiehokie') and do the following:
+    - Go to the admin area by clicking on the little wrench icon to the left of "example-1@railstutorial.org" in the top menu bar.
+    - Click the `University-oriented` menu and select `Course Offerings`. There are six course offerings in three semesters, Spring-2016 (1/1-5/31), Summer-I (6/1-7/16), and Summer-II (7/16-8/16). Pick one and click `edit`. At the top of the form, select `https://canvas.instructure.com` from the menu. Also, modify `LMS COURSE CODE` to be 'OpenDSA-LTI' and `LMS COURSE NUM` to the course ID you copied in point #4.
+    - Under the `OpenDSA Books` menu, select `Book Instances`. Clone the configuration file imported by the admin by clicking on clone option under Actions column.
+    - Click edit option for the new cloned book configuration to link it to a course offering.
+    - On `Book Instance` edit page, from the dropdown list select the course offering you linked to canvas course in the prevously.
+    - Under the `LMS config` menu, click `Lms Access`. Create a new access to the Canvas instance and put your canvas access_token there. If you don't have Canvas access token follow the instructions [here](https://guides.instructure.com/m/4214/l/40399-how-do-i-obtain-an-api-access-token-for-an-account).
+    - Click `Back to OpenDSA` link in the menu bar to go to main application page and compile the book.
+    - Click the `Course` button and then navigate to the course offering that you have previously selected. Under the `OpenDSA` tab you will find the book linked to that offering. You can click `Configure Book` to go to book configuration view (still under development). Click `Compile Book` button to generate the book's html files on the server file system, and send book details to the linked Canvas instance as well. You should see the progress bar moving forward while the course is being generated in Canvas.
+    - Once the compilation process is complete, the book is available at your Canvas site. Go to Canvas and navigate to the "Modules" submenu for your course. You should see OpenDSA chapters created and published.
 
-During development it is convenient to connect to OpenDSA-LTI database from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to CodeWorkout Database in the Vagrant machine using the following setup:
+## Connect to Vagrant VM Database:
 
-- Connection Name: CodeWorkout
+During development it is convenient to connect to OpenDSA-LTI and code-workout databases from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to Vagrant VM Database Database using the following setup:
+
+- Connection Name: OpenDSA-Devstack
 - Connection Method: Standard TCP/IP over SSH
 - SSH Hostname: 192.168.33.10
 - SSH Username: vagrant
