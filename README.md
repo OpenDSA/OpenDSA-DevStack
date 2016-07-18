@@ -115,7 +115,7 @@ in db/seeds.rb instead.
 
 ## Generate Canvas course using OpenDSA web interface.
 
-1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#Keep-OpenDSA-DevStack-up-to-date).
+1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-devstack-up-to-date).
 2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
 3. Open a new terminal and do the following to process background jobs:
     - `cd ~/OpenDSA-DevStack`
