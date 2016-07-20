@@ -9,7 +9,7 @@ Vagrant is designed to run on multiple platforms, including Mac OS X, Microsoft 
 
 1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
 2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-3. Clone or [Download](https://github.com/OpenDSA/OpenDSA-DevStack/archive/master.zip) this repository
+3. Clone this repository
 4. `$ cd OpenDSA-DevStack`
 5. `$ vagrant up`
 6. `$ vagrant ssh`
@@ -64,7 +64,7 @@ The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout re
 
 ## Keep OpenDSA-DevStack up to date:
 
-During development of OpenDSA-LTI, other developers might add new gems to the project or add new migrations etc. To keep your local version up to date with the latest version do the following:
+Other developers might make changes to any of the repositories cloned by the OpenDSA-DevStack. To keep your local version up to date with the latest version do the following:
 
 1. Open a new terminal
 2. `$ cd OpenDSA-DevStack`
@@ -73,19 +73,23 @@ During development of OpenDSA-LTI, other developers might add new gems to the pr
 5. `$ cd /vagrant/OpenDSA-LTI`
 6. `$ git pull`
 7. `$ sudo bundle install`
-8. `$ rake db:reset_populate` **Note:** This step will place the database in a simple starter state.
-9. `$ cd /vagrant/OpenDSA`
-10. `$ make pull`
-11. `$ cd /vagrant`
-12. `$ ./runservers.sh`
+8. `$ rake db:reset_populate` **Note:** This step will place the `opendsa` database in a simple starter state.
+9. `$ cd /vagrant/code-workout`
+10. `$ git pull`
+11. `$ sudo bundle install`
+12. `$ rake db:populate` **Note:** This step will place the `codeworkout`  database in a simple starter state.
+13. `$ cd /vagrant/OpenDSA`
+14. `$ make pull`
+15. `$ cd /vagrant`
+16. `$ ./runservers.sh`
 
 
-## OpenDSA-LTI Database Test Data
+## `opendsa` and `codeworkout` Databases Test Data
 
 
 The initial database population is defined by lib/tasks/sample_data.rake.
 It uses the factories defined in spec/factories/* to generate entities.
-If you add new modael classes and want to generate test data in the
+If you add new model classes and want to generate test data in the
 database, please add to the sample_data.rake file so that this population
 will happen automatically for everyone.  The sample_data.rake contains
 only "sample/try out" data for use during development, and it won't
@@ -93,8 +97,11 @@ appear on the production server.  Initial database contents provided
 for all new installs, including the production server, is described
 in db/seeds.rb instead.
 
-  - The initial database includes the following accounts:
-    - admin@opendsa.org (pass: adminadmin), has admin-level access
+  - `opendsa` database includes the following **admin** account:
+    - admin@opendsa.org (pass: adminadmin)
+  - `codeworkout` database includes the following **admin** account:
+    - admin@codeworkout.org (pass: adminadmin)
+  - Both `opendsa` and `codeworkout` databases include the following accounts:
     - example-1@railstutorial.org (pass: hokiehokie), has instructor access
     - example-*@railstutorial.org (pass: hokiehokie) 50 students
 
@@ -108,7 +115,7 @@ in db/seeds.rb instead.
 
 ## Generate Canvas course using OpenDSA web interface.
 
-1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-lti-up-to-date).
+1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-devstack-up-to-date).
 2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
 3. Open a new terminal and do the following to process background jobs:
     - `cd ~/OpenDSA-DevStack`
@@ -118,24 +125,24 @@ in db/seeds.rb instead.
 4. Go to https://canvas.instructure.com/ and create a course with the name `OpenDSA-LTI`. Copy the course ID from the URL, you will use it later.
 5. Go to https://192.168.33.10:9292 and login to the application with admin account (admin@opendsa.org, pass: 'adminadmin') and do the following:
     - Go to the admin area by clicking on the little wrench icon to the left of "admin@opendsa.org" in the top menu bar.
-    - Under the `OpenDSA Books` menu, select `Book Instances`. Then click on `Upload Books`. then  click `Choose File`, navigate to OpenDSA-DevStack/OpenDSA-LTI folder and choose `CS3_code-workout.json` and Click `Submit File`.
-    - The configuration file will be imported as a template. Templates can be cloned and linked to course offerings.
-    - Clone the configuration file you have just imported and click edit to link it to a course offering.
+    - Under the `OpenDSA Books` menu, select `Book Instances`. Then click on `Upload Books` in the upper right corner. then  click `Choose File`, navigate to OpenDSA-DevStack/OpenDSA-LTI folder and choose `CS3_code-workout.json` and Click `Submit File`.
+    - The configuration file will be imported as a template. Instructors can clone templates and link them to course offerings.
 
 6. Logout and login again as instructor (example-1@railstutorial.org, pass: 'hokiehokie') and do the following:
     - Go to the admin area by clicking on the little wrench icon to the left of "example-1@railstutorial.org" in the top menu bar.
-    - Click the `University-oriented` menu and select `Course Offerings`. There are six course offerings in three semesters, Spring-2016 (1/1-5/31), Summer-I (6/1-7/16), and Summer-II (7/16-8/16). Pick one and click `edit`. At the top of the form, select `https://canvas.instructure.com` from the menu. Also, modify `LMS COURSE CODE` to be 'OpenDSA-LTI' and `LMS COURSE NUM` to the course ID you copied in point #4.
+    - Click the `University-oriented` menu and select `Course Offerings`. There are six course offerings in three semesters, Spring-2016 (1/1-5/31), Summer-I (6/1-7/16), and Summer-II (7/16-8/16). Pick one and click `edit`. At the top of the form, select `https://canvas.instructure.com` from the menu. Also, modify `LMS COURSE CODE` to be 'OpenDSA-LTI' and `LMS COURSE NUM` to the course ID you copied in point #4 and hit `Update Course Offering` button.
     - Under the `OpenDSA Books` menu, select `Book Instances`. Clone the configuration file imported by the admin by clicking on clone option under Actions column.
     - Click edit option for the new cloned book configuration to link it to a course offering.
-    - On `Book Instance` edit page, from the dropdown list select the course offering you linked to canvas course in the prevously.
-    - Under the `LMS config` menu, click `Lms Access`. Create a new access to the Canvas instance and put your canvas access_token there. If you don't have Canvas access token follow the instructions [here](https://guides.instructure.com/m/4214/l/40399-how-do-i-obtain-an-api-access-token-for-an-account).
+    - On `Book Instance` edit page, from the dropdown list select the course offering you linked to canvas course previously. Then hit `Update Inst Book` button.
+    - Under the `LMS config` menu, click `LMS Access`. Create a new access to the Canvas instance and put your canvas access_token there. If you don't have Canvas access token follow the instructions [here](https://guides.instructure.com/m/4214/l/40399-how-do-i-obtain-an-api-access-token-for-an-account).
     - Click `Back to OpenDSA` link in the menu bar to go to main application page and compile the book.
-    - Click the `Course` button and then navigate to the course offering that you have previously selected. Under the `OpenDSA` tab you will find the book linked to that offering. You can click `Configure Book` to go to book configuration view (still under development). Click `Compile Book` button to generate the book's html files on the server file system, and send book details to the linked Canvas instance as well. You should see the progress bar moving forward while the course is being generated in Canvas.
+    - Click the `Course` button and then click `browse all` to navigate to your selected course offering. Under the `OpenDSA` tab you will find the book linked to that offering. You can click `Configure Book` to go to book configuration view **(still under development)**. Click `Compile Book` button to generate the book's html files on the server file system, and send book details to the linked Canvas instance as well. You should see the progress bar moving forward while the course is being generated in Canvas.
     - Once the compilation process is complete, the book is available at your Canvas site. Go to Canvas and navigate to the "Modules" submenu for your course. You should see OpenDSA chapters created and published.
+    - In OpenDSA sample book, under `1.1.Introduction to Data Structures and Algorithms` section you will find `Workout from Factory` assignment. Clicking on that assignment will load a programming assignment named `Workout from Factory` from CodeWorkout applicaiton through LTI protocol.
 
 ## Connect to Vagrant VM Database:
 
-During development it is convenient to connect to OpenDSA-LTI and code-workout databases from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to Vagrant VM Database Database using the following setup:
+During development it is convenient to connect to `opendsa` and `codeworkout` databases from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to Vagrant VM Database using the following setup:
 
 - Connection Name: OpenDSA-Devstack
 - Connection Method: Standard TCP/IP over SSH
