@@ -96,7 +96,7 @@ cd /vagrant/OpenDSA/
 git checkout LTI_ruby
 make pull
 cd /vagrant/OpenDSA/khan-exercises
-git checkout master
+git checkout LTI_ruby
 cd /vagrant/OpenDSA/
 pip install -r requirements.txt --upgrade
 
