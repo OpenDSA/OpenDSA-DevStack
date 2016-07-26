@@ -84,7 +84,7 @@ git pull
 
 cd /vagrant/code-workout
 bundle install
-rake db:populate
+bundle exec rake db:populate
 
 # Clone OpenDSA
 if [ ! -d /vagrant/OpenDSA ]; then
@@ -108,7 +108,7 @@ git pull
 
 cd /vagrant/OpenDSA-LTI
 bundle install
-rake db:reset_populate
+bundle exec rake db:reset_populate
 
 # Create link to OpenDSA
 ln -s /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
