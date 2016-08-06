@@ -78,7 +78,7 @@ sudo apt-get install -y ant
 
 # Clone code-workout
 if [ ! -d /vagrant/code-workout ]; then
-  git clone https://github.com/hosamshahin/code-workout.git /vagrant/code-workout
+  git clone https://github.com/OpenDSA/code-workout.git /vagrant/code-workout
 fi
 git pull
 
