@@ -117,18 +117,13 @@ in db/seeds.rb instead.
 
 1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-devstack-up-to-date).
 2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
-3. Open a new terminal and do the following to process background jobs:
-    - `cd ~/OpenDSA-DevStack`
-    - `vagrant ssh`
-    - `cd /vagrant/OpenDSA-LTI`
-    - `bundle exec rake jobs:work`
-4. Go to https://canvas.instructure.com/ and create a course with the name `OpenDSA-LTI`. Copy the course ID from the URL, you will use it later.
-5. Go to https://192.168.33.10:9292 and login to the application with admin account (admin@opendsa.org, pass: 'adminadmin') and do the following:
+3. Go to https://canvas.instructure.com/ and create a course with the name `OpenDSA-LTI`. Copy the course ID from the URL, you will use it later.
+4. Go to https://192.168.33.10:9292 and login to the application with admin account (admin@opendsa.org, pass: 'adminadmin') and do the following:
     - Go to the admin area by clicking on the little wrench icon to the left of "admin@opendsa.org" in the top menu bar.
     - Under the `OpenDSA Books` menu, select `Book Instances`. Then click on `Upload Books` in the upper right corner. then  click `Choose File`, navigate to OpenDSA-DevStack/OpenDSA-LTI folder and choose `CS3_code-workout.json` and Click `Submit File`.
     - The configuration file will be imported as a template. Instructors can clone templates and link them to course offerings.
 
-6. Logout and login again as instructor (example-1@railstutorial.org, pass: 'hokiehokie') and do the following:
+5. Logout and login again as instructor (example-1@railstutorial.org, pass: 'hokiehokie') and do the following:
     - Go to the admin area by clicking on the little wrench icon to the left of "example-1@railstutorial.org" in the top menu bar.
     - Click the `University-oriented` menu and select `Course Offerings`. There are six course offerings in three semesters, Spring-2016 (1/1-5/31), Summer-I (6/1-7/16), and Summer-II (7/16-8/16). Pick one and click `edit`. At the top of the form, select `https://canvas.instructure.com` from the menu. Also, modify `LMS COURSE CODE` to be 'OpenDSA-LTI' and `LMS COURSE NUM` to the course ID you copied in point #4 and hit `Update Course Offering` button.
     - Under the `OpenDSA Books` menu, select `Book Instances`. Clone the configuration file imported by the admin by clicking on clone option under Actions column.
