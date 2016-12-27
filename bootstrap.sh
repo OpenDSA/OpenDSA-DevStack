@@ -23,6 +23,24 @@ install Ruby ruby2.3 ruby2.3-dev
 update-alternatives --set ruby /usr/bin/ruby2.3 >/dev/null 2>&1
 update-alternatives --set gem /usr/bin/gem2.3 >/dev/null 2>&1
 
+
+# sudo apt-get update
+# sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
+
+# cd
+# git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+# echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+# echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+# exec $SHELL
+
+# git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+# echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+# exec $SHELL
+
+# rbenv install 2.3.1
+# rbenv global 2.3.1
+# ruby -v
+
 echo installing Bundler
 gem install bundler -N >/dev/null 2>&1
 
@@ -93,10 +111,10 @@ fi
 
 # Checkout LTI_ruby branch
 cd /vagrant/OpenDSA/
-git checkout LTI_ruby
+# git checkout LTI_ruby
 make pull
 cd /vagrant/OpenDSA/khan-exercises
-git checkout LTI_ruby
+# git checkout LTI_ruby
 cd /vagrant/OpenDSA/
 pip install -r requirements.txt --upgrade
 

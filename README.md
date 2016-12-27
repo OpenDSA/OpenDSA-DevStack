@@ -148,3 +148,12 @@ During development it is convenient to connect to `opendsa` and `codeworkout` da
 - MySQL Server Port: 3306
 - Username: opendsa
 - Password: opendsa
+
+
+## Getting Chrome to accept Self Signed SSL for Local Development with Vagrant
+
+- On the page with the untrusted certificate (`https://` is crossed out in red), click the lock > Certificate Information.
+- Click the `Details tab > Export`. Choose `PKCS #7, single certificate` as the file format.
+- Then follow my original instructions to get to the Manage Certificates page. Click the `Authorities tab > Import and choose the file to which you exported the certificate.
+- If prompted certification store, choose Trusted Root Certificate Authorities
+- Check all boxes and click OK. Restart Chrome.
