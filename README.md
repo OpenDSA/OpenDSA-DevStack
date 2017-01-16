@@ -119,13 +119,10 @@ in db/seeds.rb instead.
 2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
 3. Login using admin account.
 4. Go your institution's Canvas site or create an account at the public site
-    at <a href="https://canvas.instructure.com">https://canvas.instructure.com</a>
-    Once there, create a course.
-    Give it a name, and copy the course ID that you will find at the
-    end of the course URL. 
-    You will use this ID later.
+    at <a href="https://canvas.instructure.com">https://canvas.instructure.com</a> . Once there, create a course, 
+    give it a name, and copy the course ID that you will find at the end of the course URL. You will use this ID later.
 5. Go back to Go to OpenDSA applicaiton at https://192.168.33.10:9292, Click the "Course" button at the top of the page,
-    then click "Create new course".
+    then click "Create new course". 
     This will take you to a simple form that asks for the necessary
     information to define your course instance.
     Fill in all of the fields, and the click "Submit".
