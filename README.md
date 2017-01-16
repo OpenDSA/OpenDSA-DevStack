@@ -117,23 +117,23 @@ in db/seeds.rb instead.
 
 1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-devstack-up-to-date).
 2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
-3. Go to https://canvas.instructure.com/ and create a course with the name `OpenDSA-LTI`. Copy the course ID from the URL, you will use it later.
-4. Go to https://192.168.33.10:9292 and login to the application with admin account (admin@opendsa.org, pass: 'adminadmin') and do the following:
-    - Go to the admin area by clicking on the little wrench icon to the left of "admin@opendsa.org" in the top menu bar.
-    - Under the `OpenDSA Books` menu, select `Book Instances`. Then click on `Upload Books` in the upper right corner. then  click `Choose File`, navigate to OpenDSA-DevStack/OpenDSA-LTI folder and choose `CS3_code-workout.json` and Click `Submit File`.
-    - The configuration file will be imported as a template. Instructors can clone templates and link them to course offerings.
-
-5. Logout and login again as instructor (example-1@railstutorial.org, pass: 'hokiehokie') and do the following:
-    - Go to the admin area by clicking on the little wrench icon to the left of "example-1@railstutorial.org" in the top menu bar.
-    - Click the `University-oriented` menu and select `Course Offerings`. There are six course offerings in three semesters, Spring-2016 (1/1-5/31), Summer-I (6/1-7/16), and Summer-II (7/16-8/16). Pick one and click `edit`. At the top of the form, select `https://canvas.instructure.com` from the menu. Also, modify `LMS COURSE CODE` to be 'OpenDSA-LTI' and `LMS COURSE NUM` to the course ID you copied in point #4 and hit `Update Course Offering` button.
-    - Under the `OpenDSA Books` menu, select `Book Instances`. Clone the configuration file imported by the admin by clicking on clone option under Actions column.
-    - Click edit option for the new cloned book configuration to link it to a course offering.
-    - On `Book Instance` edit page, from the dropdown list select the course offering you linked to canvas course previously. Then hit `Update Inst Book` button.
-    - Under the `LMS config` menu, click `LMS Access`. Create a new access to the Canvas instance and put your canvas access_token there. If you don't have Canvas access token follow the instructions [here](https://guides.instructure.com/m/4214/l/40399-how-do-i-obtain-an-api-access-token-for-an-account).
-    - Click `Back to OpenDSA` link in the menu bar to go to main application page and compile the book.
-    - Click the `Course` button and then click `browse all` to navigate to your selected course offering. Under the `OpenDSA` tab you will find the book linked to that offering. You can click `Configure Book` to go to book configuration view **(still under development)**. Click `Compile Book` button to generate the book's html files on the server file system, and send book details to the linked Canvas instance as well. You should see the progress bar moving forward while the course is being generated in Canvas.
-    - Once the compilation process is complete, the book is available at your Canvas site. Go to Canvas and navigate to the "Modules" submenu for your course. You should see OpenDSA chapters created and published.
-    - In OpenDSA sample book, under `1.1.Introduction to Data Structures and Algorithms` section you will find `Workout from Factory` assignment. Clicking on that assignment will load a programming assignment named `Workout from Factory` from CodeWorkout applicaiton through LTI protocol.
+3. Login using admin account.
+4. Go your institution's Canvas site or create an account at the public site
+    at <a href="https://canvas.instructure.com">https://canvas.instructure.com</a>
+    Once there, create a course.
+    Give it a name, and copy the course ID that you will find at the
+    end of the course URL. 
+    You will use this ID later.
+5. Go back to Go to OpenDSA applicaiton at https://192.168.33.10:9292, Click the "Course" button at the top of the page,
+    then click "Create new course".
+    This will take you to a simple form that asks for the necessary
+    information to define your course instance.
+    Fill in all of the fields, and the click "Submit".
+6. Once you have created your course offering, you will be redirected
+    to the page where you can configure your eTextbook, and then
+    generate the course in Canvas. Click the "Generate Course" button,
+    and this process will take care of generating 
+    modules, assignments, and assignments groups in Canvas.
 
 ## Connect to Vagrant VM Database:
 
