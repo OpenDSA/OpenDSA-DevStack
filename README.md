@@ -54,7 +54,7 @@ sudo password is `vagrant` in case you need to execute any commands that require
 
 ## Development Workflow:
 
-The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout repositories inside the OpenDSA-DevStack directory. OpenDSA-DevStack directory is shared between your host machine and the virtual machine, so you can do your development to any of these repositories on your host machine using your preferred tools or IDEs (from "outide" the virtual machine). All changes you make will take effect immediately, and you can test them through the virtual machine server URLs provided earlier. You can commit and push your changes from your host machine. **However, if you want to compile books in OpenDSA, you have to do that from within the virtual machine.** Do so as follows:
+The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout repositories inside the OpenDSA-DevStack directory. OpenDSA-DevStack directory is shared between your host machine and the virtual machine, so you can do your development to any of these repositories on your host machine using your preferred tools or IDEs (from "outside" the virtual machine). All changes you make will take effect immediately, and you can test them through the virtual machine server URLs provided earlier. You can commit and push your changes from your host machine. **However, if you want to compile books in OpenDSA, you have to do that from within the virtual machine.** Do so as follows:
 
 1. Open a new terminal within your virtual machine
 2. `$ cd OpenDSA-DevStack`
@@ -153,11 +153,11 @@ in db/seeds.rb instead.
 
 1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-devstack-up-to-date).
 2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
-3. Login using admin account.
+3. Login using the admin account.
 4. Go your institution's Canvas site or create an account at the public site
     at <a href="https://canvas.instructure.com">https://canvas.instructure.com</a> . Once there, create a course, 
     give it a name, and copy the course ID that you will find at the end of the course URL. You will use this ID later.
-5. Go back to Go to OpenDSA applicaiton at https://192.168.33.10:9292, Click the "Course" button at the top of the page,
+5. Go back to Go to OpenDSA application at https://192.168.33.10:9292, Click the "Course" button at the top of the page,
     then click "Create new course". 
     This will take you to a simple form that asks for the necessary
     information to define your course instance.
@@ -170,7 +170,7 @@ in db/seeds.rb instead.
 
 ## Connect to Vagrant VM Database:
 
-During development it is convenient to connect to `opendsa` and `codeworkout` databases from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to Vagrant VM Database using the following setup:
+During development, it is convenient to connect to `opendsa` and `codeworkout` databases from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to Vagrant VM Database using the following setup:
 
 - Connection Name: OpenDSA-Devstack
 - Connection Method: Standard TCP/IP over SSH
