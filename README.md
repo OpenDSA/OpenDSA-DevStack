@@ -62,7 +62,7 @@ The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout re
 4. `$ cd /vagrant/OpenDSA`
 5. `make <<CONFIG_FILE_NAME>>`
 
-### Production deployment workflow
+## Production deployment workflow
 
   - If you are responsible for OpenDSA-LTI production server, follow the instructions in this section to perform deployment on the production server.
 
