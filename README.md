@@ -62,6 +62,42 @@ The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout re
 4. `$ cd /vagrant/OpenDSA`
 5. `make <<CONFIG_FILE_NAME>>`
 
+### Production deployment workflow
+
+  - If you are responsible for OpenDSA-LTI production server, follow the instructions in this section to perform deployment on the production server.
+
+  - Production deployment is initiated from the development environment. It starts with changes you make to OpenDSA-LTI or OpenDSA repositories in OpenDSA-DevStack. First, test these changes locally using OpenDSA-DevStack development servers. Second, commit and push OpenDSA-LTI and OpenDSA changes. Finally, initiate the production deployment command from within OpenDSA-DevStack. It is very important to push your changes before the deployment. Every time you deploy your code Capistrano will go and clone the latest version of OpenDSA-LTI then perform the deployment tasks. One of the tasks gets the latest version of OpenDSA from GitHub as well.
+
+  - The following steps need to be done **only once** to generate a pair of authentication keys. **Note:** Do not enter a passphrase and replace **prod_server** with your domain name.
+    <pre>
+      <code>
+    $ cd OpenDSA-DevStack
+    $ vagrant up
+    $ vagrant ssh
+    $ ssh-keygen -t rsa
+    $ cat .ssh/id_rsa.pub | ssh deploy@<b>prod_server</b> 'cat >> .ssh/authorized_keys'
+
+    <b>Enter deploy user password for the last time</b>
+      </code>
+    </pre>
+
+  - Here are the steps you need to follow every time you want to perform a production deployment:
+    <pre>
+      <code>
+    $ cd OpenDSA-DevStack
+    $ vagrant up
+    $ vagrant ssh
+    $ cd /vagrant/OpenDSA-LTI
+    $ <b>git pull any new code</b>
+    $ <b>commit and push any changes</b>
+    Execute the following command to deploy to the <b>staging</b> server:
+    $ bundle exec cap staging deploy
+    Execute the following command to deploy to the <b>production</b> server:
+    $ bundle exec cap production deploy
+      </code>
+    </pre>
+
+
 ## Keep OpenDSA-DevStack up to date:
 
 Other developers might make changes to any of the repositories cloned by the OpenDSA-DevStack. To keep your local version up to date with the latest version do the following:
