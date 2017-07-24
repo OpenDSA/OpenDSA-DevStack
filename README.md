@@ -17,23 +17,23 @@ Vagrant is designed to run on multiple platforms, including Mac OS X, Microsoft 
 8. `$ ./runservers.sh`
 9. After the provisioning script is complete you can go to:
 
-  * http://192.168.33.10:8080 for OpenDSA content server
-  * https://192.168.33.10:9292 for OpenDSA-LTI server
-  * https://192.168.33.10:9200 for code-workout server
+   * http://192.168.33.10:8080 for OpenDSA content server
+   * https://192.168.33.10:9292 for OpenDSA-LTI server
+   * https://192.168.33.10:9200 for code-workout server
 
 ## Shut Down The Virtual Machine:
 
 After you finish your work, you need to turn the virtual machine off.
 
 1. Exit the virtual machine terminal by typing `exit`
-2. `$ cd OpenDSA-DevStack`
+2. Change directory to `OpenDSA-DevStack`
 3. `$ vagrant halt`
 
 ## Re-run Development Servers:
 
 If you decided to shut down the virtual machine using `vagrant halt`, you have to re-run the servers again after you do `vagrant up`.
 
-1. `$ cd OpenDSA-DevStack`
+1. Change directory to `OpenDSA-DevStack`
 2. `$ vagrant up`
 3. `$ vagrant ssh`
 4. `$ cd /vagrant`
@@ -43,18 +43,32 @@ If you decided to shut down the virtual machine using `vagrant halt`, you have t
 
 If anything went wrong or you want to reprovision your virtual machine for any reason, follow these steps.
 
-1. `$ cd OpenDSA-DevStack`
+1. Change directory to `OpenDSA-DevStack`
 2. `$ git pull`
 3. `$ vagrant destroy`
 4. `$ vagrant up`
 
 ## Virtual Machine sudo password:
 
-sudo password is `vagrant` in case you need to execute any commands that require sudo.
+The sudo password is `vagrant` (in case you need to execute any commands that require sudo).
 
 ## Development Workflow:
 
-The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout repositories inside the OpenDSA-DevStack directory. OpenDSA-DevStack directory is shared between your host machine and the virtual machine, so you can do your development to any of these repositories on your host machine using your preferred tools or IDEs (from "outside" the virtual machine). All changes you make will take effect immediately, and you can test them through the virtual machine server URLs provided earlier. You can commit and push your changes from your host machine. **However, if you want to compile books in OpenDSA, you have to do that from within the virtual machine.** Do so as follows:
+The provisioning script will clone the OpenDSA, OpenDSA-LTI, and
+code-workout repositories inside the OpenDSA-DevStack
+directory.
+The OpenDSA-DevStack directory is shared between your host
+machine and the virtual machine, so you can do your development to any
+of these repositories on your host machine using your preferred tools
+or IDEs (from "outside" the virtual machine).
+All changes that you make will take effect immediately, and you can
+test them through the virtual machine server URLs provided
+earlier.
+You can commit and push your changes from your host
+machine.
+**However, if you want to compile books in OpenDSA, you have to do
+that from within the virtual machine.**
+Do so as follows:
 
 1. Open a new terminal within your virtual machine
 2. `$ cd OpenDSA-DevStack`
@@ -64,14 +78,36 @@ The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout re
 
 ## Production deployment workflow
 
-  - If you are responsible for OpenDSA-LTI production server, follow the instructions in this section to perform deployment on the production server.
+If you are responsible for maintaining an OpenDSA-LTI production
+server, follow the instructions in this section to perform deployment
+to the production server. 
 
-  - Production deployment is initiated from the development environment. It starts with changes you make to OpenDSA-LTI or OpenDSA repositories in OpenDSA-DevStack. First, test these changes locally using OpenDSA-DevStack development servers. Second, commit and push OpenDSA-LTI and OpenDSA changes. Finally, initiate the production deployment command from within OpenDSA-DevStack. It is very important to push your changes before the deployment. Every time you deploy your code Capistrano will go and clone the latest version of OpenDSA-LTI then perform the deployment tasks. One of the tasks gets the latest version of OpenDSA from GitHub as well.
+Deployment to the production server is initiated from the development
+environment.
+It starts with changes you make to OpenDSA-LTI or OpenDSA
+repositories in OpenDSA-DevStack.
+First, test these changes locally using OpenDSA-DevStack development
+servers.
+Second, commit and push any OpenDSA-LTI and OpenDSA changes.
+Finally, initiate the production deployment command from within
+OpenDSA-DevStack.
+It is important to push your changes before the deployment.
+Every time you deploy your code, Capistrano will clone the latest
+version of OpenDSA-LTI, then perform the deployment tasks.
+One of the tasks gets the latest version of OpenDSA from GitHub as
+well.
 
-  - The following steps need to be done **only once** to generate a pair of authentication keys. **Note:** Do not enter a passphrase and replace **prod_server** with your domain name.
+The following steps need to be done **only once** to generate a pair
+of authentication keys.
+**Note:** Do not enter a passphrase, and replace **prod_server** with
+your domain name.
+Some installations use both a staging and a production server.
+If yours has both, then you will need to do the ``cat`` line for each
+one.
+
     <pre>
       <code>
-    $ cd OpenDSA-DevStack
+    <b>Change directory to OpenDSA-DevStack</b>
     $ vagrant up
     $ vagrant ssh
     $ ssh-keygen -t rsa
@@ -81,10 +117,12 @@ The provisioning script will clone the OpenDSA, OpenDSA-LTI, and code-workout re
       </code>
     </pre>
 
-  - Here are the steps you need to follow every time you want to perform a production deployment:
+Here are the steps that you need to follow every time you want to
+perform a production deployment:
+
     <pre>
       <code>
-    $ cd OpenDSA-DevStack
+    <b>Change directory to OpenDSA-DevStack</b>
     $ vagrant up
     $ vagrant ssh
     $ cd /vagrant/OpenDSA-LTI
