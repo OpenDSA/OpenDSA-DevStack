@@ -105,43 +105,46 @@ Some installations use both a staging and a production server.
 If yours has both, then you will need to do the ``cat`` line for each
 one.
 
-    <pre>
-      <code>
-    <b>Change directory to OpenDSA-DevStack</b>
-    $ vagrant up
-    $ vagrant ssh
-    $ ssh-keygen -t rsa
-    $ cat .ssh/id_rsa.pub | ssh deploy@<b>prod_server</b> 'cat >> .ssh/authorized_keys'
+<pre>
+   <code>
+      <b>Change directory to OpenDSA-DevStack</b>
+      $ vagrant up
+      $ vagrant ssh
+      $ ssh-keygen -t rsa
+      $ cat .ssh/id_rsa.pub | ssh deploy@<b>prod_server</b> 'cat >> .ssh/authorized_keys'
 
-    <b>Enter deploy user password for the last time</b>
-      </code>
-    </pre>
+      <b>Enter deploy user password for the last time</b>
+   </code>
+</pre>
 
 Here are the steps that you need to follow every time you want to
 perform a production deployment:
 
-    <pre>
-      <code>
-    <b>Change directory to OpenDSA-DevStack</b>
-    $ vagrant up
-    $ vagrant ssh
-    $ cd /vagrant/OpenDSA-LTI
-    $ <b>git pull any new code</b>
-    $ <b>commit and push any changes</b>
-    Execute the following command to deploy to the <b>staging</b> server:
-    $ bundle exec cap staging deploy
-    Execute the following command to deploy to the <b>production</b> server:
-    $ bundle exec cap production deploy
-      </code>
-    </pre>
+<pre>
+   <code>
+      <b>Change directory to OpenDSA-DevStack</b>
+      $ vagrant up
+      $ vagrant ssh
+      $ cd /vagrant/OpenDSA-LTI
+      $ <b>git pull any new code</b>
+      $ <b>commit and push any changes</b>
+      Execute the following command to deploy to the <b>staging</b> server:
+      $ bundle exec cap staging deploy
+      Execute the following command to deploy to the <b>production</b> server:
+      $ bundle exec cap production deploy
+   </code>
+</pre>
 
 
 ## Keep OpenDSA-DevStack up to date:
 
-Other developers might make changes to any of the repositories cloned by the OpenDSA-DevStack. To keep your local version up to date with the latest version do the following:
+Other developers might make changes to any of the repositories cloned
+by the OpenDSA-DevStack.
+To keep your local version up to date with
+the latest version do the following:
 
 1. Open a new terminal
-2. `$ cd OpenDSA-DevStack`
+2. Change directory to `OpenDSA-DevStack`
 3. `$ vagrant reload`
 4. `$ vagrant ssh`
 5. `$ cd /vagrant/OpenDSA-LTI`
