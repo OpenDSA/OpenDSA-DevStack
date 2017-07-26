@@ -147,22 +147,10 @@ the latest version do the following:
 2. Change directory to `OpenDSA-DevStack`
 3. `$ vagrant reload`
 4. `$ vagrant ssh`
-5. `$ cd /vagrant/OpenDSA-LTI`
-6. `$ git pull`
-7. `$ sudo bundle install`
-8. `$ bundle exec rake db:reset_populate` **Note:** This step will place the `opendsa` database in a simple starter state.
-9. `$ cd /vagrant/code-workout`
-10. `$ git pull`
-11. `$ sudo bundle install`
-12. `$ bundle exec rake db:populate` **Note:** This step will place the `codeworkout`  database in a simple starter state.
-13. `$ cd /vagrant/OpenDSA`
-14. `$ make pull`
-15. `$ cd /vagrant`
-16. `$ ./runservers.sh`
-
+5. `$ cd /vagrant`
+6. `$ ./get_latest.sh`
 
 ## `opendsa` and `codeworkout` Databases Test Data
-
 
 The initial database population is defined by lib/tasks/sample_data.rake.
 It uses the factories defined in spec/factories/* to generate entities.
