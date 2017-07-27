@@ -12,6 +12,7 @@ Vagrant is designed to run on multiple platforms, including Mac OS X, Microsoft 
 3. Clone this repository
 4. `$ cd OpenDSA-DevStack`
 5. `$ vagrant up`
+   (This will take a long time!)
 6. `$ vagrant ssh`
 7. `$ cd /vagrant`
 8. `$ ./runservers.sh`
