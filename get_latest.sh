@@ -9,4 +9,3 @@ bundle exec rake db:migrate
 cd /vagrant/OpenDSA
 make pull
 cd /vagrant
-./runservers.sh
