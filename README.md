@@ -1,5 +1,5 @@
-Setting Up a Vagrant Environment for OpenDSA
-============================================
+Setting Up a Vagrant Development Environment for OpenDSA
+========================================================
 
 ## Introduction:
 
@@ -77,66 +77,6 @@ Do so as follows:
 4. `$ cd /vagrant/OpenDSA`
 5. `make <<CONFIG_FILE_NAME>>`
 
-## Production deployment workflow
-
-If you are responsible for maintaining an OpenDSA-LTI production
-server, follow the instructions in this section to perform deployment
-to the production server. 
-
-Deployment to the production server is initiated from the development
-environment.
-It starts with changes you make to OpenDSA-LTI or OpenDSA
-repositories in OpenDSA-DevStack.
-First, test these changes locally using OpenDSA-DevStack development
-servers.
-Second, commit and push any OpenDSA-LTI and OpenDSA changes.
-Finally, initiate the production deployment command from within
-OpenDSA-DevStack.
-It is important to push your changes before the deployment.
-Every time you deploy your code, Capistrano will clone the latest
-version of OpenDSA-LTI, then perform the deployment tasks.
-One of the tasks gets the latest version of OpenDSA from GitHub as
-well.
-
-The following steps need to be done **only once** to generate a pair
-of authentication keys.
-**Note:** Do not enter a passphrase, and replace **prod_server** with
-your domain name.
-Some installations use both a staging and a production server.
-If yours has both, then you will need to do the ``cat`` line for each
-one.
-
-<pre>
-   <code>
-      <b>Change directory to OpenDSA-DevStack</b>
-      $ vagrant up
-      $ vagrant ssh
-      $ ssh-keygen -t rsa
-      $ cat .ssh/id_rsa.pub | ssh deploy@<b>prod_server</b> 'cat >> .ssh/authorized_keys'
-
-      <b>Enter deploy user password for the last time</b>
-   </code>
-</pre>
-
-Here are the steps that you need to follow every time you want to
-perform a production deployment:
-
-<pre>
-   <code>
-      <b>Change directory to OpenDSA-DevStack</b>
-      $ vagrant up
-      $ vagrant ssh
-      $ cd /vagrant/OpenDSA-LTI
-      $ <b>git pull any new code</b>
-      $ <b>commit and push any changes</b>
-      Execute the following command to deploy to the <b>staging</b> server:
-      $ bundle exec cap staging deploy
-      Execute the following command to deploy to the <b>production</b> server:
-      $ bundle exec cap production deploy
-   </code>
-</pre>
-
-
 ## Keep OpenDSA-DevStack up to date:
 
 Other developers might make changes to any of the repositories cloned
@@ -183,20 +123,66 @@ in db/seeds.rb instead.
 
 1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-devstack-up-to-date).
 2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
-3. Login using the admin account.
-4. Go your institution's Canvas site or create an account at the public site
-    at <a href="https://canvas.instructure.com">https://canvas.instructure.com</a> . Once there, create a course, 
-    give it a name, and copy the course ID that you will find at the end of the course URL. You will use this ID later.
-5. Go back to Go to OpenDSA application at https://192.168.33.10:9292, Click the "Course" button at the top of the page,
-    then click "Create new course". 
-    This will take you to a simple form that asks for the necessary
-    information to define your course instance.
-    Fill in all of the fields, and the click "Submit".
-6. Once you have created your course offering, you will be redirected
-    to the page where you can configure your eTextbook, and then
-    generate the course in Canvas. Click the "Generate Course" button,
-    and this process will take care of generating 
-    modules, assignments, and assignments groups in Canvas.
+3. Follow the instructions on the instructor's [guide page](https://192.168.33.10:9292/home/guide) to set up your Canvas course. **Note:** skip the first step in this guide since you can use the **admin** account (admin@opendsa.org, pass: adminadmin) to cerate the course.
+
+## Production deployment workflow
+
+If you are responsible for maintaining an OpenDSA-LTI production
+server, follow the instructions in this section to perform deployment
+to the production server. 
+
+Deployment to the production server is initiated from the development
+environment.
+It starts with changes you make to OpenDSA-LTI or OpenDSA
+repositories in OpenDSA-DevStack.
+First, test these changes locally using OpenDSA-DevStack development
+servers.
+Second, commit and push any OpenDSA-LTI and OpenDSA changes.
+Finally, initiate the production deployment command from within
+OpenDSA-DevStack.
+It is important to push your changes before the deployment.
+Every time you deploy your code, [Capistrano](http://capistranorb.com/) will clone the latest
+version of OpenDSA-LTI, then perform the deployment tasks.
+One of the tasks gets the latest version of OpenDSA from GitHub as
+well.
+
+The following steps need to be done **only once** to generate a pair
+of authentication keys.
+**Note:** Do not enter a passphrase, and replace **prod_server** with
+your domain name.
+Some installations use both a staging and a production server.
+If yours has both, then you will need to do the ``cat`` line for each
+one.
+
+<pre>
+   <code>
+      <b>Change directory to OpenDSA-DevStack</b>
+      $ vagrant up
+      $ vagrant ssh
+      $ ssh-keygen -t rsa
+      $ cat .ssh/id_rsa.pub | ssh deploy@<b>prod_server</b> 'cat >> .ssh/authorized_keys'
+
+      <b>Enter deploy user password for the last time</b>
+   </code>
+</pre>
+
+Here are the steps that you need to follow every time you want to
+perform a production deployment:
+
+<pre>
+   <code>
+      <b>Change directory to OpenDSA-DevStack</b>
+      $ vagrant up
+      $ vagrant ssh
+      $ cd /vagrant/OpenDSA-LTI
+      $ <b>git pull any new code</b>
+      $ <b>commit and push any changes</b>
+      Execute the following command to deploy to the <b>staging</b> server:
+      $ bundle exec cap staging deploy
+      Execute the following command to deploy to the <b>production</b> server:
+      $ bundle exec cap production deploy
+   </code>
+</pre>
 
 ## Connect to Vagrant VM Database:
 

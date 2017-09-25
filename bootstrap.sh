@@ -61,13 +61,21 @@ FLUSH PRIVILEGES;
 SQL
 
 install 'Nokogiri dependencies' libxml2 libxml2-dev libxslt1-dev
-install 'ExecJS runtime' nodejs npm uglifyjs
-curl -sL https://deb.nodesource.com/setup | sudo bash -
-ln -s /usr/bin/nodejs /usr/bin/node
-ln -s /usr/bin/nodejs /usr/sbin/node
+
+echo Installing nodejs and npm
+sudo apt-get -y purge nodejs
+sudo apt-get -y purge npm
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get -y install nodejs
+sudo apt-get -y install npm
+sudo apt-get -y install uglifyjs
+sudo ln -s "$(which nodejs)" /usr/local/bin/node
 npm install -g jshint
 npm install -g csslint
+npm install -g jsonlint
+npm install -g uglify-js
 npm install -g bower
+
 
 # Needed for docs generation.
 update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
