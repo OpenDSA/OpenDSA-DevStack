@@ -181,6 +181,8 @@ perform a production deployment:
       $ bundle exec cap staging deploy
       Execute the following command to deploy to the <b>production</b> server:
       $ bundle exec cap production deploy
+      <b>...</b>
+      $ Please enter a branch (&lt;current_branch&gt;): &lt;Branch to deploy. Leave blank to deploy current_branch&gt;
    </code>
 </pre>
 
