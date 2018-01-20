@@ -3,7 +3,7 @@
 	[
 		{
 			"path": ".",
-      "folder_exclude_patterns": ["code-workout", ".vagrant"],
+      "folder_exclude_patterns": [".vagrant"],
       "file_exclude_patterns": []
     }
   ]
