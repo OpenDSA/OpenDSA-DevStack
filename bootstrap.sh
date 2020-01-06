@@ -16,8 +16,19 @@ echo '/swapfile none swap defaults 0 0' >> /etc/fstab
 echo updating system packages
 apt-add-repository -y ppa:brightbox/ruby-ng >/dev/null 2>&1
 apt-get -y update >/dev/null 2>&1
+apt-get -y upgrade >/dev/null 2>&1
 
 install 'development tools' build-essential  dkms curl libxslt-dev libpq-dev python-dev python-pip python-feedvalidator python-software-properties python-sphinx libmariadbclient-dev libcurl4-gnutls-dev libevent-dev libffi-dev libssl-dev stunnel4 libsqlite3-dev
+
+# install python3.8
+cd /opt
+wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz
+tar xzf Python-3.8.0.tgz
+cd Python-3.8.0
+./configure --enable-optimizations
+make altinstall
+apt-get install -y python3-pip
+pip3 install virtualenv
 
 install Ruby ruby2.3 ruby2.3-dev
 update-alternatives --set ruby /usr/bin/ruby2.3 >/dev/null 2>&1
@@ -124,6 +135,8 @@ make pull
 cd /vagrant/OpenDSA/khan-exercises
 # git checkout LTI_ruby
 cd /vagrant/OpenDSA/
+python3.8 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt --upgrade
 
 # Clone OpenDSA-LTI
