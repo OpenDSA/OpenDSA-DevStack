@@ -1,9 +1,8 @@
 # The output of all these installation steps is noisy. With this utility
 # the progress report is nice and concise.
-function install {
+function silentInstall {
     echo installing $1
-    shift
-    apt-get -y install "$@" >/dev/null 2>&1
+    apt-get -y install $1 >/dev/null 2>&1
 }
 
 echo adding swap file
@@ -18,19 +17,38 @@ apt-add-repository -y ppa:brightbox/ruby-ng >/dev/null 2>&1
 apt-get -y update >/dev/null 2>&1
 apt-get -y upgrade >/dev/null 2>&1
 
-install 'development tools' build-essential  dkms curl libxslt-dev libpq-dev python-dev python-pip python-feedvalidator python-software-properties python-sphinx libmariadbclient-dev libcurl4-gnutls-dev libevent-dev libffi-dev libssl-dev stunnel4 libsqlite3-dev
+echo 'Installing development tools...'
+silentInstall build-essential
+silentInstall dkms
+silentInstall curl
+silentInstall libxslt-dev
+silentInstall libpq-dev
+silentInstall python3-dev
+silentInstall python3-pip
+# silentInstall python-feedvalidator
+# silentInstall python-software-properties
+# silentInstall python-sphinx
+silentInstall libmariadbclient-dev
+silentInstall libcurl4-gnutls-dev
+silentInstall libevent-dev
+silentInstall libffi-dev
+silentInstall libssl-dev
+silentInstall stunnel4
+silentInstall libsqlite3-dev
+echo 'Main development tools installed!'
 
 # install python3.8
-cd /opt
-wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz
-tar xzf Python-3.8.0.tgz
-cd Python-3.8.0
-./configure --enable-optimizations
-make altinstall
-apt-get install -y python3-pip
-pip3 install virtualenv
+# cd /opt
+# wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz
+# tar xzf Python-3.8.0.tgz
+# cd Python-3.8.0
+# ./configure --enable-optimizations
+# make altinstall
+# apt-get install -y python3-pip
+# pip3 install virtualenv
 
-install Ruby ruby2.3 ruby2.3-dev
+silentInstall ruby2.3
+silentInstall ruby2.3-dev
 update-alternatives --set ruby /usr/bin/ruby2.3 >/dev/null 2>&1
 update-alternatives --set gem /usr/bin/gem2.3 >/dev/null 2>&1
 
@@ -55,7 +73,7 @@ update-alternatives --set gem /usr/bin/gem2.3 >/dev/null 2>&1
 echo installing Bundler
 gem install bundler -N >/dev/null 2>&1
 
-install Git git
+silentInstall git
 
 debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
 debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
@@ -71,7 +89,11 @@ GRANT ALL PRIVILEGES ON opendsa.* to 'opendsa'@'localhost'  IDENTIFIED BY 'opend
 FLUSH PRIVILEGES;
 SQL
 
-install 'Nokogiri dependencies' libxml2 libxml2-dev libxslt1-dev
+echo 'Install Nokogiri dependencies...'
+silentInstall libxml2
+silentInstall libxml2-dev
+silentInstall libxslt1-dev
+echo 'Nokogiri dependencies are installed!'
 
 echo Installing nodejs and npm
 sudo apt-get -y purge nodejs
@@ -135,9 +157,10 @@ make pull
 cd /vagrant/OpenDSA/khan-exercises
 # git checkout LTI_ruby
 cd /vagrant/OpenDSA/
-python3.8 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt --upgrade
+# python3.8 -m venv venv
+# source venv/bin/activate
+pip3 install -r requirements.txt
+pip3 install sphinx --upgrade
 
 # Clone OpenDSA-LTI
 if [ ! -d /vagrant/OpenDSA-LTI ]; then
