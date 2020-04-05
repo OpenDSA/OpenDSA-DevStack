@@ -2,12 +2,12 @@
 # With this utility the progress report is nice and concise.
 function silentInstall {
     echo installing $1 ...
-    sudo apt-get -y install $1 >/dev/null 2>&1
+    sudo apt-get --yes install $1 >/dev/null 2>&1
 }
 
 function silentAddAptRepo {
 	echo Adding Apt Repo: $1 ...
-    sudo apt-add-repository -y $1 >/dev/null 2>&1
+    sudo apt-add-repository --yes $1 >/dev/null 2>&1
 	echo Updating from added repo...
 	sudo apt-get update >/dev/null 2>&1
 }
@@ -20,8 +20,8 @@ swapon /swapfile
 echo '/swapfile none swap defaults 0 0' >> /etc/fstab
 
 echo "============ Updating System ============"
-apt-get -y update >/dev/null 2>&1
-apt-get -y upgrade >/dev/null 2>&1
+apt-get --yes update >/dev/null 2>&1
+apt-get --yes upgrade >/dev/null 2>&1
 
 # echo "QUITTING EARLY!!!!"  # For if you want to avoid all the setup
 # exit 0
@@ -158,11 +158,11 @@ echo "cd /vagrant/OpenDSA" >> /home/vagrant/.bashrc
 echo "============ Pulling Code-Workout and bundle-ing ============"
 if [ ! -d /vagrant/code-workout ]; then
 	git clone https://github.com/OpenDSA/code-workout.git /vagrant/code-workout
+	sudo --user=vagrant bundle install
+	sudo --user=vagrant bundle exec rake db:populate
 fi
 cd /vagrant/code-workout
 git pull
-sudo -u vagrant bundle install
-sudo -u vagrant bundle exec rake db:populate
 
 cd /vagrant/OpenDSA/
 # git checkout LTI_ruby
