@@ -116,7 +116,7 @@ if [ "$OpenDSA" = true ]; then
 	sudo apt-get --yes purge nodejs
 	sudo apt-get --yes purge npm
 	echo "NOTE: Node needs a update. Changing to setup_12.x seems to work fine?"
-	curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 	silentInstall nodejs
 	silentInstall npm # npm is already included in node12
 	sudo ln -s "$(which nodejs)" /usr/local/bin/node
