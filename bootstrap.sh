@@ -201,7 +201,7 @@ if [ "$OpenDSA_LTI" = true ]; then
 		git pull
 	fi
 	cd /vagrant/OpenDSA-LTI
-	# NOTE: bundle prefers to run as user, not root.  Use "sudo -u vagrant bund..." instead? 
+	echo "NOTE: bundle prefers to run as user, not root.  Use 'sudo -u vagrant bund...'' instead?" 
 	bundle install
 	bundle exec rake db:reset_populate
 
