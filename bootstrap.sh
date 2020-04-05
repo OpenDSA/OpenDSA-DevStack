@@ -9,7 +9,7 @@ function silentAddAptRepo {
 	echo Adding Apt Repo: $1 ...
     sudo apt-add-repository -y $1 >/dev/null 2>&1
 	echo Updating from added repo...
-	sudo apt-get update $1 >/dev/null 2>&1
+	sudo apt-get update >/dev/null 2>&1
 }
 
 echo "============ Adding Swap File ============"
