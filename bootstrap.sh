@@ -83,7 +83,8 @@ fi
 
 if [ "$OpenDSA_LTI" = true ]; then
 	echo "================== Installing Bundler =================="
-	gem install bundler -N >/dev/null 2>&1
+	# gem install bundler -N >/dev/null 2>&1  OLD
+	gem install bundler -v 1.17.3 -N >/dev/null 2>&1
 
 	echo "============ Installing Nokogiri dependencies ============"
 	silentInstall libxml2
