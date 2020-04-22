@@ -108,6 +108,7 @@ if [ ! -d /vagrant/code-workout ]; then
 fi
 git pull
 
+
 cd /vagrant/code-workout
 bundle install
 bundle exec rake db:populate
@@ -131,6 +132,9 @@ if [ ! -d /vagrant/OpenDSA-LTI ]; then
   git clone https://github.com/OpenDSA/OpenDSA-LTI.git /vagrant/OpenDSA-LTI
 fi
 git pull
+
+echo installing rake
+sudo gem install rake -v 11.2.2
 
 cd /vagrant/OpenDSA-LTI
 bundle install
