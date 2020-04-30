@@ -1,5 +1,6 @@
 # OpenDSA content server
 cd /vagrant/OpenDSA
+sudo lsof -t -i tcp:8080 | xargs kill -9
 (setsid ./WebServer &)
 
 sleep 2
