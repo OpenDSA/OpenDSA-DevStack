@@ -93,7 +93,7 @@ if [ "$OpenDSA_LTI" = true ]; then
 fi
 
 
-if ["$codeworkout" = true ]; then  ### BROKEN because of <<< inside????
+if [ "$codeworkout" = true ] || [ "$OpenDSA_LTI" = true ]; then
 	echo "============ Installing SQL and doing config ============"
 	debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
 	debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
@@ -101,12 +101,12 @@ if ["$codeworkout" = true ]; then  ### BROKEN because of <<< inside????
 	silentInstall mysql-server
 	silentInstall libmysqlclient-dev
 	mysql -uroot -proot <<SQL
-CREATE DATABASE codeworkout DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-CREATE DATABASE opendsa DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-GRANT ALL PRIVILEGES ON codeworkout.* to 'codeworkout'@'localhost' IDENTIFIED BY 'codeworkout';
-FLUSH PRIVILEGES;
-GRANT ALL PRIVILEGES ON opendsa.* to 'opendsa'@'localhost'  IDENTIFIED BY 'opendsa';
-FLUSH PRIVILEGES;
+	CREATE DATABASE codeworkout DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+	CREATE DATABASE opendsa DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+	GRANT ALL PRIVILEGES ON codeworkout.* to 'codeworkout'@'localhost' IDENTIFIED BY 'codeworkout';
+	FLUSH PRIVILEGES;
+	GRANT ALL PRIVILEGES ON opendsa.* to 'opendsa'@'localhost'  IDENTIFIED BY 'opendsa';
+	FLUSH PRIVILEGES;
 SQL
 fi
 
