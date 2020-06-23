@@ -4,7 +4,8 @@
 # With this utility the progress report is nice and concise.
 silentInstall() {
     echo installing $1 ...
-    sudo apt-get --yes install $1 >/dev/null 2>&1
+    # --quiet does not work as intended.  Directing stdin and stderr is needed for now
+    sudo apt-get --yes --quiet install $1 >/dev/null 2>&1
 }
 
 silentAddAptRepo() {
@@ -20,8 +21,8 @@ codeworkout=true
 echo "boostrap.sh setup: OpenDSA=$OpenDSA ; OpenDSA_LTI=$OpenDSA_LTI ; codeworkout=$codeworkout"
 
 echo "============ Adding Swap File ============"
-fallocate -l 2G /swapfile
 # chown root:root /swapfile # not needed since already root
+fallocate --length 2G /swapfile
 chmod 0600 /swapfile
 mkswap /swapfile
 swapon /swapfile
@@ -113,13 +114,13 @@ fi
 
 if [ "$OpenDSA" = true ]; then
 	echo "============ Installing Nodejs And NPM ============"
-	sudo apt-get --yes purge nodejs
-	sudo apt-get --yes purge npm
+	sudo apt-get --yes --quiet purge nodejs 
+	sudo apt-get --yes --quiet purge npm
 	echo "NOTE: Node needs a update. Changing to setup_12.x seems to work fine?"
 	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 	silentInstall nodejs
 	silentInstall npm # npm is already included in node12
-	sudo ln -s "$(which nodejs)" /usr/local/bin/node
+	sudo ln --symbolic "$(which nodejs)" /usr/local/bin/node
 	npm install --global jshint
 	npm install --global csslint
 	npm install --global jsonlint
@@ -206,9 +207,9 @@ if [ "$OpenDSA_LTI" = true ]; then
 	bundle exec rake db:reset_populate
 
 	echo "============ Creating links between OpenDSA-LTI and OpenDSA ============"
-	ln -s /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
-	ln -s /vagrant/OpenDSA/RST /vagrant/OpenDSA-LTI/RST
-	ln -s /vagrant/OpenDSA/config /vagrant/OpenDSA-LTI/Configuration
+	ln --symbolic --force /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
+	ln --symbolic --force /vagrant/OpenDSA/RST /vagrant/OpenDSA-LTI/RST
+	ln --symbolic --force /vagrant/OpenDSA/config /vagrant/OpenDSA-LTI/Configuration
 	rm /vagrant/OpenDSA-LTI/Configuration/config
 	rm /vagrant/OpenDSA-LTI/RST/RST
 	sudo bower install --allow-root --verbose
