@@ -8,11 +8,15 @@ silentInstall() {
     sudo apt-get --yes --quiet install $1 >/dev/null 2>&1
 }
 
+silentAptUpdate() {
+	echo "Doing apt-get update..."
+	sudo apt-get --quiet --quiet update
+}
+
 silentAddAptRepo() {
 	echo Adding Apt Repo: $1 ...
     sudo apt-add-repository --yes $1 >/dev/null 2>&1
-	echo Updating from added repo...
-	sudo apt-get update >/dev/null 2>&1
+    silentAptUpdate 
 }
 
 OpenDSA=true
@@ -21,8 +25,8 @@ codeworkout=true
 echo "boostrap.sh setup: OpenDSA=$OpenDSA ; OpenDSA_LTI=$OpenDSA_LTI ; codeworkout=$codeworkout"
 
 echo "============ Adding Swap File ============"
-# chown root:root /swapfile # not needed since already root
 fallocate --length 2G /swapfile
+chown root:root /swapfile # not needed since already root
 chmod 0600 /swapfile
 mkswap /swapfile
 swapon /swapfile
@@ -31,8 +35,9 @@ swapon /swapfile
 echo '\n/swapfile none swap defaults 0 0' >> /etc/fstab
 
 echo "============ Updating System ============"
-apt-get --yes update >/dev/null 2>&1
-apt-get --yes upgrade >/dev/null 2>&1
+silentAptUpdate
+echo "Doing apt-get upgrade ..."
+sudo apt-get --yes --quiet --quiet upgrade >/dev/null 2>&1
 
 # echo "QUITTING EARLY!!!!" && exit 0 # For if you want to avoid all the setup
 
@@ -64,8 +69,9 @@ if [ "$OpenDSA_LTI" = true ]; then
 	silentAddAptRepo ppa:brightbox/ruby-ng
 	silentInstall ruby2.3
 	silentInstall ruby2.3-dev
-	update-alternatives --set ruby /usr/bin/ruby2.3 >/dev/null 2>&1
-	update-alternatives --set gem /usr/bin/gem2.3 >/dev/null 2>&1
+	update-alternatives --quiet --set ruby /usr/bin/ruby2.3
+	update-alternatives --quiet --set gem /usr/bin/gem2.3
+	sudo apt autoremove --yes --quiet
 fi
 
 # sudo apt-get update
@@ -83,9 +89,10 @@ fi
 # ruby -v
 
 if [ "$OpenDSA_LTI" = true ]; then
-	echo "================== Installing Bundler =================="
+	echo "============== Installing Bundler and Rake =================="
 	# gem install bundler -N >/dev/null 2>&1  OLD
-	gem install bundler -v 1.17.3 -N >/dev/null 2>&1
+	gem install bundler --version 1.17.3 --no-document >/dev/null 2>&1
+	gem install rake --version 11.2.2 >/dev/null 2>&1
 
 	echo "============ Installing Nokogiri dependencies ============"
 	silentInstall libxml2
@@ -138,7 +145,6 @@ echo "============ Install HSTR Command History tool ============"
 silentInstall libncurses5-dev
 silentInstall libreadline-dev
 silentAddAptRepo ppa:ultradvorka/ppa
-sudo apt-get update
 silentInstall hstr
 hh --show-configuration >> ~/.bashrc
 # source home/vagrant/.bashrc  # not really needed since this script doesnt need hh or hstr
@@ -147,7 +153,6 @@ hh --show-configuration >> ~/.bashrc
 if [ "$OpenDSA" = true ]; then
 	echo "============ Installing Java 8 and Ant ============"
 	silentAddAptRepo ppa:webupd8team/java
-	sudo apt-get update
 	echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 	echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 	# silentInstall oracle-java8-installer # not a package anymore
@@ -173,10 +178,9 @@ if [ "$OpenDSA" = true ]; then
 	cd /vagrant/OpenDSA
 	make pull
 
-	echo "============ Building OpenDSA's Py Venv and installing reqs ============"
+	echo "============ Building OpenDSA's Py Venv and pip packages ============"
 	cd /vagrant/OpenDSA
-	make clean-venv
-	make .pyVenv
+	make venv
 	# Automatically activates the .pyVenv every login. 
 	echo "cd /vagrant/OpenDSA" >> /home/vagrant/.bashrc
 	echo "source .pyVenv/bin/activate" >> /home/vagrant/.bashrc
