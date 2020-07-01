@@ -157,6 +157,9 @@ fi
 cd /vagrant
 echo "This is the home of our projects:"
 echo | pwd
+export ODSA_ENV="DEV"
+echo "export ODSA_ENV=\"DEV\"" >> /home/vagrant/.bashrc
+echo "echo \"ODSA_ENV variable is set to: \$ODSA_ENV\"" >> /home/vagrant/.bashrc
 echo "cd /vagrant" >> /home/vagrant/.bashrc
 
 # Needed for docs generation.
