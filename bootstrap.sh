@@ -166,6 +166,9 @@ export ODSA_ENV="DEV"
 echo "export ODSA_ENV=\"DEV\"" >> /home/vagrant/.bashrc
 echo "echo \"ODSA_ENV variable is set to: \$ODSA_ENV\"" >> /home/vagrant/.bashrc
 echo "cd /vagrant" >> /home/vagrant/.bashrc
+export PYTHON="python3.8"
+echo "export PYTHON=\"python3.8\"" >> /home/vagrant/.bashrc
+echo "cd /vagrant" >> /home/vagrant/.bashrc
 
 # Needed for docs generation.
 update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
