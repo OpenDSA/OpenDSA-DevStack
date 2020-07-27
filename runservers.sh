@@ -1,6 +1,6 @@
 # OpenDSA content server
 cd /vagrant/OpenDSA
-(setsid ./WebServer &)
+(setsid python3 server.py &)
 
 sleep 2
 # OpenDSA-LTI server
