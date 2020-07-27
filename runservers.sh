@@ -1,7 +1,7 @@
 # OpenDSA content server
 cd /vagrant/OpenDSA
 sudo lsof -t -i tcp:8080 | xargs kill -9
-(setsid ./WebServer &)
+(setsid python3 server.py &)
 
 sleep 2
 # OpenDSA-LTI server

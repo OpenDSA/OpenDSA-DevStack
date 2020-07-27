@@ -3,7 +3,7 @@
 	[
 		{
 			"path": ".",
-      "folder_exclude_patterns": [".vagrant"],
+      "folder_exclude_patterns": [".vagrant", ".pyVenv"],
       "file_exclude_patterns": []
     }
   ]
