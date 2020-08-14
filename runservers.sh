@@ -14,11 +14,11 @@ sleep 2
 cd /vagrant/OpenDSA-LTI
 (setsid bundle exec rake jobs:work &)
 
-sleep 2
-# code-workout
-cd /vagrant/code-workout
-sudo lsof -t -i tcp:9200 | xargs kill -9
-(setsid bundle exec thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 9200 &)
+# sleep 2
+# # code-workout
+# cd /vagrant/code-workout
+# sudo lsof -t -i tcp:9200 | xargs kill -9
+# (setsid bundle exec thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 9200 &)
 
 # sleep 2
 # # OpenPOP
