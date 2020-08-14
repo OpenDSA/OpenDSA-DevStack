@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# The output of all these installation steps is noisy. 
+# The output of all these installation steps is noisy.
 # With this utility the progress report is nice and concise.
 silentInstall() {
     echo installing $1 ...
@@ -16,7 +16,7 @@ silentAptUpdate() {
 silentAddAptRepo() {
 	echo Adding Apt Repo: $1 ...
     sudo apt-add-repository --yes $1 >/dev/null 2>&1
-    silentAptUpdate 
+    silentAptUpdate
 }
 
 OpenDSA=true
@@ -67,10 +67,10 @@ if [ "$OpenDSA_LTI" = true ]; then
 	echo "NOTE: The bionic64 VM can install ruby2.5 immediately!  No add-repo needed!"
 	echo "NOTE: But ruby2.3 -> ruby2.5 has code changes. "
 	silentAddAptRepo ppa:brightbox/ruby-ng
-	silentInstall ruby2.3
-	silentInstall ruby2.3-dev
-	update-alternatives --quiet --set ruby /usr/bin/ruby2.3
-	update-alternatives --quiet --set gem /usr/bin/gem2.3
+	silentInstall ruby2.5
+	silentInstall ruby2.5-dev
+	update-alternatives --quiet --set ruby /usr/bin/ruby2.5
+	update-alternatives --quiet --set gem /usr/bin/gem2.5
 	sudo apt autoremove --yes --quiet
 fi
 
@@ -91,8 +91,8 @@ fi
 if [ "$OpenDSA_LTI" = true ]; then
 	echo "============== Installing Bundler and Rake =================="
 	# gem install bundler -N >/dev/null 2>&1  OLD
-	gem install bundler --version 1.17.3 --no-document >/dev/null 2>&1
-	gem install rake --version 11.2.2 >/dev/null 2>&1
+	gem install bundler --version 2.1.4 --no-document >/dev/null 2>&1
+	gem install rake --version 13.0.1 >/dev/null 2>&1
 
 	echo "============ Installing Nokogiri dependencies ============"
 	silentInstall libxml2
@@ -121,7 +121,7 @@ fi
 
 if [ "$OpenDSA" = true ]; then
 	echo "============ Installing Nodejs And NPM ============"
-	sudo apt-get --yes --quiet purge nodejs 
+	sudo apt-get --yes --quiet purge nodejs
 	sudo apt-get --yes --quiet purge npm
 	echo "NOTE: Node needs a update. Changing to setup_12.x seems to work fine?"
 	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
@@ -184,7 +184,7 @@ if [ "$OpenDSA" = true ]; then
 	echo "============ Building OpenDSA's Py Venv and pip packages ============"
 	cd /vagrant/OpenDSA
 	make venv
-	# Automatically activates the .pyVenv every login. 
+	# Automatically activates the .pyVenv every login.
 	echo "cd /vagrant/OpenDSA" >> /home/vagrant/.bashrc
 	echo "source .pyVenv/bin/activate" >> /home/vagrant/.bashrc
 fi
@@ -209,11 +209,14 @@ if [ "$OpenDSA_LTI" = true ]; then
 	echo "============ Pulling OpenDSA-LTI and bundle-ing ============"
 	if [ ! -d /vagrant/OpenDSA-LTI ]; then
 		git clone https://github.com/OpenDSA/OpenDSA-LTI.git /vagrant/OpenDSA-LTI
+		cd /vagrant/OpenDSA_LTI
+		git checkout railsv6
 		git pull
 	fi
 	cd /vagrant/OpenDSA-LTI
-	echo "NOTE: bundle prefers to run as user, not root.  Use 'sudo -u vagrant bund...'' instead?" 
+	echo "NOTE: bundle prefers to run as user, not root.  Use 'sudo -u vagrant bund...'' instead?"
 	bundle install
+	echo "NOTE: need to create database.yml, move migrations, and recreate db"
 	bundle exec rake db:reset_populate
 
 	echo "============ Creating links between OpenDSA-LTI and OpenDSA ============"
