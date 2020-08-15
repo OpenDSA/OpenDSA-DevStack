@@ -64,13 +64,15 @@ fi
 
 if [ "$OpenDSA_LTI" = true ]; then
 	echo "============== Installing Ruby and Gem =============="
-	echo "NOTE: The bionic64 VM can install ruby2.5 immediately!  No add-repo needed!"
-	echo "NOTE: But ruby2.3 -> ruby2.5 has code changes. "
-	silentAddAptRepo ppa:brightbox/ruby-ng
-	silentInstall ruby2.5
-	silentInstall ruby2.5-dev
-	update-alternatives --quiet --set ruby /usr/bin/ruby2.5
-	update-alternatives --quiet --set gem /usr/bin/gem2.5
+	git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+	echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+	echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+	exec $SHELL
+	git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+	echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+	exec $SHELL
+	rbenv install 2.7.1
+	rbenv global 2.7.1
 	sudo apt autoremove --yes --quiet
 fi
 
@@ -92,6 +94,7 @@ if [ "$OpenDSA_LTI" = true ]; then
 	echo "============== Installing Bundler and Rake =================="
 	# gem install bundler -N >/dev/null 2>&1  OLD
 	gem install bundler --version 2.1.4 --no-document >/dev/null 2>&1
+	rbenv rehash
 	gem install rake --version 13.0.1 >/dev/null 2>&1
 
 	echo "============ Installing Nokogiri dependencies ============"
