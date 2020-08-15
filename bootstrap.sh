@@ -209,7 +209,7 @@ if [ "$OpenDSA_LTI" = true ]; then
 	echo "============ Pulling OpenDSA-LTI and bundle-ing ============"
 	if [ ! -d /vagrant/OpenDSA-LTI ]; then
 		git clone https://github.com/OpenDSA/OpenDSA-LTI.git /vagrant/OpenDSA-LTI
-		cd /vagrant/OpenDSA_LTI
+		cd /vagrant/OpenDSA-LTI
 		git checkout railsv6
 		git pull
 	fi
@@ -217,7 +217,11 @@ if [ "$OpenDSA_LTI" = true ]; then
 	echo "NOTE: bundle prefers to run as user, not root.  Use 'sudo -u vagrant bund...'' instead?"
 	bundle install
 	echo "NOTE: need to create database.yml, move migrations, and recreate db"
-	bundle exec rake db:reset_populate
+	bundle exec rake db:drop
+	bundle exec rake db:create
+	bundle exec rake db:schema:load
+	bundle exec rake db:seed
+	bundle exec rake db:populate
 
 	echo "============ Creating links between OpenDSA-LTI and OpenDSA ============"
 	ln --symbolic --force /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
