@@ -25,11 +25,11 @@ codeworkout=true
 echo "boostrap.sh setup: OpenDSA=$OpenDSA ; OpenDSA_LTI=$OpenDSA_LTI ; codeworkout=$codeworkout"
 
 echo "============ Adding Swap File ============"
-fallocate --length 2G /swapfile
-chown root:root /swapfile # not needed since already root
-chmod 0600 /swapfile
-mkswap /swapfile
-swapon /swapfile
+sudo fallocate --length 2G /swapfile
+sudo chown root:root /swapfile # not needed since already root
+sudo chmod 0600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
 # echo "Verifying..." && swapon -s
 # grep -i --color swap /proc/meminfo
 echo '\n/swapfile none swap defaults 0 0' >> /etc/fstab
@@ -64,13 +64,12 @@ fi
 
 if [ "$OpenDSA_LTI" = true ]; then
 	echo "============== Installing Ruby and Gem =============="
-  su vagrant
-	git clone https://github.com/rbenv/rbenv.git /home/vagrant/.rbenv
-	echo 'export PATH="/home/vagrant/.rbenv/bin:$PATH"' >> /home/vagrant/.bashrc
-	echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bashrc
+	git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+	echo 'export PATH="~/.rbenv/bin:$PATH"' >> ~/.bashrc
+	echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 	exec $SHELL
-	git clone https://github.com/rbenv/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build
-	echo 'export PATH="/home/vagrant/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/vagrant/.bashrc
+	git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+	echo 'export PATH="~/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
 	exec $SHELL
 	rbenv install 2.7.1
 	rbenv global 2.7.1
@@ -133,11 +132,11 @@ if [ "$OpenDSA" = true ]; then
 	silentInstall nodejs
 	silentInstall npm # npm is already included in node12
 	sudo ln --symbolic "$(which nodejs)" /usr/local/bin/node
-	npm install --global jshint
-	npm install --global csslint
-	npm install --global jsonlint
-	npm install --global uglify-js # minifies js files
-	npm install --global clean-css-cli # minifies css files
+	sudo npm install --global jshint
+	sudo npm install --global csslint
+	sudo npm install --global jsonlint
+	sudo npm install --global uglify-js # minifies js files
+	sudo npm install --global clean-css-cli # minifies css files
 	if [ "$OpenDSA_LTI" = true ]; then
 		npm install --global bower
 		echo "NOTE: See https://bower.io/blog/2017/how-to-migrate-away-from-bower/"
