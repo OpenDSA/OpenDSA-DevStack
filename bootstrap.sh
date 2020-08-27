@@ -64,12 +64,12 @@ fi
 
 if [ "$OpenDSA_LTI" = true ]; then
 	echo "============== Installing Ruby and Gem =============="
-	git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-	echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-	echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+	git clone https://github.com/rbenv/rbenv.git /home/vagrant/.rbenv
+	echo 'export PATH="/home/vagrant/.rbenv/bin:$PATH"' >> /home/vagrant/.bashrc
+	echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bashrc
 	exec $SHELL
-	git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-	echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+	git clone https://github.com/rbenv/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build
+	echo 'export PATH="/home/vagrant/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/vagrant/.bashrc
 	exec $SHELL
 	rbenv install 2.7.1
 	rbenv global 2.7.1
