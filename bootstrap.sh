@@ -64,6 +64,7 @@ fi
 
 if [ "$OpenDSA_LTI" = true ]; then
 	echo "============== Installing Ruby and Gem =============="
+  su vagrant
 	git clone https://github.com/rbenv/rbenv.git /home/vagrant/.rbenv
 	echo 'export PATH="/home/vagrant/.rbenv/bin:$PATH"' >> /home/vagrant/.bashrc
 	echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bashrc
@@ -74,6 +75,7 @@ if [ "$OpenDSA_LTI" = true ]; then
 	rbenv install 2.7.1
 	rbenv global 2.7.1
 	sudo apt autoremove --yes --quiet
+  exit
 fi
 
 # sudo apt-get update
