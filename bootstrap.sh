@@ -205,9 +205,10 @@ if [ "$OpenDSA_LTI" = true ]; then
         git pull
     fi
     cd /vagrant/OpenDSA-LTI
-    echo "NOTE: bundle prefers to run as user, not root.  Use 'sudo -u vagrant bund...'' instead?"
     bundle install
     echo "NOTE: need to create database.yml, move migrations, and recreate db"
+    mv /vagrant/OpenDSA-LTI/db/migrate /vagrant/OpenDSA-LTI/db/migrate_db
+    touch /vagrant/OpenDSA-LTI/config/database.yml
     bundle exec rake db:drop
     bundle exec rake db:create
     bundle exec rake db:schema:load
