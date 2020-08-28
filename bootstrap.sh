@@ -175,6 +175,8 @@ if [ "$OpenDSA" = true ]; then
     echo "============ Building OpenDSA's Py Venv and pip packages ============"
     cd /vagrant/OpenDSA
     make venv
+    sudo mkdir -p /home/deploy/OpenDSA
+    sudo cp -r .pyVenv/ /home/deploy/OpenDSA/
     # Automatically activates the .pyVenv every login.
     echo "cd /vagrant/OpenDSA" >> /home/vagrant/.bashrc
     echo "source .pyVenv/bin/activate" >> /home/vagrant/.bashrc
