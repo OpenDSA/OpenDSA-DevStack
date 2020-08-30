@@ -118,6 +118,7 @@ if [ "$OpenDSA" = true ]; then
     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
     silentInstall nodejs
     silentInstall npm # npm is already included in node12
+    # TODO ln on windows
     sudo ln --symbolic "$(which nodejs)" /usr/local/bin/node
     sudo npm install --global jshint
     sudo npm install --global csslint
@@ -210,7 +211,6 @@ if [ "$OpenDSA_LTI" = true ]; then
     bundle install
     echo "NOTE: need to create database.yml, move migrations, and recreate db"
     mv /vagrant/OpenDSA-LTI/db/migrate /vagrant/OpenDSA-LTI/db/migrate_db
-    touch /vagrant/OpenDSA-LTI/config/database.yml
     bundle exec rake db:drop
     bundle exec rake db:create
     bundle exec rake db:schema:load
@@ -218,6 +218,7 @@ if [ "$OpenDSA_LTI" = true ]; then
     bundle exec rake db:populate
 
     echo "============ Creating links between OpenDSA-LTI and OpenDSA ============"
+    # TODO doesn't work on windows - check windows and use cp -r
     ln --symbolic --force /vagrant/OpenDSA /vagrant/OpenDSA-LTI/public
     ln --symbolic --force /vagrant/OpenDSA/RST /vagrant/OpenDSA-LTI/RST
     ln --symbolic --force /vagrant/OpenDSA/config /vagrant/OpenDSA-LTI/Configuration
