@@ -204,7 +204,6 @@ if [ "$OpenDSA_LTI" = true ]; then
     if [ ! -d /vagrant/OpenDSA-LTI ]; then
         git clone https://github.com/OpenDSA/OpenDSA-LTI.git /vagrant/OpenDSA-LTI
         cd /vagrant/OpenDSA-LTI
-        git checkout railsv6
         git pull
     fi
     cd /vagrant/OpenDSA-LTI
