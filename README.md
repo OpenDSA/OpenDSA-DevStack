@@ -3,78 +3,65 @@ Setting Up a Vagrant Development Environment for OpenDSA
 
 ## Introduction:
 
-Vagrant is designed to run on multiple platforms, including Mac OS X, Microsoft Windows, Debian, Ubuntu, CentOS, RedHat and Fedora. In this document we describe how to configure and run an OpenDSA project virtual development environment through Vagrant.
+Docker is designed to run on multiple platforms, including Mac OS X, Microsoft Windows, Debian, Ubuntu, CentOS, RedHat and Fedora. In this document we describe how to configure and run an OpenDSA project virtual development environment through Docker.
 
 ## Installation Steps:
 
-1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
-2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+1. Install [Docker](https://docs.docker.com/get-docker/)
+2. Install Make (Make can be found in the default package manager on Linux, in Brew on Mac, and [here](http://gnuwin32.sourceforge.net/packages/make.htm) for Windows.  For a Windows installation, you should put make in Program Files, NOT Program Files (x86). Then, edit your environment variable PATH to add: C:/Program Files/GnuWin32/bin. If you don’t know how to edit an environment variable on Windows, google for “windows set environment variable”.)
 3. Clone this repository
 4. `$ cd OpenDSA-DevStack`
-5. `$ vagrant up`
-   (This will take a long time to install everything the first time!)
-6. `$ vagrant ssh`
-7. `$ cd /vagrant`
-8. `$ ./runservers.sh`
-9. After the provisioning script is complete you can go to:
+5. `$ make up` or `$ docker-compose up`
+6. Once you see `RAILS_ENV=development bundle exec thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 80` in the terminal, this may take a few minutes, the app will be available at:
 
-   * http://192.168.33.10:8080 for OpenDSA content server
-   * https://192.168.33.10:9292 for OpenDSA-LTI server
-   * https://192.168.33.10:9200 for code-workout server
+   * http://localhost:8080 for OpenDSA content server (Must be started manually from inside of the container)
+   * https://localhost:8000 for OpenDSA-LTI server
 
 ## Shut Down The Virtual Machine:
 
-After you finish your work, you need to turn the virtual machine off.
+After you finish your work, you need to bring down the Docker containers.
 
-1. Exit the virtual machine terminal by typing `exit`
+1. If you entered the container, exit the terminal by typing `exit`
 2. Change directory to `OpenDSA-DevStack`
-3. `$ vagrant halt`
+3. `$ make down` or `$ docker-compose down`
 
 ## Re-run Development Servers:
 
-If you decided to shut down the virtual machine using `vagrant halt`, you have to re-run the servers again after you do `vagrant up`.
+If you have taken down the containers using `$ make down` you can restart them by running `$ make up` again or `$ make restart`.
 
-1. Change directory to `OpenDSA-DevStack`
-2. `$ vagrant up`
-3. `$ vagrant ssh`
-4. `$ cd /vagrant`
-5. `$ ./runservers.sh`
+## Reprovision The Containers:
 
-## Reprovision The Virtual Machine:
-
-If anything went wrong or you want to reprovision your virtual machine for any reason, follow these steps.
+If anything went wrong, you want to reset your database, or just want to reset the app for any reason, follow these steps.
 
 1. Change directory to `OpenDSA-DevStack`
 2. `$ git pull`
-3. `$ vagrant destroy`
-4. `$ vagrant up`
+3. `$ make nuke` or `$ docker-compose down -v`
+4. `$ make up`
 
-## Virtual Machine sudo password:
+## Container sudo password:
 
-The sudo password is `vagrant` (in case you need to execute any commands that require sudo).
+When running commands in the container, there is not sudo password, (in case you need to execute any commands that require sudo).
 
 ## Development Workflow:
 
-The provisioning script will clone the OpenDSA, OpenDSA-LTI, and
-code-workout repositories inside the OpenDSA-DevStack
-directory.
+The provisioning script will clone the OpenDSA and OpenDSA-LTI repositories inside the OpenDSA-DevStack directory.
 The OpenDSA-DevStack directory is shared between your host
-machine and the virtual machine, so you can do your development to any
+machine and the Docker containers, so you can do your development to any
 of these repositories on your host machine using your preferred tools
-or IDEs (from "outside" the virtual machine).
+or IDEs (from "outside" the container environment).
 All changes that you make will take effect immediately, and you can
 test them through the virtual machine server URLs provided
 earlier.
 You can commit and push your changes from your host
 machine.
 **However, if you want to compile books in OpenDSA, you have to do
-that from within the virtual machine.**
+that from within the container.**
 Do so as follows:
 
-1. Open a new terminal within your virtual machine
+1. Open a new terminal on your host machine
 2. `$ cd OpenDSA-DevStack`
-3. `$ vagrant ssh` (you don't need to do `vagrant up` if the VM is already up and running)
-4. `$ cd /vagrant/OpenDSA`
+3. `$ make ssh` (you don't need to do `make up` if the container is already up and running)
+4. `$ cd /opendsa`
 5. `make <<CONFIG_FILE_NAME>>`
 
 ## Keep OpenDSA-DevStack up to date:
@@ -86,12 +73,9 @@ the latest version do the following:
 
 1. Open a new terminal
 2. Change directory to `OpenDSA-DevStack`
-3. `$ vagrant reload`
-4. `$ vagrant ssh`
-5. `$ cd /vagrant`
-6. `$ ./get_latest.sh`
+3. `$ ./get_latest.sh`
 
-## `opendsa` and `codeworkout` Databases Test Data
+## `opendsa` Database Test Data
 
 The initial database population is defined by lib/tasks/sample_data.rake.
 It uses the factories defined in spec/factories/* to generate entities.
@@ -105,9 +89,7 @@ in db/seeds.rb instead.
 
   - `opendsa` database includes the following **admin** account:
     - admin@opendsa.org (pass: adminadmin)
-  - `codeworkout` database includes the following **admin** account:
-    - admin@codeworkout.org (pass: adminadmin)
-  - Both `opendsa` and `codeworkout` databases include the following accounts:
+  - `opendsa` database also includes the following accounts:
     - example-1@railstutorial.org (pass: hokiehokie), has instructor access
     - example-*@railstutorial.org (pass: hokiehokie) 50 students
 
@@ -122,14 +104,14 @@ in db/seeds.rb instead.
 ## Generate Canvas course using OpenDSA web interface.
 
 1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-devstack-up-to-date).
-2. After you are done you should have OpenDSA-LTI server running. Go to https://192.168.33.10:9292 to make sure your application is up and running.
-3. Follow the instructions on the instructor's [guide page](https://192.168.33.10:9292/home/guide) to set up your Canvas course. **Note:** skip the first step in this guide since you can use the **admin** account (admin@opendsa.org, pass: adminadmin) to cerate the course.
+2. After you are done you should have OpenDSA-LTI server running. Go to https://localhost:8000 to make sure your application is up and running.
+3. Follow the instructions on the instructor's [guide page](https://localhost:8000/home/guide) to set up your Canvas course. **Note:** skip the first step in this guide since you can use the **admin** account (admin@opendsa.org, pass: adminadmin) to cerate the course.
 
-## Production deployment workflow
+## OLD Production deployment workflow
 
 If you are responsible for maintaining an OpenDSA-LTI production
 server, follow the instructions in this section to perform deployment
-to the production server. 
+to the production server.
 
 Deployment to the production server is initiated from the development
 environment.
@@ -186,22 +168,19 @@ perform a production deployment:
    </code>
 </pre>
 
-## Connect to Vagrant VM Database:
+## Connect to Docker Container Database:
 
-During development, it is convenient to connect to `opendsa` and `codeworkout` databases from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to Vagrant VM Database using the following setup:
+During development, it is convenient to connect to the `opendsa` database from your host machine using [MySQL Workbench](https://www.mysql.com/products/workbench/). Once you installed MySQL Workbench create a new connection to Vagrant VM Database using the following setup:
 
 - Connection Name: OpenDSA-Devstack
 - Connection Method: Standard TCP/IP over SSH
-- SSH Hostname: 192.168.33.10
-- SSH Username: vagrant
-- SSH Password: vagrant
 - MySQL Hostname: 127.0.0.1
-- MySQL Server Port: 3306
-- Username: opendsa
+- MySQL Server Port: 3307
+- Username: root
 - Password: opendsa
 
 
-## Getting Chrome to accept Self Signed SSL for Local Development with Vagrant
+## Getting Chrome to accept Self Signed SSL for Local Development with Docker
 
 - On the page with the untrusted certificate (`https://` is crossed out in red), click the lock > Certificate Information.
 - Click the `Details tab > Export`. Choose `PKCS #7, single certificate` as the file format.
