@@ -1,11 +1,4 @@
-cd /vagrant/OpenDSA-LTI
+cd opendsa-lti
 git pull
-sudo bundle install
-bundle exec rake db:migrate
-cd /vagrant/code-workout
-git pull
-sudo bundle install
-bundle exec rake db:migrate
-cd /vagrant/OpenDSA
+cd opendsa
 make pull
-cd /vagrant
