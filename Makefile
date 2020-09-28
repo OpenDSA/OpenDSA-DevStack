@@ -1,6 +1,12 @@
-.DEFAULT_GOAL:=help
+env ?= dev
 
-COMPOSE_FILES_PATH := -f docker-compose.yml
+.DEFAULT_GOAL := help
+
+ifeq ($(filter $(env),dev prod),)
+  $(error the env variable is invalid. Must be one of <prod|dev>)
+endif
+
+COMPOSE_FILES_PATH := -f docker-compose.yml -f docker-$(env).yml
 
 .PHONY: build up up-detach down nuke restart ssh help
 
@@ -39,4 +45,4 @@ setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
 	bash setup.sh
 
 help: ## This is the help dialog
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m \n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m env=<dev|prod> default: dev\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
