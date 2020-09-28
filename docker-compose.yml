@@ -45,6 +45,8 @@ services:
 networks:
   db_network:
     driver: bridge
+  nginx_network:
+    driver: bridge
 volumes:
   db:
   staticvolume:
