@@ -8,5 +8,7 @@ services:
       - 8000:80
     networks:
       - nginx_network
+    volumes:
+      - staticvolume:/opendsa-lti/public/assets
     depends_on:
       - opendsa-lti

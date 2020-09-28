@@ -21,18 +21,22 @@ services:
       dockerfile: Dockerfile
       args:
         - RAILS_ENV=development
+        - ODSA_BRANCH=master
+        - LTI_BRANCH=master
     image: opendsa-lti:latest
     volumes:
       - ./opendsa-lti:/opendsa-lti
       - ./opendsa:/opendsa
+      - staticvolume:/opendsa-lti/public/assets
+      - bundle:/usr/local/bundle
       - cache:/cache # added to support windows
     entrypoint: /opendsa-lti/docker-entrypoint.sh
     command: ["./scripts/start.sh"]
     networks:
       - db_network
-    ports:
-      - "8000:80"
-      - "8080:8080"
+      - nginx_network
+    expose:
+      - 8000
     depends_on:
       - db
     environment:
@@ -43,4 +47,6 @@ networks:
     driver: bridge
 volumes:
   db:
+  staticvolume:
+  bundle:
   cache: # added to support windows
