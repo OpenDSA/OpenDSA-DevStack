@@ -5,7 +5,8 @@ services:
     tty: true
     command: [nginx-debug, '-g', 'daemon off;']
     ports:
-      - 8000:80
+      - 80:80
+      - 443:443
     networks:
       - nginx_network
     volumes:

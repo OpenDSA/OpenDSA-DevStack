@@ -1,4 +1,4 @@
 cd opendsa-lti
 git pull
-cd opendsa
+cd ../opendsa
 make pull

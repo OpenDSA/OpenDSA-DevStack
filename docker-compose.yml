@@ -22,7 +22,7 @@ services:
       args:
         - RAILS_ENV=development
         - ODSA_BRANCH=master
-        - LTI_BRANCH=master
+        - LTI_BRANCH=docker-compose
     image: opendsa-lti:latest
     volumes:
       - ./opendsa-lti:/opendsa-lti
@@ -36,7 +36,7 @@ services:
       - db_network
       - nginx_network
     expose:
-      - 8000
+      - 80
     depends_on:
       - db
     environment:

@@ -10,16 +10,16 @@ COMPOSE_FILES_PATH := -f docker-compose.yml -f docker-$(env).yml
 
 .PHONY: build up up-detach down nuke restart ssh help
 
-build: ## This builds the images
+build: update## This builds the images
 	docker-compose $(COMPOSE_FILES_PATH) build
 
-up: ## This brings up the app
+up: update ## This brings up the app
 	docker-compose $(COMPOSE_FILES_PATH) up
 
-up-build: ## This brings up the app with a build
+up-build: update ## This brings up the app with a build
 	docker-compose $(COMPOSE_FILES_PATH) up --build
 
-up-detach: ## This brings up the app and detaches the shell from the logs
+up-detach: update ## This brings up the app and detaches the shell from the logs
 	docker-compose $(COMPOSE_FILES_PATH) up -d
 
 down: ## This takes down the app
@@ -43,6 +43,9 @@ logs: ## This attachs you to the logs if you ran in detached mode
 
 setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
 	bash setup.sh
+
+update: ## This updates OpenDSA and OpenDSA-LTI
+	bash get_latest.sh
 
 help: ## This is the help dialog
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m env=<dev|prod> default: dev\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
