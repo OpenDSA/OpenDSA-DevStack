@@ -36,7 +36,8 @@ services:
       - db_network
       - nginx_network
     expose:
-      - 80
+#      - 80
+      - 443
     depends_on:
       - db
     environment:
