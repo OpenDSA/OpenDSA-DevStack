@@ -17,7 +17,7 @@ services:
 
   opendsa-lti:
     build:
-      context: ./OpenDSA-LTI
+      context: ./opendsa-lti
       dockerfile: Dockerfile
       args:
         - RAILS_ENV=development
@@ -36,8 +36,7 @@ services:
       - db_network
       - nginx_network
     expose:
-#      - 80
-      - 443
+      - 8443
     depends_on:
       - db
     environment:

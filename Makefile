@@ -10,16 +10,16 @@ COMPOSE_FILES_PATH := -f docker-compose.yml -f docker-$(env).yml
 
 .PHONY: build up up-detach down nuke restart ssh help
 
-build: update## This builds the images
+build: ## This builds the images
 	docker-compose $(COMPOSE_FILES_PATH) build
 
-up: update ## This brings up the app
+up: ## This brings up the app
 	docker-compose $(COMPOSE_FILES_PATH) up
 
-up-build: update ## This brings up the app with a build
+up-build: ## This brings up the app with a build
 	docker-compose $(COMPOSE_FILES_PATH) up --build
 
-up-detach: update ## This brings up the app and detaches the shell from the logs
+up-detach: ## This brings up the app and detaches the shell from the logs
 	docker-compose $(COMPOSE_FILES_PATH) up -d
 
 down: ## This takes down the app
