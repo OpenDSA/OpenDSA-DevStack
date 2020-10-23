@@ -1,19 +1,18 @@
 version: '3.7'
 services:
   db:
-    image: mysql:5.7.31
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres
+#    command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "3307:3306"
+      - "3307:5432"
     networks:
       - db_network
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/postgres/data
     environment:
-      MYSQL_ROOT_PASSWORD: opendsa
-      MYSQL_DATABASE: opendsa
-      MYSQL_USER: opendsa
-      MYSQL_PASSWORD: opendsa
+      POSTGRES_DB: opendsa
+      POSTGRES_USER: opendsa
+      POSTGRES_PASSWORD: opendsa
 
   opendsa-lti:
     build:
