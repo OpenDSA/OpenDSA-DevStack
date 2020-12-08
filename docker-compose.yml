@@ -4,7 +4,7 @@ services:
     image: postgres
 #    command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "3307:5432"
+      - "5431:5432"
     networks:
       - db_network
     volumes:
@@ -13,6 +13,21 @@ services:
       POSTGRES_DB: opendsa
       POSTGRES_USER: opendsa
       POSTGRES_PASSWORD: opendsa
+
+  dbmysql:
+    image: mysql:5.7.31
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3307:3306"
+    networks:
+      - db_network
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: opendsa
+      MYSQL_DATABASE: opendsa
+      MYSQL_USER: opendsa
+      MYSQL_PASSWORD: opendsa
 
   opendsa-lti:
     build:
@@ -38,6 +53,7 @@ services:
       - 8443
     depends_on:
       - db
+      - dbmysql
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
 
