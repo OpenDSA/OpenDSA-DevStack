@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   db:
-    image: mysql:5.7.31
+    image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3307:3306"
@@ -23,7 +23,7 @@ services:
         - RAILS_ENV=development
         - ODSA_BRANCH=master
         - LTI_BRANCH=docker-compose
-    image: opendsa-lti:latest
+    image: opendsa/opendsa-lti:latest
     volumes:
       - ./opendsa-lti:/opendsa-lti
       - ./opendsa:/opendsa
@@ -41,6 +41,23 @@ services:
       - db
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
+
+  codeworkout:
+    build:
+      context: ./code-workout
+      dockerfile: Dockerfile
+    image: code-workout:latest
+    volumes:
+      - ./code-workout:/code-workout
+    stdin_open: true
+    tty: true
+    networks:
+      - db_network
+      - nginx_network
+    expose:
+      - 9292
+    depends_on:
+      - db
 
 networks:
   db_network:

@@ -1,0 +1,6 @@
+development:
+  adapter: mysql2
+  database: codeworkout
+  username: root
+  password: opendsa
+  host: db

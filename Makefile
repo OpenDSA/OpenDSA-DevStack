@@ -42,10 +42,13 @@ logs: ## This attachs you to the logs if you ran in detached mode
 	docker logs -f opendsa-lti_opendsa-lti_1
 
 setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
-	bash setup.sh
+	bash ./scripts/setup.sh
 
 update: ## This updates OpenDSA and OpenDSA-LTI
-	bash get_latest.sh
+	bash ./scripts/get_latest.sh
+
+database: ## This sets up the OpenDSA and CodeWorkout databases
+	bash ./scripts/db_setup.sh
 
 help: ## This is the help dialog
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m env=<dev|prod> default: dev\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
