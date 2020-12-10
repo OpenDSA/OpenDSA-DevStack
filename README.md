@@ -1,4 +1,4 @@
-Setting Up a Vagrant Development Environment for OpenDSA
+Setting Up a Docker Development Environment for OpenDSA
 ========================================================
 
 ## Introduction:
@@ -11,19 +11,20 @@ Docker is designed to run on multiple platforms, including Mac OS X, Microsoft W
 2. Install Make (Make can be found in the default package manager on Linux, in Brew on Mac, and [here](http://gnuwin32.sourceforge.net/packages/make.htm) for Windows.  For a Windows installation, you should put make in Program Files, NOT Program Files (x86). Then, edit your environment variable PATH to add: C:/Program Files/GnuWin32/bin. If you don’t know how to edit an environment variable on Windows, google for “windows set environment variable”.)
 3. Clone this repository
 4. `$ cd OpenDSA-DevStack`
-5. `$ make up` or `$ docker-compose up`
-6. Once you see `RAILS_ENV=development bundle exec thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 80` in the terminal, this may take a few minutes, the app will be available at:
+5. `$ make setup` or `$ ./setup.sh` (first time only)
+6. `$ make up` or `$ docker-compose -f docker-compose.yml -f docker-dev.yml up`
+7. Once you see `RAILS_ENV=development bundle exec thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 80` in the terminal (this may take a few minutes)
+8. `$ make database` or `$ ./db_setup.sh` (first time only and in another terminal) then, the app will be available at:
 
-   * http://localhost:8080 for OpenDSA content server (Must be started manually from inside of the container)
-   * https://localhost:8000 for OpenDSA-LTI server
+   * https://localhost:8443 for OpenDSA-LTI server (note the HTTPS because we are using SSL)
 
-## Shut Down The Virtual Machine:
+## Stop the Containers:
 
 After you finish your work, you need to bring down the Docker containers.
 
 1. If you entered the container, exit the terminal by typing `exit`
 2. Change directory to `OpenDSA-DevStack`
-3. `$ make down` or `$ docker-compose down`
+3. `$ make down` or `$ docker-compose -f docker-compose.yml -f docker-dev.yml down`
 
 ## Re-run Development Servers:
 
@@ -60,7 +61,7 @@ Do so as follows:
 
 1. Open a new terminal on your host machine
 2. `$ cd OpenDSA-DevStack`
-3. `$ make ssh` (you don't need to do `make up` if the container is already up and running)
+3. `$ make ssh` or `$ docker-compose exec opendsa-lti bash` (you don't need to do `make up` if the container is already up and running)
 4. `$ cd /opendsa`
 5. `make <<CONFIG_FILE_NAME>>`
 
@@ -73,7 +74,15 @@ the latest version do the following:
 
 1. Open a new terminal
 2. Change directory to `OpenDSA-DevStack`
-3. `$ ./get_latest.sh`
+3. `$ make update` or `$ ./get_latest.sh`
+
+## Common Errors
+
+Make sure that you have started Docker before running of the Makefile commands.
+
+If you are on Windows, you may run into issues with line endings.  If you do, simply open Git Bash and run `$ dos2unix filename` to fix them.  This will most likely happen on a script file.
+
+If you are on Windows, you may run into issues with any `docker exec` commands (such as `make ssh`).  To solve them, you may have to start any such command with `winpty`.
 
 ## `opendsa` Database Test Data
 
@@ -104,8 +113,8 @@ in db/seeds.rb instead.
 ## Generate Canvas course using OpenDSA web interface.
 
 1. Make sure OpenDSA-DevStack is up to date by following the instructions [here](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/README.md#keep-opendsa-devstack-up-to-date).
-2. After you are done you should have OpenDSA-LTI server running. Go to https://localhost:8000 to make sure your application is up and running.
-3. Follow the instructions on the instructor's [guide page](https://localhost:8000/home/guide) to set up your Canvas course. **Note:** skip the first step in this guide since you can use the **admin** account (admin@opendsa.org, pass: adminadmin) to cerate the course.
+2. After you are done you should have OpenDSA-LTI server running. Go to https://localhost:8443 to make sure your application is up and running.
+3. Follow the instructions on the instructor's [guide page](https://localhost:8443/home/guide) to set up your Canvas course. **Note:** skip the first step in this guide since you can use the **admin** account (admin@opendsa.org, pass: adminadmin) to cerate the course.
 
 ## OLD Production deployment workflow
 
