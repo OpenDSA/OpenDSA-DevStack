@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd opendsa-lti
 git pull
 cd ../opendsa

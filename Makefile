@@ -39,7 +39,7 @@ ssh-db: ## This docker execs you into the mysql database
 	docker-compose exec db mysql -uroot -p'opendsa'
 
 logs: ## This attachs you to the logs if you ran in detached mode
-	docker logs -f opendsa-lti_opendsa-lti_1
+	docker-compose logs
 
 setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
 	bash ./scripts/setup.sh
