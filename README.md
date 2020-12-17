@@ -11,8 +11,10 @@ Docker is designed to run on multiple platforms, including Mac OS X, Microsoft W
 2. Install Make (Make can be found in the default package manager on Linux, in Brew on Mac, and [here](http://gnuwin32.sourceforge.net/packages/make.htm) for Windows.  For a Windows installation, you should put make in Program Files, NOT Program Files (x86). Then, edit your environment variable PATH to add: C:/Program Files/GnuWin32/bin. If you don’t know how to edit an environment variable on Windows, google for “windows set environment variable”.)
 3. Clone this repository
 4. `$ cd OpenDSA-DevStack`
-5. `$ make up` or `$ docker-compose up`
-6. Once you see `RAILS_ENV=development bundle exec thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 80` in the terminal, this may take a few minutes, the app will be available at:
+5. Run setup.sh to clone OpenDSA and OpenDSA-LTI.
+* **If you are Windows User:** Windows paths are case insensitive, make sure you have both repository cloned and named **exactly** `opendsa-lti` and `opendsa` (**remove any spaces or return character**).
+6. `$ make up` or `$ docker-compose up`
+7. Once you see `RAILS_ENV=development bundle exec thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 80` in the terminal, this may take a few minutes, the app will be available at:
 
    * http://localhost:8080 for OpenDSA content server (Must be started manually from inside of the container)
    * https://localhost:8000 for OpenDSA-LTI server
