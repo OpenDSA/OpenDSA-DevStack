@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   db:
-    image: mysql:5.7.31
+    image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3307:3306"
@@ -17,30 +17,71 @@ services:
 
   opendsa-lti:
     build:
-      context: ./OpenDSA-LTI
+      context: ./opendsa-lti
       dockerfile: Dockerfile
       args:
         - RAILS_ENV=development
-    image: opendsa-lti:latest
+        - ODSA_BRANCH=master
+        - LTI_BRANCH=docker-compose
+    image: opendsa/opendsa-lti:latest
     volumes:
       - ./opendsa-lti:/opendsa-lti
       - ./opendsa:/opendsa
+      - staticvolume:/opendsa-lti/public/assets
+      - bundle:/usr/local/bundle
       - cache:/cache # added to support windows
     entrypoint: /opendsa-lti/docker-entrypoint.sh
     command: ["./scripts/start.sh"]
     networks:
       - db_network
-    ports:
-      - "8000:80"
-      - "8080:8080"
+      - nginx_network
+    expose:
+      - 8443
     depends_on:
       - db
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
 
+  codeworkout:
+    build:
+      context: ./code-workout
+      dockerfile: Dockerfile
+    image: code-workout:latest
+    volumes:
+      - ./code-workout:/code-workout
+    stdin_open: true
+    tty: true
+    networks:
+      - db_network
+      - nginx_network
+    expose:
+      - 9292
+    depends_on:
+      - db
+
+  nginx:
+    build: ./nginx
+    image: opendsa/nginx:latest
+    tty: true
+    command: [ nginx-debug, '-g', 'daemon off;' ]
+    ports:
+      - 8443:8443
+      - 9292:9292
+    networks:
+      - nginx_network
+    volumes:
+      - staticvolume:/opendsa-lti/public/assets
+    depends_on:
+      - opendsa-lti
+      - codeworkout
+
 networks:
   db_network:
     driver: bridge
+  nginx_network:
+    driver: bridge
 volumes:
   db:
+  staticvolume:
+  bundle:
   cache: # added to support windows

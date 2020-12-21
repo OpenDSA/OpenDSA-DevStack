@@ -1,4 +1,10 @@
-.DEFAULT_GOAL:=help
+env ?= dev
+
+.DEFAULT_GOAL := help
+
+ifeq ($(filter $(env),dev prod),)
+  $(error the env variable is invalid. Must be one of <prod|dev>)
+endif
 
 COMPOSE_FILES_PATH := -f docker-compose.yml
 
@@ -33,10 +39,16 @@ ssh-db: ## This docker execs you into the mysql database
 	docker-compose exec db mysql -uroot -p'opendsa'
 
 logs: ## This attachs you to the logs if you ran in detached mode
-	docker logs -f opendsa-lti_opendsa-lti_1
+	docker-compose logs
 
 setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
-	bash setup.sh
+	bash ./scripts/setup.sh
+
+update: ## This updates OpenDSA and OpenDSA-LTI
+	bash ./scripts/get_latest.sh
+
+database: ## This sets up the OpenDSA and CodeWorkout databases
+	bash ./scripts/db_setup.sh
 
 help: ## This is the help dialog
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m \n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
