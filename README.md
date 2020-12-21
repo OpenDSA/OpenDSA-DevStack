@@ -13,7 +13,7 @@ Docker is designed to run on multiple platforms, including Mac OS X, Microsoft W
 4. `$ cd OpenDSA-DevStack`
 5. `$ make setup` or `$ ./setup.sh` (first time only)
 * **If you are Windows User:** Windows paths are case insensitive, make sure you have both repository cloned and named **exactly** `opendsa-lti` and `opendsa` (**remove any spaces or return character**).
-6. `$ make up` or `$ docker-compose -f docker-compose.yml -f up`
+6. `$ make up` or `$ docker-compose -f docker-compose.yml up`
 7. Once you see `RAILS_ENV=development bundle exec thin start --ssl --ssl-key-file server.key --ssl-cert-file server.crt -p 80` in the terminal (this may take a few minutes)
 8. `$ make database` or `$ ./db_setup.sh` (first time only and in another terminal) then, the app will be available at:
 
