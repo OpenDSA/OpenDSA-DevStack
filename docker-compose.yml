@@ -22,7 +22,7 @@ services:
       args:
         - RAILS_ENV=development
         - ODSA_BRANCH=master
-        - LTI_BRANCH=docker-compose
+        - LTI_BRANCH=master
     image: opendsa/opendsa-lti:latest
     volumes:
       - ./opendsa-lti:/opendsa-lti
