@@ -51,15 +51,9 @@ setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
 	#cp config/extrtoolembed.py opendsa/RST/ODSAextensions/odsa/extrtoolembed/
 
 update: ## This updates OpenDSA and OpenDSA-LTI
-	cd opendsa-lti
-	git pull
-	cd ../opendsa
-	git pull
-	cd ../code-workout
-	git stash
-	git pull
-	git stash pop
-	cd ..
+	cd opendsa-lti && git pull
+	cd opendsa && git pull
+	cd code-workout && git stash && git pull && git stash pop
 
 database: ## This sets up the OpenDSA and CodeWorkout databases
 	docker-compose exec opendsa-lti rake db:populate
