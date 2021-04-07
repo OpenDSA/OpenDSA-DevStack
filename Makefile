@@ -42,13 +42,29 @@ logs: ## This attachs you to the logs if you ran in detached mode
 	docker-compose logs
 
 setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
-	bash ./scripts/setup.sh
+	git clone https://github.com/OpenDSA/OpenDSA.git opendsa
+	git clone https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
+	git clone https://github.com/web-cat/code-workout.git
+	cp config/server.* code-workout/
+	cp config/codeworkout_runservers.sh code-workout/runservers.sh
+	cp config/codeworkout_db.yml code-workout/config/database.yml
+	#cp config/extrtoolembed.py opendsa/RST/ODSAextensions/odsa/extrtoolembed/
 
 update: ## This updates OpenDSA and OpenDSA-LTI
-	bash ./scripts/get_latest.sh
+	cd opendsa-lti
+	git pull
+	cd ../opendsa
+	git pull
+	cd ../code-workout
+	git stash
+	git pull
+	git stash pop
+	cd ..
 
 database: ## This sets up the OpenDSA and CodeWorkout databases
-	bash ./scripts/db_setup.sh
+	docker-compose exec opendsa-lti rake db:populate
+	docker-compose exec codeworkout rake db:create
+	docker-compose exec codeworkout rake db:populate
 
 help: ## This is the help dialog
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
