@@ -45,6 +45,7 @@ setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
 	git clone https://github.com/OpenDSA/OpenDSA.git opendsa
 	git clone https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
 	git clone https://github.com/web-cat/code-workout.git
+	cd code-workout && git checkout staging && cd ..
 	cp config/server.* code-workout/
 	cp config/codeworkout_runservers.sh code-workout/runservers.sh
 	cp config/codeworkout_db.yml code-workout/config/database.yml
