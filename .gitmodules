@@ -1,10 +1,20 @@
 [submodule "opendsa"]
 	path = opendsa
 	url = https://github.com/OpenDSA/OpenDSA.git
+	branch = master
+	update = merge
 [submodule "opendsa-lti"]
 	path = opendsa-lti
 	url = https://github.com/OpenDSA/OpenDSA-LTI.git
+	branch = master
+	update = merge
 [submodule "code-workout"]
 	path = code-workout
 	url = https://github.com/web-cat/code-workout.git
 	branch = staging
+	update = merge
+[submodule "openpop"]
+	path = openpop
+	url = https://github.com/OpenDSA/OpenPOP.git
+	branch = master
+	update = merge
