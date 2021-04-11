@@ -42,32 +42,35 @@ logs: ## This attachs you to the logs if you ran in detached mode
 	docker-compose logs
 
 clean:
-	-rm -rf opendsa
-	-rm -rf opendsa-lti
-	-rm -rf code-workout
-	-rm -rf openPOP
+	-git submodule deinit -- opendsa
+	-git submodule deinit -- opendsa-lti
+	-git submodule deinit -- code-workout
 
+# git clone https://github.com/OpenDSA/OpenDSA.git opendsa
 opendsa:
-	git clone https://github.com/OpenDSA/OpenDSA.git opendsa
+	git submodule init -- opendsa
 	#cp config/extrtoolembed.py opendsa/RST/ODSAextensions/odsa/extrtoolembed/
 
+# git clone https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
 opendsa-lti:
-	git clone https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
+	git submodule init -- opendsa-lti
 	
+# git clone https://github.com/web-cat/code-workout.git
 code-workout:
-	git clone https://github.com/web-cat/code-workout.git
-	cd code-workout && git checkout staging && cd ..
+	git submodule init -- code-workout
+	@echo "### Note: this may not be the master branch!!!"
 	cp config/codeworkout_runservers.sh code-workout/runservers.sh
 	cp config/codeworkout_db.yml code-workout/config/database.yml
 	cp config/server.* code-workout/
 
 openPOP:
-	@echo fake git clone of $@
+	@echo "OpenPOP setup is not implemented yet!!!"
 
-update: ## This updates OpenDSA and OpenDSA-LTI
-	cd opendsa-lti && git pull
-	cd opendsa && git pull
-	cd code-workout && git stash && git pull && git stash pop
+update: ## This updates all initialized submodules
+	git submodule update
+	# cd opendsa-lti && git pull
+	# cd opendsa && git pull
+	# cd code-workout && git stash && git pull && git stash pop
 
 database: ## This sets up the OpenDSA and CodeWorkout databases
 	docker-compose exec opendsa-lti rake db:populate
