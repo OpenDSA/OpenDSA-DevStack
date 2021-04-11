@@ -55,7 +55,7 @@ opendsa:
 opendsa-lti:
 	git submodule init -- opendsa-lti
 	
-# git clone https://github.com/web-cat/code-workout.git
+# git clone -b staging https://github.com/web-cat/code-workout.git
 code-workout:
 	git submodule init -- code-workout
 	@echo "### Note: this may not be the master branch!!!"
