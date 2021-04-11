@@ -17,6 +17,7 @@ opendsa: ## Inits the opendsa project as a submodule and updates
 opendsa-lti: ## Inits the opendsa-lti project as a submodule and updates
 	### git submodule add https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
 	git submodule update --init --remote -- opendsa-lti
+	cd opendsa-lti && git checkout master && cd ..
 
 code-workout: ## Inits the web-cat/code-workout project as a submodule and updates (+ some configs)
 	### git submodule add -b staging https://github.com/web-cat/code-workout.git
