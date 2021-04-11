@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  devstack:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devstack:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/devstack

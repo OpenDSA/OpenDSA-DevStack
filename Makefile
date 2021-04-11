@@ -41,15 +41,28 @@ ssh-db: ## This docker execs you into the mysql database
 logs: ## This attachs you to the logs if you ran in detached mode
 	docker-compose logs
 
-setup: ## This sets up the repo and pulls OpenDSA and OpenDSA-LTI
+clean:
+	-rm -rf opendsa
+	-rm -rf opendsa-lti
+	-rm -rf code-workout
+	-rm -rf openPOP
+
+opendsa:
 	git clone https://github.com/OpenDSA/OpenDSA.git opendsa
+	#cp config/extrtoolembed.py opendsa/RST/ODSAextensions/odsa/extrtoolembed/
+
+opendsa-lti:
 	git clone https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
+	
+code-workout:
 	git clone https://github.com/web-cat/code-workout.git
 	cd code-workout && git checkout staging && cd ..
-	cp config/server.* code-workout/
 	cp config/codeworkout_runservers.sh code-workout/runservers.sh
 	cp config/codeworkout_db.yml code-workout/config/database.yml
-	#cp config/extrtoolembed.py opendsa/RST/ODSAextensions/odsa/extrtoolembed/
+	cp config/server.* code-workout/
+
+openPOP:
+	@echo fake git clone of $@
 
 update: ## This updates OpenDSA and OpenDSA-LTI
 	cd opendsa-lti && git pull
