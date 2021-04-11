@@ -5,10 +5,38 @@ Setting Up a Docker Development Environment for OpenDSA
 
 Docker is designed to run on multiple platforms, including Mac OS X, Microsoft Windows, Debian, Ubuntu, CentOS, RedHat and Fedora. In this document we describe how to configure and run an OpenDSA project virtual development environment through Docker.
 
-## Installation Steps:
+## NEW Installation Steps:
 
 1. Install [Docker](https://docs.docker.com/get-docker/)
-2. Install Make (Make can be found in the default package manager on Linux, in Brew on Mac, and [here](http://gnuwin32.sourceforge.net/packages/make.htm) for Windows.  For a Windows installation, you should put make in Program Files, NOT Program Files (x86). Then, edit your environment variable PATH to add: C:/Program Files/GnuWin32/bin. If you don’t know how to edit an environment variable on Windows, google for “windows set environment variable”.)
+2. Clone this repostory.  Download could work too.
+3. Run the setup: `$ docker-compose run setup make <<projects>>`
+   - Projects are: `opendsa opendsa-lti code-workout`
+4. Spin up your service(s):  `docker-compose up <<services>>`
+   - Services are: `setup opendsa-lti code-workout openPOP nginx db`
+
+Want to take a dive and actually work within a container? Just do: `docker-compose run <<service>> bash`.
+
+### Using Docker:
+
+The `docker-compose.yml` file is how `docker-compose` manages the many images and containers where your services are running.  The `Dockerfile` is used by `docker` to create the image of a useful machine environment, which can produce containers to do the work.
+
+- `docker-compose up <<services>>` Begins services in new containers.  Meant for tasks that have no 'finish', like a server.
+   - replace `up` with `down` to both stop and deletes these same containers.  
+- `docker-compose run <<service>> <<commands>>`  starts a **new container** with a task than has a 'finish';  Some example commands are: `python test.py` or `bash`
+   - replace `run` with `exec` to use a **running** container instead.  
+- `docker-compose build <<services>>` Builds a new image for services (Note: old containers are **not** updated)
+- `docker images` and `docker container list` displays the images/containers that are *currently active*.  Can add `--all` to see inactive ones as well.
+
+Useful options and arguments:
+
+- `--detach` or `-d` Runs docker and services in the *background*,  giving you back control of the command line. 
+
+
+
+## OLD Installation Steps:
+
+1. Install [Docker](https://docs.docker.com/get-docker/)
+2. Install Make (Make can be found in the default package manager on Linux, in Brew on Mac, and [here](https://sourceforge.net/projects/ezwinports/files/make-4.3-without-guile-w32-bin.zip/download) for Windows.  For a Windows installation, you should put the entire folder in Program Files, NOT Program Files (x86). Then, edit your environment variable PATH to add: C:/Program Files/Make/bin. If you don’t know how to edit an environment variable on Windows, google for “windows set environment variable”.)
 3. Clone this repository
 4. `$ cd OpenDSA-DevStack`
 5. `$ make setup` or `$ ./setup.sh` (first time only)
