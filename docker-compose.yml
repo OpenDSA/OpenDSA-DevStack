@@ -1,6 +1,18 @@
 version: '3.7'
 services:
+  setup:
+    profiles: ["setup"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devstack:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/devstack
+
   db:
+    profiles: ["lti", "codeworkout"]
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     ports:
@@ -16,6 +28,7 @@ services:
       MYSQL_PASSWORD: opendsa
 
   opendsa-lti:
+    profiles: ['lti']
     build:
       context: ./opendsa-lti
       dockerfile: Dockerfile
@@ -43,6 +56,7 @@ services:
       - SPROCKETS_CACHE=/cache # added to support windows
 
   codeworkout:
+    profiles: ['codeworkout']
     build:
       context: ./code-workout
       dockerfile: Dockerfile
@@ -59,7 +73,9 @@ services:
     depends_on:
       - db
 
+  # Alex question: what is nginx for?  What profile is best for it? 
   nginx:
+    profiles: ["lti", 'codeworkout']
     build: ./nginx
     image: opendsa/nginx:latest
     tty: true
