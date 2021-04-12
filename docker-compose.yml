@@ -36,6 +36,8 @@ services:
       - ./opendsa:/opendsa
     expose:
       - 8080
+    depends_on:
+      - proxy
     labels:
       traefik.http.routers.opendsa.rule: Host(`opendsa.localhost.devcom.vt.edu`)
       traefik.http.services.opendsa.loadbalancer.server.port: 8080
@@ -62,6 +64,7 @@ services:
       - 8443
     depends_on:
       - db
+      - proxy
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
     labels:
@@ -84,6 +87,7 @@ services:
       - 9292
     depends_on:
       - db
+      - proxy
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
     labels:
@@ -102,6 +106,8 @@ services:
       - ./openpop:/openpop
     expose:
       - 9295
+    depends_on:
+      - proxy
     labels:
       traefik.http.routers.openpop.rule: Host(`openpop.localhost.devcom.vt.edu`)
       traefik.http.services.openpop.loadbalancer.server.port: 9295
@@ -118,6 +124,7 @@ services:
     networks:
       default:
         aliases: # Ensure all container-to-container HTTP requests go through the proxy
+          - opendsa.localhost.devcom.vt.edu
           - opendsa-lti.localhost.devcom.vt.edu
           - code-workout.localhost.devcom.vt.edu
           - openpop.localhost.devcom.vt.edu
