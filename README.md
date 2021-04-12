@@ -28,7 +28,7 @@ Want to take a dive and actually work within a container? Just do: `docker-compo
 The `docker-compose.yml` file is how `docker-compose` manages the many images and containers where your services are running.  The `Dockerfile` is used by `docker` to create the image of a useful machine environment, which can produce containers to do the work.
 
 - `docker-compose up <<services>>` Begins services in new containers.  Meant for tasks that have no 'finish', like a server.
-   - replace `up` with `down` to both stop and deletes these same containers.
+   - `docker-compose down` to both stop and remove the containers that were brought up.
 - `docker-compose run <<service>> <<commands>>`  starts a **new container** with a task than has a 'finish';  Some example commands are: `python test.py` or `bash`
    - replace `run` with `exec` to use a **running** container instead.
 - `docker-compose build <<services>>` Builds a new image for services (Note: old containers are **not** updated)
