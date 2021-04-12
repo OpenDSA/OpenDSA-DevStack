@@ -10,10 +10,9 @@ Docker is designed to run on multiple platforms, including Mac OS X, Microsoft W
 1. Install [Docker](https://docs.docker.com/get-docker/)
 2. Clone this repostory.  Download could work too.
 3. Run the setup: `$ docker-compose run setup make <<projects>>`
-   - Projects are: `opendsa opendsa-lti code-workout`
-4. Spin up your service(s):  `COMPOSE_PROFILES=<<profiles,comma,separated>> docker-compose up or docker-compose --profile <<profile>> up`
-   - Note: you need a `--profile` for each service you want to bring up
-   - Services are: `setup lti code-workout openpop`
+   - Projects are: `opendsa opendsa-lti code-workout openpop`
+4. Spin up your service(s):  `docker-compose up <<services>>`
+   - Available services: `opendsa-lti code-workout openpop db nginx` and even `setup`.  
 
 Want to take a dive and actually work within a container? Just do: `docker-compose run <<service>> bash`.
 
@@ -28,10 +27,10 @@ The `docker-compose.yml` file is how `docker-compose` manages the many images an
 - `docker-compose build <<services>>` Builds a new image for services (Note: old containers are **not** updated)
 - `docker images` and `docker container list` displays the images/containers that are *currently active*.  Can add `--all` to see inactive ones as well.
 
-Useful options and arguments:
+Useful tips and options:
 
-- `--detach` or `-d` Runs docker and services in the *background*,  giving you back control of the command line.
-
+- Adding the `--detach` or `-d` option allows some docker commands to run in the *background*, giving you back control of the command line.
+- Setting a `docker-compose` alias is nice to avoid typing it as much.  We recommend `docc=docker-compose`
 
 
 ## OLD Installation Steps:
