@@ -17,8 +17,6 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3307:3306"
-    networks:
-      - db_network
     volumes:
       - db:/var/lib/mysql
     environment:
@@ -26,6 +24,21 @@ services:
       MYSQL_DATABASE: opendsa
       MYSQL_USER: opendsa
       MYSQL_PASSWORD: opendsa
+
+  opendsa:
+    profiles: ["opendsa"]
+    build:
+      context: ./opendsa
+      dockerfile: Dockerfile
+    image: opendsa/opendsa:latest
+    command: ["./scripts/start.sh"]
+    volumes:
+      - ./opendsa:/opendsa
+    expose:
+      - 8080
+    labels:
+      traefik.http.routers.opendsa.rule: Host(`opendsa.localhost.devcom.vt.edu`)
+      traefik.http.services.opendsa.loadbalancer.server.port: 8080
 
   opendsa-lti:
     profiles: ['lti']
@@ -45,15 +58,16 @@ services:
       - cache:/cache # added to support windows
     entrypoint: /opendsa-lti/docker-entrypoint.sh
     command: ["./scripts/start.sh"]
-    networks:
-      - db_network
-      - nginx_network
     expose:
       - 8443
     depends_on:
       - db
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
+    labels:
+      traefik.http.routers.opendsa-lti.rule: Host(`opendsa-lti.localhost.devcom.vt.edu`)
+      traefik.http.services.opendsa-lti.loadbalancer.server.port: 8443
+
 
   code-workout:
     profiles: ['code-workout']
@@ -66,15 +80,16 @@ services:
       - cache:/cache # added to support windows
     stdin_open: true
     tty: true
-    networks:
-      - db_network
-      - nginx_network
     expose:
       - 9292
     depends_on:
       - db
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
+    labels:
+      traefik.http.routers.code-workout.rule: Host(`code-workout.localhost.devcom.vt.edu`)
+      traefik.http.services.code-workout.loadbalancer.server.port: 9292
+
 
   openpop:
     profiles: ['openpop']
@@ -85,35 +100,33 @@ services:
     command: ["./runservers.sh"]
     volumes:
       - ./openpop:/openpop
-    networks:
-      - nginx_network
     expose:
       - 9295
+    labels:
+      traefik.http.routers.openpop.rule: Host(`openpop.localhost.devcom.vt.edu`)
+      traefik.http.services.openpop.loadbalancer.server.port: 9295
 
-  nginx:
+  proxy:
     profiles: ['lti', 'code-workout', 'openpop']
-    build: ./nginx
-    image: opendsa/nginx:latest
-    tty: true
-    command: [ nginx-debug, '-g', 'daemon off;' ]
+    image: dtr.it.vt.edu/devcom/devcom-localhost-proxy:traefik-2.3
     ports:
-      - 8443:8443
-      - 9292:9292
-      - 9295:9295
-    networks:
-      - nginx_network
+      - 80:80
+      - 443:443
+      - 127.0.0.1:8080:8080
     volumes:
-      - staticvolume:/opendsa-lti/public/assets
-    depends_on:
-      - opendsa-lti
-      - code-workout
-      - openpop
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      default:
+        aliases: # Ensure all container-to-container HTTP requests go through the proxy
+          - opendsa-lti.localhost.devcom.vt.edu
+          - code-workout.localhost.devcom.vt.edu
+          - openpop.localhost.devcom.vt.edu
 
-networks:
-  db_network:
-    driver: bridge
-  nginx_network:
-    driver: bridge
+# networks:
+#   db_network:
+#     driver: bridge
+#   nginx_network:
+#     driver: bridge
 volumes:
   db:
   staticvolume:

@@ -5,6 +5,12 @@ Setting Up a Docker Development Environment for OpenDSA
 
 Docker is designed to run on multiple platforms, including Mac OS X, Microsoft Windows, Debian, Ubuntu, CentOS, RedHat and Fedora. In this document we describe how to configure and run an OpenDSA project virtual development environment through Docker.
 
+Services are located at
+ * https://opendsa.localhost.devcom.vt.edu: for OpenDSA
+ * https://opendsa-lti.localhost.devcom.vt.edu: for OpenDSA-LTI
+ * https://code-workout.localhost.devcom.vt.edu: for CodeWorkout
+ * https://openpop.localhost.devcom.vt.edu: for OpenPOP
+
 ## NEW Installation Steps:
 
 1. Install [Docker](https://docs.docker.com/get-docker/)
@@ -13,7 +19,7 @@ Docker is designed to run on multiple platforms, including Mac OS X, Microsoft W
    - Projects are: `opendsa opendsa-lti code-workout`
 4. Spin up your service(s):  `COMPOSE_PROFILES=<<profiles,comma,separated>> docker-compose up or docker-compose --profile <<profile>> up`
    - Note: you need a `--profile` for each service you want to bring up
-   - Services are: `setup lti code-workout openpop`
+   - Services are: `setup opendsa lti code-workout openpop`
 
 Want to take a dive and actually work within a container? Just do: `docker-compose run <<service>> bash`.
 

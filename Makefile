@@ -26,9 +26,7 @@ code-workout: ## Inits the web-cat/code-workout project as a submodule and updat
 	git clone --branch staging https://github.com/web-cat/code-workout.git
 	@echo "### Note: this  ^^^ may not be the master branch!!!"
 	git checkout -- code-workout/devstackPlaceholder.md
-	cp config/codeworkout_runservers.sh code-workout/runservers.sh
 	cp config/codeworkout_db.yml code-workout/config/database.yml
-	cp config/server.* code-workout/
 
 openpop: ## Inits the openpop project as a submodule and updates
 	-rm openpop/devstackPlaceholder.md
