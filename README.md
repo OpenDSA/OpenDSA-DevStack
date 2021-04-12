@@ -34,10 +34,10 @@ The `docker-compose.yml` file is how `docker-compose` manages the many images an
 - `docker-compose build <<services>>` Builds a new image for services (Note: old containers are **not** updated)
 - `docker images` and `docker container list` displays the images/containers that are *currently active*.  Can add `--all` to see inactive ones as well.
 
-Useful options and arguments:
+Useful tips and options:
 
-- `--detach` or `-d` Runs docker and services in the *background*,  giving you back control of the command line.
-
+- Adding the `--detach` or `-d` option allows some docker commands to run in the *background*, giving you back control of the command line.
+- Setting a `docker-compose` alias is nice to avoid typing it as much.  We recommend `docc=docker-compose`
 
 
 ## OLD Installation Steps:
