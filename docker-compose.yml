@@ -122,11 +122,6 @@ services:
           - code-workout.localhost.devcom.vt.edu
           - openpop.localhost.devcom.vt.edu
 
-# networks:
-#   db_network:
-#     driver: bridge
-#   nginx_network:
-#     driver: bridge
 volumes:
   db:
   staticvolume:
