@@ -46,8 +46,8 @@ update: ## Updates all initialized submodules
 
 database: ## Sets up the OpenDSA and CodeWorkout databases
 	docker-compose exec opendsa-lti rake db:populate
-	docker-compose exec codeworkout rake db:create
-	docker-compose exec codeworkout rake db:populate
+	docker-compose exec code-workout rake db:create
+	docker-compose exec code-workout rake db:populate
 
 help: ## This help dialog
 	@echo

@@ -12,7 +12,7 @@ services:
       - .:/devstack
 
   db:
-    profiles: ["lti", "codeworkout"]
+    profiles: ['lti', 'code-workout']
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     ports:
@@ -55,14 +55,15 @@ services:
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
 
-  codeworkout:
-    profiles: ['codeworkout']
+  code-workout:
+    profiles: ['code-workout']
     build:
       context: ./code-workout
       dockerfile: Dockerfile
     image: code-workout:latest
     volumes:
       - ./code-workout:/code-workout
+      - cache:/cache # added to support windows
     stdin_open: true
     tty: true
     networks:
@@ -72,10 +73,25 @@ services:
       - 9292
     depends_on:
       - db
+    environment:
+      - SPROCKETS_CACHE=/cache # added to support windows
 
-  # Alex question: what is nginx for?  What profile is best for it? 
+  openpop:
+    profiles: ['openpop']
+    build:
+      context: ./openpop
+      dockerfile: Dockerfile
+    image: openpop:latest
+    command: ["./runservers.sh"]
+    volumes:
+      - ./openpop:/openpop
+    networks:
+      - nginx_network
+    expose:
+      - 9295
+
   nginx:
-    profiles: ["lti", 'codeworkout']
+    profiles: ['lti', 'code-workout', 'openpop']
     build: ./nginx
     image: opendsa/nginx:latest
     tty: true
@@ -83,13 +99,15 @@ services:
     ports:
       - 8443:8443
       - 9292:9292
+      - 9295:9295
     networks:
       - nginx_network
     volumes:
       - staticvolume:/opendsa-lti/public/assets
     depends_on:
       - opendsa-lti
-      - codeworkout
+      - code-workout
+      - openpop
 
 networks:
   db_network:

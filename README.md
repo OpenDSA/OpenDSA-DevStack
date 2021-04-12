@@ -11,8 +11,9 @@ Docker is designed to run on multiple platforms, including Mac OS X, Microsoft W
 2. Clone this repostory.  Download could work too.
 3. Run the setup: `$ docker-compose run setup make <<projects>>`
    - Projects are: `opendsa opendsa-lti code-workout`
-4. Spin up your service(s):  `docker-compose up <<services>>`
-   - Services are: `setup opendsa-lti code-workout openPOP nginx db`
+4. Spin up your service(s):  `COMPOSE_PROFILES=<<profiles,comma,separated>> docker-compose up or docker-compose --profile <<profile>> up`
+   - Note: you need a `--profile` for each service you want to bring up
+   - Services are: `setup lti code-workout openpop`
 
 Want to take a dive and actually work within a container? Just do: `docker-compose run <<service>> bash`.
 
@@ -21,15 +22,15 @@ Want to take a dive and actually work within a container? Just do: `docker-compo
 The `docker-compose.yml` file is how `docker-compose` manages the many images and containers where your services are running.  The `Dockerfile` is used by `docker` to create the image of a useful machine environment, which can produce containers to do the work.
 
 - `docker-compose up <<services>>` Begins services in new containers.  Meant for tasks that have no 'finish', like a server.
-   - replace `up` with `down` to both stop and deletes these same containers.  
+   - replace `up` with `down` to both stop and deletes these same containers.
 - `docker-compose run <<service>> <<commands>>`  starts a **new container** with a task than has a 'finish';  Some example commands are: `python test.py` or `bash`
-   - replace `run` with `exec` to use a **running** container instead.  
+   - replace `run` with `exec` to use a **running** container instead.
 - `docker-compose build <<services>>` Builds a new image for services (Note: old containers are **not** updated)
 - `docker images` and `docker container list` displays the images/containers that are *currently active*.  Can add `--all` to see inactive ones as well.
 
 Useful options and arguments:
 
-- `--detach` or `-d` Runs docker and services in the *background*,  giving you back control of the command line. 
+- `--detach` or `-d` Runs docker and services in the *background*,  giving you back control of the command line.
 
 
 
