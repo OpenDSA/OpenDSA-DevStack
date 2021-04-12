@@ -107,7 +107,7 @@ services:
       traefik.http.services.openpop.loadbalancer.server.port: 9295
 
   proxy:
-    profiles: ['lti', 'code-workout', 'openpop']
+    profiles: ['opendsa', 'lti', 'code-workout', 'openpop']
     image: dtr.it.vt.edu/devcom/devcom-localhost-proxy:traefik-2.3
     ports:
       - 80:80
