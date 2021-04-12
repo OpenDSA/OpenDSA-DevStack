@@ -6,43 +6,42 @@ ifeq ($(filter $(env),dev prod),)
   $(error the env variable is invalid. Must be one of <prod|dev>)
 endif
 
+SUBPROJECTS = opendsa opendsa-lti code-workout openPOP
+
 .PHONY: opendsa opendsa-lti code-workout openPOP
 
 opendsa: ## Inits the opendsa project as a submodule and updates
-	### git submodule add https://github.com/OpenDSA/OpenDSA.git opendsa
-	git submodule update --init --remote -- opendsa
-	cd opendsa && git checkout master && cd ..
+	-rm opendsa/devstackPlaceholder.md
+	git clone https://github.com/OpenDSA/OpenDSA.git opendsa
+	git checkout -- opendsa/devstackPlaceholder.md
 	# cp config/extrtoolembed.py opendsa/RST/ODSAextensions/odsa/extrtoolembed/
 
 opendsa-lti: ## Inits the opendsa-lti project as a submodule and updates
-	### git submodule add https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
-	git submodule update --init --remote -- opendsa-lti
-	cd opendsa-lti && git checkout master && cd ..
+	-rm opendsa-lti/devstackPlaceholder.md
+	git clone https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
+	git checkout -- opendsa-lti/devstackPlaceholder.md
 
 code-workout: ## Inits the web-cat/code-workout project as a submodule and updates (+ some configs)
-	### git submodule add -b staging https://github.com/web-cat/code-workout.git
-	git submodule update --init --remote -- code-workout
-	cd code-workout && git checkout staging && cd ..
-	@echo "### Note: this may not be the master branch!!!"
+	-rm code-workout/devstackPlaceholder.md
+	git clone --branch staging https://github.com/web-cat/code-workout.git
+	@echo "### Note: this  ^^^ may not be the master branch!!!"
+	git checkout -- code-workout/devstackPlaceholder.md
 	cp config/codeworkout_runservers.sh code-workout/runservers.sh
 	cp config/codeworkout_db.yml code-workout/config/database.yml
 	cp config/server.* code-workout/
 
 openpop: ## Inits the openpop project as a submodule and updates
-	### git submodule add https://github.com/OpenDSA/OpenPOP.git openpop
-	git submodule update --init --remote -- openpop
-	cd openpop && git checkout master && cd ..
+	-rm openpop/devstackPlaceholder.md
+	git clone https://github.com/OpenDSA/OpenPOP.git openpop
+	git checkout -- openpop/devstackPlaceholder.md
 
 .PHONY: clean update help
 clean: ## De-inits all submodule repositories
-	-git submodule deinit -f -- opendsa
-	-git submodule deinit -f -- opendsa-lti
-	-git submodule deinit -f -- code-workout
-	-git submodule deinit -f -- openpop
-
-update: ## Updates all initialized submodules
-	git submodule update --remote
-
+	-rm -rf $(SUBPROJECTS)
+	-git checkout -- opendsa/*
+	-git checkout -- opendsa-lti/*
+	-git checkout -- code-workout/*
+	-git checkout -- openpop/*
 
 database: ## Sets up the OpenDSA and CodeWorkout databases
 	docker-compose exec opendsa-lti rake db:populate
