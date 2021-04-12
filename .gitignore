@@ -10,3 +10,13 @@
 # proportion of contributors will probably not be using SublimeText
 # *.sublime-project
 
+# Devstack ignores the subproject repositories, except for a placeholder file:
+opendsa/*
+!opendsa/devstackPlaceholder.md
+opendsa-lti/*
+!opendsa-lti/devstackPlaceholder.md
+openpop/*
+!openpop/devstackPlaceholder.md
+code-workout/*
+!code-workout/devstackPlaceholder.md
+
