@@ -6,9 +6,9 @@ ifeq ($(filter $(env),dev prod),)
   $(error the env variable is invalid. Must be one of <prod|dev>)
 endif
 
-SUBPROJECTS = opendsa opendsa-lti code-workout openPOP
+SUBPROJECTS = opendsa opendsa-lti code-workout openpop
 
-.PHONY: opendsa opendsa-lti code-workout openPOP
+.PHONY: opendsa opendsa-lti code-workout openpop
 
 opendsa: ## Inits the opendsa project as a subproject and updates
 	-mv opendsa/devstackPlaceholder.md opendsa.devstackPlaceholder.md
