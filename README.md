@@ -1,44 +1,48 @@
-Setting Up a Docker Development Environment for OpenDSA
-========================================================
+Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
+=================================================================
 
-## Introduction:
+## NEW Full Instructions:
 
-Docker is designed to run on multiple platforms, including Mac OS X, Microsoft Windows, Debian, Ubuntu, CentOS, RedHat and Fedora. In this document we describe how to configure and run an OpenDSA project virtual development environment through Docker.
-
-Services are located at
- * https://opendsa.localhost.devcom.vt.edu: for OpenDSA
- * https://opendsa-lti.localhost.devcom.vt.edu: for OpenDSA-LTI
- * https://code-workout.localhost.devcom.vt.edu: for CodeWorkout
- * https://openpop.localhost.devcom.vt.edu: for OpenPOP
-
-## NEW Installation Steps:
-
-1. Install [Docker](https://docs.docker.com/get-docker/)
+1. Install [Docker](https://docs.docker.com/get-docker/).  It is the only requirement, and it runs on just about every platform. 
 2. Clone this repostory.  Download could work too.
-3. Run the setup: `$ docker-compose run setup make <<projects>>`
-   - Projects are: `opendsa opendsa-lti code-workout`
-4. Spin up your service(s):  `COMPOSE_PROFILES=<<profiles,comma,separated>> docker-compose up or docker-compose --profile <<profile>> up`
-   - Note: you need a `--profile` for each service you want to bring up
-   - Services are: `setup opendsa lti code-workout openpop`
+3. Run the setup for your projects: `docker-compose run setup make <<service>>`
+   - The service name will match the `up` Docker command, listed in the projects table below.
+4. Spin up your service: `docker-compose up <<service>>`
+5. Go to your service's URL
 
-Want to take a dive and actually work within a container? Just do: `docker-compose run <<service>> bash`.
+### OpenDSA Projects:
 
-### Using Docker:
+| Repository                                             | Docker command                   | Service's URL after `up` command              |
+|--------------------------------------------------------|----------------------------------|-----------------------------------------------|
+| [OpenDSA](https://github.com/OpenDSA/OpenDSA)          | `docker-compose up opendsa`      | https://opendsa.localhost.devcom.vt.edu/      |
+| [OpenDSA-LTI](https://github.com/OpenDSA/OpenDSA-LTI)  | `docker-compose up opendsa-lti`  | https://opendsa-lti.localhost.devcom.vt.edu/  |
+| [CodeWorkout](https://github.com/web-cat/code-workout) | `docker-compose up code-workout` | https://code-workout.localhost.devcom.vt.edu/ |
+| [OpenPOP](https://github.com/OpenDSA/OpenPOP)          | `docker-compose up openpop`      | https://openpop.localhost.devcom.vt.edu/      |
+
+----------
+
+### Navigating Projects and using Docker:
 
 The `docker-compose.yml` file is how `docker-compose` manages the many images and containers where your services are running.  The `Dockerfile` is used by `docker` to create the image of a useful machine environment, which can produce containers to do the work.
 
+- `docker-compose run <<service>> bash` allows you to dive into container and have a shell and command line interface.
 - `docker-compose up <<services>>` Begins services in new containers.  Meant for tasks that have no 'finish', like a server.
-   - replace `up` with `down` to both stop and deletes these same containers.
+   - `docker-compose down` to both stop and remove the containers that were brought up.
 - `docker-compose run <<service>> <<commands>>`  starts a **new container** with a task than has a 'finish';  Some example commands are: `python test.py` or `bash`
    - replace `run` with `exec` to use a **running** container instead.
 - `docker-compose build <<services>>` Builds a new image for services (Note: old containers are **not** updated)
 - `docker images` and `docker container list` displays the images/containers that are *currently active*.  Can add `--all` to see inactive ones as well.
 
-Useful tips and options:
+### Useful tips and options:
 
 - Adding the `--detach` or `-d` option allows some docker commands to run in the *background*, giving you back control of the command line.
 - Setting a `docker-compose` alias is nice to avoid typing it as much.  We recommend `docc=docker-compose`
+- On Windows, you may want to do `git config --global core.filemode false`.  Repositories cloned within Docker can show many changes to the file permissions when `git diff` is used outside of the Docker container.  
+- The `up` command can spin up several services, e.g.: `docker-compose up opendsa opendsa-lti code-workout`
 
+----------
+----------
+----------
 
 ## OLD Installation Steps:
 
