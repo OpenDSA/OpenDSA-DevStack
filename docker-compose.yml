@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   setup:
-    profiles: ["setup"]
+    profiles: ['setup']
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,7 +26,7 @@ services:
       MYSQL_PASSWORD: opendsa
 
   opendsa:
-    profiles: ["opendsa"]
+    profiles: ['opendsa']
     build:
       context: ./opendsa
       dockerfile: Dockerfile
@@ -42,6 +42,23 @@ services:
       traefik.http.routers.opendsa.rule: Host(`opendsa.localhost.devcom.vt.edu`)
       traefik.http.services.opendsa.loadbalancer.server.port: 8080
 
+  opendsa-server:
+    profiles: ['lti']
+    build:
+      context: ./opendsa
+      dockerfile: Dockerfile.flask
+    image: opendsa/opendsa-server:latest
+    command: ["python", "api.py"]
+    volumes:
+      - ./opendsa:/opendsa
+    expose:
+      - 8082
+    depends_on:
+      - proxy
+    labels:
+      traefik.http.routers.opendsa-server.rule: Host(`opendsa-server.localhost.devcom.vt.edu`)
+      traefik.http.services.opendsa-server.loadbalancer.server.port: 8082
+
   opendsa-lti:
     profiles: ['lti']
     build:
@@ -49,8 +66,8 @@ services:
       dockerfile: Dockerfile
       args:
         - RAILS_ENV=development
-        - ODSA_BRANCH=master
-        - LTI_BRANCH=master
+        - ODSA_BRANCH=docker-lti
+        - LTI_BRANCH=docker-lti
     image: opendsa/opendsa-lti:latest
     volumes:
       - ./opendsa-lti:/opendsa-lti
@@ -65,6 +82,7 @@ services:
     depends_on:
       - db
       - proxy
+      - opendsa-server
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
     labels:
@@ -128,6 +146,7 @@ services:
           - opendsa-lti.localhost.devcom.vt.edu
           - code-workout.localhost.devcom.vt.edu
           - openpop.localhost.devcom.vt.edu
+          - opendsa-server.localhost.devcom.vt.edu
 
 volumes:
   db:
