@@ -12,7 +12,7 @@ services:
       - .:/devstack
 
   db:
-    profiles: ['lti', 'code-workout']
+    profiles: ['lti', 'code-workout', 'cw-op', 'odsa-cw']
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     ports:
@@ -43,7 +43,7 @@ services:
       traefik.http.services.opendsa.loadbalancer.server.port: 8080
 
   opendsa-server:
-    profiles: ['lti']
+    profiles: ['lti', 'odsa-cw']
     build:
       context: ./opendsa
       dockerfile: Dockerfile.flask
@@ -58,7 +58,7 @@ services:
       traefik.http.services.opendsa-server.loadbalancer.server.port: 8082
 
   opendsa-lti:
-    profiles: ['lti']
+    profiles: ['lti', 'odsa-cw']
     build:
       context: ./opendsa-lti
       dockerfile: Dockerfile
@@ -88,7 +88,7 @@ services:
       traefik.http.services.opendsa-lti.loadbalancer.server.port: 8443
 
   code-workout:
-    profiles: ['code-workout']
+    profiles: ['code-workout', 'cw-op', 'odsa-cw']
     build:
       context: ./code-workout
       dockerfile: Dockerfile
@@ -110,7 +110,7 @@ services:
       traefik.http.services.code-workout.loadbalancer.server.port: 9292
 
   openpop:
-    profiles: ['openpop']
+    profiles: ['openpop', 'cw-op']
     build:
       context: ./openpop
       dockerfile: Dockerfile
@@ -127,7 +127,7 @@ services:
       traefik.http.services.openpop.loadbalancer.server.port: 9295
 
   proxy:
-    profiles: ['opendsa', 'lti', 'code-workout', 'openpop']
+    profiles: ['opendsa', 'lti', 'code-workout', 'openpop', 'cw-op', 'odsa-cw']
     image: dtr.it.vt.edu/devcom/devcom-localhost-proxy:traefik-2.3
     ports:
       - 80:80

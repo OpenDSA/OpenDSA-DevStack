@@ -3,7 +3,7 @@ Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 
 ## NEW Full Instructions:
 
-1. Install [Docker](https://docs.docker.com/get-docker/).  It is the only requirement, and it runs on just about every platform. 
+1. Install [Docker](https://docs.docker.com/get-docker/).  It is the only requirement, and it runs on just about every platform.
 2. Clone this repostory.  Download could work too.
 3. Run the setup for your projects: `docker-compose run setup make <<service>>`
    - The service name will match the `up` Docker command, listed in the projects table below.
@@ -37,8 +37,12 @@ The `docker-compose.yml` file is how `docker-compose` manages the many images an
 
 - Adding the `--detach` or `-d` option allows some docker commands to run in the *background*, giving you back control of the command line.
 - Setting a `docker-compose` alias is nice to avoid typing it as much.  We recommend `docc=docker-compose`
-- On Windows, you may want to do `git config --global core.filemode false`.  Repositories cloned within Docker can show many changes to the file permissions when `git diff` is used outside of the Docker container.  
+- On Windows, you may want to do `git config --global core.filemode false`.  Repositories cloned within Docker can show many changes to the file permissions when `git diff` is used outside of the Docker container.
 - The `up` command can spin up several services, e.g.: `docker-compose up opendsa opendsa-lti code-workout`
+- There are also two specific profiles set up for common development stacks
+  - `docker-compose --profile odsa-cw up` will bring up a stack including OpenDSA-LTI and CodeWorkout
+  - `docker-compose --profile cw-op up` will bring up a stack including CodeWorkout and OpenPOP
+- In the `docker-compose.yml` the `opendsa-lti` container has a few arguments that you can use to declare which branches of OpenDSA and OpenDSA-LTI you want to use
 
 ----------
 ----------
