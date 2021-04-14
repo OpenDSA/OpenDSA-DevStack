@@ -53,8 +53,6 @@ services:
       - ./opendsa:/opendsa
     expose:
       - 8082
-    depends_on:
-      - proxy
     labels:
       traefik.http.routers.opendsa-server.rule: Host(`opendsa-server.localhost.devcom.vt.edu`)
       traefik.http.services.opendsa-server.loadbalancer.server.port: 8082
@@ -89,7 +87,6 @@ services:
       traefik.http.routers.opendsa-lti.rule: Host(`opendsa-lti.localhost.devcom.vt.edu`)
       traefik.http.services.opendsa-lti.loadbalancer.server.port: 8443
 
-
   code-workout:
     profiles: ['code-workout']
     build:
@@ -111,7 +108,6 @@ services:
     labels:
       traefik.http.routers.code-workout.rule: Host(`code-workout.localhost.devcom.vt.edu`)
       traefik.http.services.code-workout.loadbalancer.server.port: 9292
-
 
   openpop:
     profiles: ['openpop']
