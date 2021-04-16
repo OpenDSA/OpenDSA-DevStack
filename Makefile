@@ -34,7 +34,7 @@ openpop: ## Inits the openpop project as a subproject and updates
 	git clone https://github.com/OpenDSA/OpenPOP.git openpop
 	-mv openpop.devstackPlaceholder.md openpop/devstackPlaceholder.md
 
-.PHONY: clean update help
+.PHONY: clean update gitPull gitStatus help
 clean: ## Clears out all subproject repositories, and resets to placeholders
 	-rm -rf $(SUBPROJECTS)
 	-git checkout -- opendsa/*
@@ -46,6 +46,18 @@ database: ## Sets up the OpenDSA and CodeWorkout databases
 	docker-compose exec opendsa-lti rake db:populate
 	docker-compose exec code-workout rake db:create
 	docker-compose exec code-workout rake db:populate
+gitPull: ## Git pull on each of the cloned subprojects (but NOT DevStack itself)
+	if test -d opendsa/.git; then cd opendsa; git pull; fi
+	if test -d opendsa-lti/.git; then cd opendsa-lti; git pull; fi
+	if test -d code-workout/.git; then cd code-workout; git pull; fi
+	if test -d openpop/.git; then cd openpop; git pull; fi
+
+gitStatus: ## Git status on each of the cloned subprojects (but NOT DevStack itself)
+	if test -d opendsa/.git; then cd opendsa; git status; fi
+	if test -d opendsa-lti/.git; then cd opendsa-lti; git status; fi
+	if test -d code-workout/.git; then cd code-workout; git status; fi
+	if test -d openpop/.git; then cd openpop; git status; fi
+
 
 help: ## This help dialog
 	@echo
