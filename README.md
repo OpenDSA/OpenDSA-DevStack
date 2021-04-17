@@ -8,6 +8,7 @@ Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 3. Run the setup for your projects: `docker-compose run setup make <<service>>`
    - The service name will match the `up` Docker command, listed in the projects table below.
 4. Spin up your service: `docker-compose up <<service>>`
+   - If you are using code-workout and/or opendsa-lti, you should also initialize their databases with: `docker-compose exec opendsa-lti rake db:populate` or `docker-compose exec code-workout rake db:create db:populate`
 5. Go to your service's URL
 
 ### OpenDSA Projects:

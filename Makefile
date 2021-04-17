@@ -42,10 +42,6 @@ clean: ## Clears out all subproject repositories, and resets to placeholders
 	-git checkout -- code-workout/*
 	-git checkout -- openpop/*
 
-database: ## Sets up the OpenDSA and CodeWorkout databases
-	docker-compose exec opendsa-lti rake db:populate
-	docker-compose exec code-workout rake db:create
-	docker-compose exec code-workout rake db:populate
 gitPull: ## Git pull on each of the cloned subprojects (but NOT DevStack itself)
 	if test -d opendsa/.git; then cd opendsa; git pull; fi
 	if test -d opendsa-lti/.git; then cd opendsa-lti; git pull; fi
