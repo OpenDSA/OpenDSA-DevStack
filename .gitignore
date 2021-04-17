@@ -10,13 +10,11 @@
 # proportion of contributors will probably not be using SublimeText
 # *.sublime-project
 
-# Devstack ignores the subproject repositories, except for a placeholder file:
+# Devstack ignores changes the subproject repositories.  HOWEVER, there are placeholder files in
+# them that need to be kept in the repo so that Docker has a valid compose.yml configuration. 
+# These are replaced with the full subproject during `docker-compose run setup make <<subproject>>`
 opendsa/*
-!opendsa/devstackPlaceholder.md
 opendsa-lti/*
-!opendsa-lti/devstackPlaceholder.md
 openpop/*
-!openpop/devstackPlaceholder.md
 code-workout/*
-!code-workout/devstackPlaceholder.md
 
