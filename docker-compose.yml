@@ -27,6 +27,9 @@ services:
 
   opendsa:
     profiles: ['opendsa', 'lti', 'odsa-cw']
+    # extends:
+    #   file: opendsa/docker-compose.yml
+    #   service: opendsa
     build:
       context: ./opendsa
       dockerfile: Dockerfile
