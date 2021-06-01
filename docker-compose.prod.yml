@@ -5,14 +5,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: devstack:latest
+    image: opendsa/devstack:1.0
     stdin_open: true
     tty: true
     volumes:
       - .:/devstack
 
   db:
-    profiles: ['lti', 'code-workout', 'cw-op', 'odsa-cw']
+    profiles: ['production']
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     ports:
@@ -26,26 +26,18 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
   opendsa:
-    profiles: ['opendsa', 'lti', 'odsa-cw']
-    # extends:
-    #   file: opendsa/docker-compose.yml
-    #   service: opendsa
+    profiles: ['production']
     build:
       context: ./opendsa
       dockerfile: Dockerfile
-    image: opendsa/opendsa:latest
+    image: opendsa/opendsa:1.0
     volumes:
       - ./opendsa:/opendsa
     expose:
       - 8080
-    depends_on:
-      - proxy
-    labels:
-      traefik.http.routers.opendsa.rule: Host(`opendsa.localhost.devcom.vt.edu`)
-      traefik.http.services.opendsa.loadbalancer.server.port: 8080
 
   opendsa-lti:
-    profiles: ['lti', 'odsa-cw']
+    profiles: ['production']
     build:
       context: ./opendsa-lti
       dockerfile: Dockerfile
@@ -53,7 +45,7 @@ services:
         - RAILS_ENV=${RAILS_ENV}
         - ODSA_BRANCH=${ODSA_BRANCH}
         - LTI_BRANCH=${LTI_BRANCH}
-    image: opendsa/opendsa-lti:latest
+    image: opendsa/opendsa-lti:1.0
     volumes:
       - ./opendsa-lti:/opendsa-lti
       - ./opendsa:/opendsa
@@ -70,37 +62,15 @@ services:
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
     labels:
-      traefik.http.routers.opendsa-lti.rule: Host(`opendsa-lti.localhost.devcom.vt.edu`)
+      traefik.http.routers.opendsa-lti.rule: Host(`opendsa-testing.cs.vt.edu`)
       traefik.http.services.opendsa-lti.loadbalancer.server.port: 8443
 
-  code-workout:
-    profiles: ['code-workout', 'cw-op', 'odsa-cw']
-    build:
-      context: ./code-workout
-      dockerfile: Dockerfile
-    image: opendsa/code-workout:latest
-    volumes:
-      - ./code-workout:/code-workout
-      - cache:/cache # added to support windows
-    stdin_open: true
-    tty: true
-    expose:
-      - 9292
-    depends_on:
-      - db
-      - proxy
-    environment:
-      - SPROCKETS_CACHE=/cache # added to support windows
-    labels:
-      traefik.http.routers.code-workout.rule: Host(`code-workout.localhost.devcom.vt.edu`)
-      traefik.http.services.code-workout.loadbalancer.server.port: 9292
-
   openpop:
-    profiles: ['openpop', 'cw-op']
+    profiles: ['production']
     build:
       context: ./openpop
       dockerfile: Dockerfile
-    image: opendsa/openpop:latest
+    image: opendsa/openpop:1.0
     command: ["./runservers.sh"]
     volumes:
       - ./openpop:/openpop
@@ -109,12 +79,15 @@ services:
     depends_on:
       - proxy
     labels:
-      traefik.http.routers.openpop.rule: Host(`openpop.localhost.devcom.vt.edu`)
+      traefik.http.routers.openpop.rule: Host(`openpop.cs.vt.edu`)
       traefik.http.services.openpop.loadbalancer.server.port: 9295
 
   proxy:
-    profiles: ['opendsa', 'lti', 'code-workout', 'openpop', 'cw-op', 'odsa-cw']
-    image: dtr.it.vt.edu/devcom/devcom-localhost-proxy:traefik-2.3
+    profiles: ['production']
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    image: opendsa/proxy:1.0
     ports:
       - 80:80
       - 443:443
@@ -123,11 +96,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       default:
-        aliases: # Ensure all container-to-container HTTP requests go through the proxy
-          - opendsa.localhost.devcom.vt.edu
-          - opendsa-lti.localhost.devcom.vt.edu
-          - code-workout.localhost.devcom.vt.edu
-          - openpop.localhost.devcom.vt.edu
+        aliases:
+          - opendsa-testing.cs.vt.edu
 
 volumes:
   db:
