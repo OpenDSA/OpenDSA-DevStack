@@ -1,0 +1,25 @@
+[entryPoints.web]
+  address = ":80"
+
+  [entryPoints.web.http]
+    [entryPoints.web.http.redirections]
+      [entryPoints.web.http.redirections.entryPoint]
+        to = "websecure"
+        scheme = "https"
+
+  [entryPoints.websecure]
+    address = ":443"
+
+    [entryPoints.websecure.http]
+      tls = true
+
+# Dashboard will run on localhost:8080
+[api]
+  insecure = true
+
+[providers]
+  [providers.file]
+    directory = "/etc/traefik/configuration"
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    watch = true
