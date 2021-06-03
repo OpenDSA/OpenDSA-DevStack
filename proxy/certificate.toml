@@ -1,5 +1,5 @@
 [tls.stores]
   [tls.stores.default]
     [tls.stores.default.defaultCertificate]
-      certFile = "/home/awh4kc/certs/fullchain.pem"
-      keyFile = "/home/awh4kc/certs/privkey.pem"
+      certFile = "/etc/certs/opendsa-staging.cs.vt.edu.crt"
+      keyFile = "/etc/certs/opendsa-staging.cs.vt.edu.key"

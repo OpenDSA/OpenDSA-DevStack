@@ -120,6 +120,7 @@ services:
       - 443:443
       - 127.0.0.1:8000:8080
     volumes:
+      - ./certs:/etc/certs
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       default:
