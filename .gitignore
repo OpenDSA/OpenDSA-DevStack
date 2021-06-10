@@ -18,4 +18,4 @@ opendsa-lti/*
 openpop/*
 code-workout/*
 .env
-proxy/opendsa-staging.cs.vt.edu.*
+proxy/certs/*
