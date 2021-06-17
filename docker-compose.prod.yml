@@ -58,12 +58,8 @@ services:
       - 8443
     depends_on:
       - db
-      - proxy
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
-    labels:
-      traefik.http.routers.opendsa-lti.rule: Host(`opendsa-testing.cs.vt.edu`)
-      traefik.http.services.opendsa-lti.loadbalancer.server.port: 8443
 
   openpop:
     profiles: ['production']
@@ -76,29 +72,23 @@ services:
       - ./openpop:/openpop
     expose:
       - 9295
-    depends_on:
-      - proxy
-    labels:
-      traefik.http.routers.openpop.rule: Host(`openpop.cs.vt.edu`)
-      traefik.http.services.openpop.loadbalancer.server.port: 9295
 
-  proxy:
+  nginx:
     profiles: ['production']
     build:
-      context: ./proxy
+      context: ./nginx
       dockerfile: Dockerfile
-    image: opendsa/proxy:1.0
+    image: opendsa/nginx:1.0
+    command: [nginx, '-g', 'daemon off;']
     ports:
       - 80:80
       - 443:443
-      - 127.0.0.1:8000:8080
+    tty: true
     volumes:
       - ./certs:/etc/certs
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      default:
-        aliases:
-          - opendsa-testing.cs.vt.edu
+    depends_on:
+      - opendsa-lti
+      - openpop
 
 volumes:
   db:
