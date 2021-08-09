@@ -15,9 +15,11 @@ opendsa: ## Inits the opendsa project as a subproject
 	git clone https://github.com/OpenDSA/OpenDSA.git opendsa
 	# cp config/extrtoolembed.py opendsa/RST/ODSAextensions/odsa/extrtoolembed/
 
-opendsa-lti: ## Inits the opendsa-lti project as a subproject
+opendsa-lti: ## Inits the opendsa-lti and opendsa projects as subprojects
 	rm -rf opendsa-lti
 	git clone https://github.com/OpenDSA/OpenDSA-LTI.git opendsa-lti
+	rm -rf opendsa
+	git clone https://github.com/OpenDSA/OpenDSA.git opendsa
 
 code-workout: ## Inits the web-cat/code-workout project as a subproject (+ do some config)
 	rm -rf code-workout
