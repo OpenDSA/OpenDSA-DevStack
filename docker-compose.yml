@@ -1,28 +1,58 @@
 version: '3.7'
 services:
+  setup:
+    profiles: ['setup']
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devstack:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/devstack
+
   db:
+    profiles: ['lti', 'code-workout', 'cw-op', 'odsa-cw']
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3307:3306"
-    networks:
-      - db_network
     volumes:
       - db:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: opendsa
-      MYSQL_DATABASE: opendsa
-      MYSQL_USER: opendsa
-      MYSQL_PASSWORD: opendsa
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  opendsa:
+    profiles: ['opendsa', 'lti', 'odsa-cw']
+    # extends:
+    #   file: opendsa/docker-compose.yml
+    #   service: opendsa
+    build:
+      context: ./opendsa
+      dockerfile: Dockerfile
+    image: opendsa/opendsa:latest
+    volumes:
+      - ./opendsa:/opendsa
+    expose:
+      - 8080
+    depends_on:
+      - proxy
+    labels:
+      traefik.http.routers.opendsa.rule: Host(`opendsa.localhost.devcom.vt.edu`)
+      traefik.http.services.opendsa.loadbalancer.server.port: 8080
 
   opendsa-lti:
+    profiles: ['lti', 'odsa-cw']
     build:
       context: ./opendsa-lti
       dockerfile: Dockerfile
       args:
-        - RAILS_ENV=development
-        - ODSA_BRANCH=master
-        - LTI_BRANCH=master
+        - RAILS_ENV=${RAILS_ENV}
+        - ODSA_BRANCH=${ODSA_BRANCH}
+        - LTI_BRANCH=${LTI_BRANCH}
     image: opendsa/opendsa-lti:latest
     volumes:
       - ./opendsa-lti:/opendsa-lti
@@ -32,54 +62,73 @@ services:
       - cache:/cache # added to support windows
     entrypoint: /opendsa-lti/docker-entrypoint.sh
     command: ["./scripts/start.sh"]
-    networks:
-      - db_network
-      - nginx_network
     expose:
       - 8443
     depends_on:
       - db
+      - proxy
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
+    labels:
+      traefik.http.routers.opendsa-lti.rule: Host(`opendsa-lti.localhost.devcom.vt.edu`)
+      traefik.http.services.opendsa-lti.loadbalancer.server.port: 8443
 
-  codeworkout:
+  code-workout:
+    profiles: ['code-workout', 'cw-op', 'odsa-cw']
     build:
       context: ./code-workout
       dockerfile: Dockerfile
-    image: code-workout:latest
+    image: opendsa/code-workout:latest
     volumes:
       - ./code-workout:/code-workout
+      - cache:/cache # added to support windows
     stdin_open: true
     tty: true
-    networks:
-      - db_network
-      - nginx_network
     expose:
       - 9292
     depends_on:
       - db
+      - proxy
+    environment:
+      - SPROCKETS_CACHE=/cache # added to support windows
+    labels:
+      traefik.http.routers.code-workout.rule: Host(`code-workout.localhost.devcom.vt.edu`)
+      traefik.http.services.code-workout.loadbalancer.server.port: 9292
 
-  nginx:
-    build: ./nginx
-    image: opendsa/nginx:latest
-    tty: true
-    command: [ nginx-debug, '-g', 'daemon off;' ]
-    ports:
-      - 8443:8443
-      - 9292:9292
-    networks:
-      - nginx_network
+  openpop:
+    profiles: ['openpop', 'cw-op']
+    build:
+      context: ./openpop
+      dockerfile: Dockerfile
+    image: opendsa/openpop:latest
+    command: ["./runservers.sh"]
     volumes:
-      - staticvolume:/opendsa-lti/public/assets
+      - ./openpop:/openpop
+    expose:
+      - 9295
     depends_on:
-      - opendsa-lti
-      - codeworkout
+      - proxy
+    labels:
+      traefik.http.routers.openpop.rule: Host(`openpop.localhost.devcom.vt.edu`)
+      traefik.http.services.openpop.loadbalancer.server.port: 9295
 
-networks:
-  db_network:
-    driver: bridge
-  nginx_network:
-    driver: bridge
+  proxy:
+    profiles: ['opendsa', 'lti', 'code-workout', 'openpop', 'cw-op', 'odsa-cw']
+    image: dtr.it.vt.edu/devcom/devcom-localhost-proxy:traefik-2.3
+    ports:
+      - 80:80
+      - 443:443
+      - 127.0.0.1:8000:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      default:
+        aliases: # Ensure all container-to-container HTTP requests go through the proxy
+          - opendsa.localhost.devcom.vt.edu
+          - opendsa-lti.localhost.devcom.vt.edu
+          - code-workout.localhost.devcom.vt.edu
+          - openpop.localhost.devcom.vt.edu
+
 volumes:
   db:
   staticvolume:

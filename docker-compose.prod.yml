@@ -1,0 +1,97 @@
+version: '3.7'
+services:
+  setup:
+    profiles: ['setup']
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: opendsa/devstack:1.0
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/devstack
+
+  db:
+    profiles: ['production']
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  opendsa:
+    profiles: ['production']
+    build:
+      context: ./opendsa
+      dockerfile: Dockerfile
+    image: opendsa/opendsa:1.0
+    volumes:
+      - ./opendsa:/opendsa
+    expose:
+      - 8080
+
+  opendsa-lti:
+    profiles: ['production']
+    build:
+      context: ./opendsa-lti
+      dockerfile: Dockerfile
+      args:
+        - RAILS_ENV=${RAILS_ENV}
+        - ODSA_BRANCH=${ODSA_BRANCH}
+        - LTI_BRANCH=${LTI_BRANCH}
+    image: opendsa/opendsa-lti:1.0
+    volumes:
+      - ./opendsa-lti:/opendsa-lti
+      - ./opendsa:/opendsa
+      - staticvolume:/opendsa-lti/public/assets
+      - bundle:/usr/local/bundle
+      - cache:/cache # added to support windows
+    entrypoint: /opendsa-lti/docker-entrypoint.sh
+    command: ["./scripts/start.sh"]
+    expose:
+      - 8443
+    depends_on:
+      - db
+    environment:
+      - SPROCKETS_CACHE=/cache # added to support windows
+
+  openpop:
+    profiles: ['production']
+    build:
+      context: ./openpop
+      dockerfile: Dockerfile
+    image: opendsa/openpop:1.0
+    command: ["./runservers.sh"]
+    volumes:
+      - ./openpop:/openpop
+    expose:
+      - 9295
+
+  nginx:
+    profiles: ['production']
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: opendsa/nginx:1.0
+    command: [nginx, '-g', 'daemon off;']
+    ports:
+      - 80:80
+      - 443:443
+    tty: true
+    volumes:
+      - ./certs:/etc/certs
+    depends_on:
+      - opendsa-lti
+      - openpop
+
+volumes:
+  db:
+  staticvolume:
+  bundle:
+  cache: # added to support windows

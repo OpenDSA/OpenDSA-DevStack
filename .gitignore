@@ -1,21 +1,21 @@
 #Temp files
 *~
 
-# cache files for sublime text
-*.tmlanguage.cache
-*.tmPreferences.cache
-*.stTheme.cache
-.vagrant
-/OpenDSA-server
-/OpenDSA-LTI
-/OpenDSA
-/code-workout
-
 # workspace files are user-specific
 *.sublime-workspace
 *.idea
+.DS_Store
 
 # project files should be checked into the repository, unless a significant
 # proportion of contributors will probably not be using SublimeText
 # *.sublime-project
-ubuntu-bionic-18.04-cloudimg-console.log
+
+# Devstack ignores changes the subproject repositories.  HOWEVER, there are placeholder files in
+# them that need to be kept in the repo so that Docker has a valid compose.yml configuration. 
+# These are replaced with the full subproject during `docker-compose run setup make <<subproject>>`
+opendsa/*
+opendsa-lti/*
+openpop/*
+code-workout/*
+.env
+proxy/certs/*
