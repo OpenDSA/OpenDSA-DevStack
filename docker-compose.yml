@@ -67,7 +67,6 @@ services:
     depends_on:
       - db
       - proxy
-      - opendsa
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
     labels:
