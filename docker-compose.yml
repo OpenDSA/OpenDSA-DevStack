@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: devstack:latest
+    image: opendsa/devstack:latest
     stdin_open: true
     tty: true
     volumes:
