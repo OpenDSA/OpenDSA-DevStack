@@ -1,0 +1,8 @@
+.PHONY: ssh restart
+
+ssh: ## execs into OpenDSA container to compile books
+	docker-compose -f docker-compose.prod.yml --profile production exec opendsa bash
+
+restart: ## restarts the production server
+	docker-compose -f docker-compose.prod.yml --profile production down
+	docker-compose -f docker-compose.prod.yml --profile production up -d

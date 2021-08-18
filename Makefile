@@ -1,3 +1,5 @@
+include Makefile.prod
+
 env ?= dev
 
 .DEFAULT_GOAL := help

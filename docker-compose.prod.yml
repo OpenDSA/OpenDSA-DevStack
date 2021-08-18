@@ -33,6 +33,8 @@ services:
     image: opendsa/opendsa:1.0
     volumes:
       - ./opendsa:/opendsa
+    ports:
+      - 8080:8080
     expose:
       - 8080
 
@@ -86,6 +88,8 @@ services:
     tty: true
     volumes:
       - ./certs:/etc/certs
+      - staticvolume:/collected-static
+      - ./opendsa:/collected-static/OpenDSA:ro
     depends_on:
       - opendsa-lti
       - openpop
