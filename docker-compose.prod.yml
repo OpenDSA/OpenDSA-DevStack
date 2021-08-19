@@ -60,6 +60,8 @@ services:
       - 8443
     depends_on:
       - db
+    env_file:
+      - .env
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
 
