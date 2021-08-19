@@ -19,3 +19,4 @@ openpop/*
 code-workout/*
 .env
 proxy/certs/*
+certs/*
