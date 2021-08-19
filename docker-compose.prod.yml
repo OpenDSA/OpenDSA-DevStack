@@ -53,7 +53,7 @@ services:
       - bundle:/usr/local/bundle
       - cache:/cache # added to support windows
     entrypoint: /opendsa-lti/docker-entrypoint.sh
-    command: ["./scripts/start.sh"]
+    command: ["./scripts/start-prod.sh"]
     expose:
       - 8443
     depends_on:
