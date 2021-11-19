@@ -12,7 +12,7 @@ services:
       - .:/devstack
 
   db:
-    profiles: ['production']
+    profiles: ['production', 'staging']
     image: mysql:5.7
     restart: always
     command: --default-authentication-plugin=mysql_native_password
@@ -27,7 +27,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
   opendsa:
-    profiles: ['production']
+    profiles: ['production', 'staging']
     build:
       context: ./opendsa
       dockerfile: Dockerfile
@@ -41,7 +41,7 @@ services:
       - 8080
 
   opendsa-lti:
-    profiles: ['production']
+    profiles: ['production', 'staging']
     build:
       context: ./opendsa-lti
       dockerfile: Dockerfile
@@ -69,7 +69,6 @@ services:
       - SPROCKETS_CACHE=/cache # added to support windows
 
   openpop:
-    profiles: ['production']
     build:
       context: ./openpop
       dockerfile: Dockerfile
@@ -81,7 +80,7 @@ services:
       - 9295
 
   nginx:
-    profiles: ['production']
+    profiles: ['production', 'staging']
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -98,7 +97,6 @@ services:
       - ./opendsa:/collected-static/OpenDSA:ro
     depends_on:
       - opendsa-lti
-      - openpop
 
 volumes:
   db:
