@@ -40,6 +40,8 @@ services:
       - 8080
     depends_on:
       - proxy
+    env_file:
+      - .env
     labels:
       traefik.http.routers.opendsa.rule: Host(`opendsa.localhost.devcom.vt.edu`)
       traefik.http.services.opendsa.loadbalancer.server.port: 8080
