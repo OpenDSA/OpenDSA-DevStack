@@ -32,7 +32,7 @@ services:
     #   service: opendsa
     build:
       context: ./opendsa
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.server
     image: opendsa/opendsa:latest
     volumes:
       - ./opendsa:/opendsa
