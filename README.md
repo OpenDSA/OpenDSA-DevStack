@@ -4,7 +4,7 @@ Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 ## NEW Full Instructions:
 
 1. Install [Docker](https://docs.docker.com/get-docker/).  It is the only requirement, and it runs on just about every platform.
-2. Clone this repostory.  Download could work too.
+2. Clone this repostory.  Download could work too. (Look at the checkpoints below to make sure the download is successful) 
 3. Run the setup for your projects: `docker-compose run setup make <<service>>`
    - The service name will match the `up` Docker command, listed in the projects table below.
 4. Spin up your service: `docker-compose up <<service>>`
@@ -44,6 +44,19 @@ The `docker-compose.yml` file is how `docker-compose` manages the many images an
   - `docker-compose --profile odsa-cw up` will bring up a stack including OpenDSA-LTI and CodeWorkout
   - `docker-compose --profile cw-op up` will bring up a stack including CodeWorkout and OpenPOP
 - In the `docker-compose.yml` the `opendsa-lti` container has a few arguments that you can use to declare which branches of OpenDSA and OpenDSA-LTI you want to use
+
+### Troubleshooting 
+#### Docker Issues 
+If you are having trouble building the OpenDSA Docker Images, first make sure that Docker itself is properly functioning. Before running any commands, ensure that the Docker Daemon is up and running and then run the command below in your terminal to pull a sample docker image. 
+
+If you are not able to pull this image, reinstall Docker, or double check that you followed all the steps correctly. Some possible reasons Docker might not have installed correctly can be found below. 
+
+##### Windows - Hyper-V 
+If you are having trouble running Docker on a Windows 10 (or earlier) system, double check that Hyper-V is enabled. This setting might've been manually turned off in the past if you were running a Virtual Machine like VMWare. This setting should be automatically turned on by the Docker Desktop Windows Installer, but if a conflicting system (like VMWare is running) is still running, it needs to be manually checked. 
+
+##### Windows 11
+Docker on Windows was classically supported through Hyper-V, which no longer exists in Windows 11. Due to this, some manual shuffling of systems needs to be done to run Docker on these machines. The simplest approach seems to be to install a Linux Subsystem like WSL [Windows Subsystem for Linux] (https://hope.edu/academics/computer-science/student-resources/using-wsl.html). After WSL is running, you should be able to download Docker, however you will still need to run Docker commands through an IDE that supports the Docker Platform. Many IDE's such as [IntelliJ] (https://www.jetbrains.com/help/idea/docker.html#:~:text=IntelliJ%20IDEA%20provides%20Docker%20support,as%20described%20in%20Install%20plugins.) and [VSCode] (https://code.visualstudio.com/docs/containers/overview) have plugins to support this, so use an IDE that you are comfortable with. After setting up the system, pull the sample docker image noted earlier in this section, to confirm success. 
+
 
 ----------
 ----------
