@@ -3,13 +3,13 @@ Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 
 ## Instructions:
 
-1. Install [Docker](https://docs.docker.com/get-docker/). [Docker Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/edit/documentationUpdates/README.md#docker-issues)
+1. Install [Docker](https://docs.docker.com/get-docker/). [Docker Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/tree/master#docker-issues)
 2. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 2. From a bash shell, clone this repostory (git clone https://github.com/OpenDSA/OpenDSA-DevStack.git).  Download could work too. 
 3. From a bash shell at the root of OpenDSA-DevStack install the repositories you will be working with: `docker-compose run setup make <<service>>`
    - Services = [opendsa, opendsa-lti, code-workout]
 4. From a bash shell at the root of OpenDSA-DevStack, Spin up your service: See table below for command using Docker profiles, leave this command running in the shell
-5. Go to your service's URL (table below)
+5. Go to your service's URL in the [Table](https://github.com/OpenDSA/OpenDSA-DevStack/tree/master#OpenDSA-Projects)
 
 ### OpenDSA Projects:
 
