@@ -3,17 +3,17 @@ Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 
 ## Instructions:
 
-1. Install [Docker](https://docs.docker.com/get-docker/). [Docker Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/tree/master#docker-issues)
+1. Install [Docker](https://docs.docker.com/get-docker/). If you experience any issues getting Docker set up, see our [Docker Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/tree/master#docker-issues) section below to debug.
 2. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-2. From a bash shell, clone this repostory (git clone https://github.com/OpenDSA/OpenDSA-DevStack.git).  Download could work too. 
-3. From a bash shell at the root of OpenDSA-DevStack install the repositories you will be working with: `docker-compose run setup make <<service>>`
-   - Services = [opendsa, opendsa-lti, code-workout]
-4. From a bash shell at the root of OpenDSA-DevStack, Spin up your service: See table below for command using Docker profiles, leave this command running in the shell
-5. Go to your service's URL in the [Table](https://github.com/OpenDSA/OpenDSA-DevStack/tree/master#OpenDSA-Projects)
+2. From a bash shell, clone this repostory (git clone https://github.com/OpenDSA/OpenDSA-DevStack.git).
+3. From a bash shell at the root of OpenDSA-DevStack clone the repositories you will be working with into their correct relative locations: `docker-compose run setup make <<repository>>`
+   - repository = [opendsa, opendsa-lti, code-workout]
+4. From a bash shell at the root of OpenDSA-DevStack, Spin up your profile: See table below for command using Docker profiles, leave this command running in the shell
+5. Go to your profile's URL in the [Table](https://github.com/OpenDSA/OpenDSA-DevStack/tree/master#OpenDSA-Projects)
 
 ### OpenDSA Projects:
 
-| Repository                                             | Docker command                             | Service's URL after `up` command              |
+| Repository                                             | Docker command                             | Profile's URL after `up` command              |
 |--------------------------------------------------------|--------------------------------------------|-----------------------------------------------|
 | [OpenDSA](https://github.com/OpenDSA/OpenDSA)          | `docker-compose --profile opendsa up`      | https://opendsa.localhost.devcom.vt.edu/      |
 | [OpenDSA-LTI](https://github.com/OpenDSA/OpenDSA-LTI)  | `docker-compose --profile lti up`          | https://opendsa-lti.localhost.devcom.vt.edu/  |
@@ -23,15 +23,15 @@ Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 
 ### Navigating Projects and using Docker:
 
-The `docker-compose.yml` file is how `docker-compose` manages the many images and containers where your services are running.  The `Dockerfile` is used by `docker` to create the image of a useful machine environment, which can produce containers to do the work.
+The `docker-compose.yml` file is how `docker` manages the many images and containers where your containers are running.  The `Dockerfile` is used by `docker` to create the image of a useful machine environment, which can produce containers to do the work.
 
-- `docker-compose run <<service>> bash` allows you to dive into container and have a shell and command line interface.
-- `docker-compose up <<services>>` Begins services in new containers.  Meant for tasks that have no 'finish', like a server.
+- `docker-compose run <<container>> bash` allows you to create and `ssh` into container and have a shell and command line interface.
+- `docker-compose --profile <<profile>> up` Creates new containers running the project according to a specified profile.  Meant for tasks that have no 'finish', like a server.
    - `docker-compose --profile <<profile>> down` to both stop and remove the containers that were brought up.
-- `docker-compose run <<service>> <<commands>>`  starts a **new container** with a task than has a 'finish';  Some example commands are: `python test.py` or `bash`
-   - replace `run` with `exec` to use a **running** container instead.
+- `docker-compose run <<container>> <<commands>>`  starts a **new container** with a task than has a 'finish';  Some example commands are: `python test.py` or `bash`
+   - `docker-compose exec <<container>> <<commands>>` to use a **running** container instead.
 - If you are using code-workout and/or opendsa-lti, you should also initialize their databases with: `docker-compose exec opendsa-lti rake db:populate` or `docker-compose exec code-workout rake db:create db:populate`
-- `docker-compose build <<services>>` Builds a new image for services (Note: old containers are **not** updated)
+- `docker-compose build <<containers>>` Builds a new image for containers (Note: old containers are **not** updated)
 - `docker images` and `docker container list` displays the images/containers that are *currently active*.  Can add `--all` to see inactive ones as well.
 
 ### Useful tips and options:
@@ -39,7 +39,7 @@ The `docker-compose.yml` file is how `docker-compose` manages the many images an
 - Adding the `--detach` or `-d` option allows some docker commands to run in the *background*, giving you back control of the command line.
 - Setting a `docker-compose` alias is nice to avoid typing it as much.  We recommend `docc=docker-compose`
 - On Windows, you may want to do `git config --global core.filemode false`.  Repositories cloned within Docker can show many changes to the file permissions when `git diff` is used outside of the Docker container.
-- The `up` command can spin up several services, e.g.: `docker-compose up opendsa opendsa-lti code-workout`
+- The `up` command can spin up several containers, e.g.: `docker-compose up opendsa opendsa-lti code-workout`
 - There are also two specific profiles set up for common development stacks
   - `docker-compose --profile odsa-cw up` will bring up a stack including OpenDSA-LTI and CodeWorkout
   - `docker-compose --profile cw-op up` will bring up a stack including CodeWorkout and OpenPOP
@@ -47,13 +47,13 @@ The `docker-compose.yml` file is how `docker-compose` manages the many images an
 
 ### Troubleshooting 
 #### Docker Issues 
-If you are having trouble building the OpenDSA Docker Images, first make sure that Docker itself is properly functioning. Before running any commands, ensure that the Docker Daemon is up and running and then run the command below in your terminal to pull a sample docker image. 
+If you are having trouble building or running the OpenDSA Docker Images, first make sure that Docker itself is properly functioning. Before running any commands, ensure that the Docker Daemon is up and running and then run the command below in your terminal to pull a sample docker image. 
 
-1. Pull the Docker Image 
+1. Pull the Docker Image: 
 `docker pull shreyamallamula/dockernginx`
-2. Run the Docker Image 
+2. Run the Docker Image:
 `docker run -d -p 5000:80 shreyamallamula/dockernginx`
-3. Point to the right IP address 
+3. In a browser, navigate to:
 http://localhost:5000/ 
 
 If you are not able to pull this image, reinstall Docker, or double check that you followed all the steps correctly. Some possible reasons Docker might not have installed correctly can be found below. 
