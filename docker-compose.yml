@@ -118,7 +118,7 @@ services:
 
   proxy:
     profiles: ['opendsa', 'lti', 'code-workout', 'openpop', 'cw-op', 'odsa-cw']
-    image: dtr.it.vt.edu/devcom/devcom-localhost-proxy:traefik-2.3
+    image: code.vt.edu:5005/devcom/devcom-localhost-proxy:traefik-2.3
     ports:
       - 80:80
       - 443:443
