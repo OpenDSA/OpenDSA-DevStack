@@ -13,7 +13,7 @@ services:
 
   db:
     profiles: ['lti', 'code-workout', 'cw-op', 'odsa-cw']
-    image: mysql:5.7
+    image: mariadb:10.2
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3307:3306"

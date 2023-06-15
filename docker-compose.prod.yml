@@ -12,7 +12,7 @@ services:
       - .:/devstack
 
   db:
-    profiles: ['production', 'staging']
+    profiles: ['production', 'staging', 'external']
     image: mysql:5.7
     restart: always
     command: --default-authentication-plugin=mysql_native_password
@@ -27,7 +27,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
   opendsa:
-    profiles: ['production', 'staging']
+    profiles: ['production', 'staging', 'external']
     build:
       context: ./opendsa
       dockerfile: Dockerfile.server
@@ -43,7 +43,7 @@ services:
     - .env
 
   deforms:
-    profiles: ['production', 'staging']
+    profiles: ['production', 'staging', 'external']
     build:
       context: ./opendsa
       dockerfile: Dockerfile.deforms
@@ -60,7 +60,7 @@ services:
       - .env
 
   opendsa-lti:
-    profiles: ['production', 'staging']
+    profiles: ['production', 'staging', 'external']
     build:
       context: ./opendsa-lti
       dockerfile: Dockerfile
@@ -116,6 +116,34 @@ services:
       - ./opendsa:/collected-static/OpenDSA:ro
     depends_on:
       - opendsa-lti
+
+  swag:
+    profile: ['external']
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+     - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - URL=yourdomain.url
+      - VALIDATION=http
+      # - SUBDOMAINS=www, #optional
+      # - CERTPROVIDER= #optional
+      # - DNSPLUGIN=cloudflare #optional
+      # - PROPAGATION= #optional
+      # - DUCKDNSTOKEN= #optional
+      # - EMAIL= #optional
+      # - ONLY_SUBDOMAINS=false #optional
+      # - EXTRA_DOMAINS= #optional
+      # - STAGING=false #optional
+    volumes:
+      - /nginx/nginxconf:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
 
 volumes:
   db:
