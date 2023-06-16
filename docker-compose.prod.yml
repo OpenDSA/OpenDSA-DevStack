@@ -118,7 +118,7 @@ services:
       - opendsa-lti
 
   swag:
-    profile: ['external']
+    profiles: ['external']
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
     cap_add:
