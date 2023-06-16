@@ -48,6 +48,7 @@ services:
 
   opendsa-lti:
     profiles: ['lti', 'odsa-cw']
+    platform: linux/amd64
     build:
       context: ./opendsa-lti
       dockerfile: Dockerfile
