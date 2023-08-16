@@ -21,6 +21,7 @@ services:
     volumes:
       - db:/var/lib/mysql
       - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/encryption:/etc/mysql/encryption
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
