@@ -20,6 +20,7 @@ services:
       - "127.0.0.1:3307:3306"
     volumes:
       - db:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
