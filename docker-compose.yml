@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   setup:
     profiles: ['setup']
@@ -13,12 +12,14 @@ services:
 
   db:
     profiles: ['lti', 'code-workout', 'cw-op', 'odsa-cw']
-    image: mysql:5.7
+    image: mariadb:10.2
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3307:3306"
     volumes:
       - db:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/encryption:/etc/mysql/encryption
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -48,6 +49,7 @@ services:
 
   opendsa-lti:
     profiles: ['lti', 'odsa-cw']
+    platform: linux/amd64
     build:
       context: ./opendsa-lti
       dockerfile: Dockerfile
@@ -118,7 +120,7 @@ services:
 
   proxy:
     profiles: ['opendsa', 'lti', 'code-workout', 'openpop', 'cw-op', 'odsa-cw']
-    image: dtr.it.vt.edu/devcom/devcom-localhost-proxy:traefik-2.3
+    image: code.vt.edu:5005/devcom/devcom-localhost-proxy:traefik-2.3
     ports:
       - 80:80
       - 443:443
