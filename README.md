@@ -6,7 +6,7 @@ Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 1. Install [Docker](https://docs.docker.com/get-docker/). If you experience any issues getting Docker set up, see our [Docker Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/docs/common_errors.md) or if you are on windows, our [Windows Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/docs/windows_troubleshooting.md) section to debug.
 2. Install [Git](https://git-scm.com/book/en/v2/fGetting-Started-Installing-Git)
 3. From a bash shell, clone this repostory: `git clone https://github.com/OpenDSA/OpenDSA-DevStack.git`.
-4. From a bash shell at the root of OpenDSA-DevStack: `cp example.env .env`
+4. From a bash shell at the root of OpenDSA-DevStack: `cp env.example .env`
    - If this command fails, you can create a new text file called example.env and copy in the contents of the .env file
 6. From a bash shell at the root of OpenDSA-DevStack use docker compose to clone the repositories you will be working with into their correct relative locations: `docker-compose run setup make <<repository>>`
    - repository = [opendsa, opendsa-lti, code-workout]
