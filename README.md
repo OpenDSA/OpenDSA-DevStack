@@ -13,6 +13,7 @@ Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 7. To run all of the necessary container for different workflows we have created several docker profiles that combine them all into one command.
 8. From a bash shell at the root of OpenDSA-DevStack, start your profile: See table below for command using Docker profiles, leave this command running in the shell
    - The first time this command is run it will pull the images and take up to 10 minutes to install. Subsequent times will take 1-2 minutes.
+   - If you will be working on edits in the OpenDSA-LTI repo, you will want to build the Docker images locally (using a build command before an up command).
    - You will know the app is running when you see something like `=== puma startup: 2023-06-13 11:51:13 -0400 ===` as the last line in the terminal
 9. Go to your profile's URL in the [Table](https://github.com/OpenDSA/OpenDSA-DevStack/tree/master#OpenDSA-Projects)
 
