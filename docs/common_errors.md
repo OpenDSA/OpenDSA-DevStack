@@ -4,7 +4,7 @@ Make sure that you have started Docker before running of the Makefile commands.
 
 When running commands in the container, there is not sudo password, (in case you need to execute any commands that require sudo).
 
-If the iframe embeds are not appearing, try manually compiling a book in the opendsa container `docker-compose --profile lti exec opendsa make Test`
+If the iframe embeds are not appearing, try manually compiling a book in the opendsa container `docker-compose --profile lti exec opendsa make Test` it is likely you will need to run `docker-compose --profile lti exec opendsa make min` to place the libraries in their expected locations.
 
 ### Troubleshooting 
 
