@@ -1,5 +1,5 @@
 #### General Issues 
-If you are on Windows, you may run into issues with line endings.  If you do, simply open Git Bash and run `$ dos2unix filename` to fix them.  This will most likely happen on a script file.
+If you are on Windows, you may run into issues with line endings.  If you do, simply open Git Bash and run `$ dos2unix filename` to fix them.  This will most likely happen on a script file. If this happens with many files, you can edit the .git/config and change core.filemode to false
 
 If you are on Windows, you may run into issues with any `docker exec` or `docker run` commands (such as `make ssh`).  To solve them, you may have to start any such command with `winpty`.
 
