@@ -68,6 +68,8 @@ services:
     command: ["./scripts/start.sh"]
     expose:
       - 8443
+    ports:
+      - 8443:8443
     depends_on:
       - db
       - proxy
