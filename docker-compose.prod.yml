@@ -44,7 +44,7 @@ services:
     - .env
 
   deforms:
-    profiles: ['production', 'staging', 'external']
+    profiles: ['staging', 'external']
     build:
       context: ./opendsa
       dockerfile: Dockerfile.deforms
