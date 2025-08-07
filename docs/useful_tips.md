@@ -7,5 +7,6 @@
 - There are also two specific profiles set up for common development stacks
   - `docker-compose --profile odsa-cw up` will bring up a stack including OpenDSA-LTI and CodeWorkout
   - `docker-compose --profile cw-op up` will bring up a stack including CodeWorkout and OpenPOP
-- In the `docker-compose.yml` the `opendsa-lti` container has a few arguments that you can use to declare which branches of OpenDSA and OpenDSA-LTI you want to use
+- In the `docker-compose.yml` the `opendsa-lti` container has a few arguments that you can use to declare which branches of OpenDSA and OpenDSA-LTI you want to use.
 - If you are on Windows, any command that enters into a container (exec or run) will most likely need to be prefaced with `winpty` see the [Windows Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/docs/windows_troubleshooting.md) section for more.
+- If you are editing the /embed exercises, you'll need to exec into the opendsa-lti container and run `rake update_module_versions` then `rake clear_rails_cache` in order to populate the view.
