@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: opendsa/devstack:1.0
+    image: opendsa/devstack:1.1
     stdin_open: true
     tty: true
     volumes:
@@ -32,7 +32,7 @@ services:
     build:
       context: ./opendsa
       dockerfile: Dockerfile.server
-    image: opendsa/opendsa:1.0
+    image: opendsa/opendsa:1.1
     restart: always
     volumes:
       - ./opendsa:/opendsa
@@ -44,11 +44,11 @@ services:
     - .env
 
   deforms:
-    profiles: ['staging', 'external']
+    profiles: ['production', 'staging', 'external']
     build:
       context: ./opendsa
       dockerfile: Dockerfile.deforms
-    image: opendsa/deforms:1.0
+    image: opendsa/deforms:1.1
     restart: always
     volumes:
       - ./opendsa:/opendsa
@@ -68,7 +68,7 @@ services:
         - RAILS_ENV=${RAILS_ENV}
         - ODSA_BRANCH=${ODSA_BRANCH}
         - LTI_BRANCH=${LTI_BRANCH}
-    image: opendsa/opendsa-lti:1.0
+    image: opendsa/opendsa-lti:1.1
     restart: always
     volumes:
       - ./opendsa-lti:/opendsa-lti
@@ -91,7 +91,7 @@ services:
     build:
       context: ./openpop
       dockerfile: Dockerfile
-    image: opendsa/openpop:1.0
+    image: opendsa/openpop:1.1
     command: ["./runservers.sh"]
     volumes:
       - ./openpop:/openpop
@@ -103,7 +103,7 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    image: opendsa/nginx:1.0
+    image: opendsa/nginx:1.1
     restart: always
     command: [nginx, '-g', 'daemon off;']
     ports:
