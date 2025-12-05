@@ -1,6 +1,8 @@
 Setting up the OpenDSA Development Environment (OpenDSA-DevStack)
 =================================================================
 
+NOTE: there is an issue with the proxy and a temporary fix is in Docker Desktop -> Settings -> Docker Engine and add `"min-api-version": "1.24"` to the JSON config, then apply and restart.
+
 ## Instructions:
 
 1. Install [Docker](https://docs.docker.com/get-docker/). If you experience any issues getting Docker set up, see our [Docker Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/docs/common_errors.md) or if you are on windows, our [Windows Troubleshooting](https://github.com/OpenDSA/OpenDSA-DevStack/blob/master/docs/windows_troubleshooting.md) section to debug.
